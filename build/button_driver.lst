@@ -1,0 +1,305 @@
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\cc2ex4H6.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"button_driver.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "Core/Src/button_driver.c"
+  20              		.section	.text.InputFilter_getEdge,"ax",%progbits
+  21              		.align	1
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	InputFilter_getEdge:
+  27              	.LVL0:
+  28              	.LFB240:
+   1:Core/Src/button_driver.c **** /**
+   2:Core/Src/button_driver.c ****   * @file   button_driver.c
+   3:Core/Src/button_driver.c ****   * @author BFH-TI / Matthias WAELTI <waltm5@bfh.ch>
+   4:Core/Src/button_driver.c ****   * @author BFH-TI / Daniel DEBRUNNER <dnd1@bfh.ch>
+   5:Core/Src/button_driver.c ****   * @version 1.0.1
+   6:Core/Src/button_driver.c ****   * @date 23.03.2021
+   7:Core/Src/button_driver.c ****   * @date 23.04.2018
+   8:Core/Src/button_driver.c ****   * @brief  Driver for a push button. IDE 1.6.0 hal_gpio changes on EDGE
+   9:Core/Src/button_driver.c ****   * @hardware NucleoF446RE, mbed-016.1-application-shield
+  10:Core/Src/button_driver.c ****   */
+  11:Core/Src/button_driver.c **** 
+  12:Core/Src/button_driver.c **** #include "button_driver.h"
+  13:Core/Src/button_driver.c **** 
+  14:Core/Src/button_driver.c **** static void InputFilter_sample(InputFilter *const _this)
+  15:Core/Src/button_driver.c **** {
+  16:Core/Src/button_driver.c ****     GPIO_PinState currentInputState = GPIO_PIN_RESET;
+  17:Core/Src/button_driver.c ****     currentInputState = HAL_GPIO_ReadPin(_this->port, _this->pin);
+  18:Core/Src/button_driver.c **** 
+  19:Core/Src/button_driver.c ****     _this->rawInputSet = _this->rawInputSet << 1;
+  20:Core/Src/button_driver.c ****     _this->rawInputSet |= currentInputState;
+  21:Core/Src/button_driver.c **** 
+  22:Core/Src/button_driver.c ****     if (_this->inputState == true) {
+  23:Core/Src/button_driver.c ****         if (_this->rawInputSet == INPUT_LOW) {
+  24:Core/Src/button_driver.c ****             _this->pendingEdge = myFALLING_EDGE;
+  25:Core/Src/button_driver.c ****             _this->inputState = false;
+  26:Core/Src/button_driver.c ****         }
+  27:Core/Src/button_driver.c ****     }
+  28:Core/Src/button_driver.c ****     else {
+  29:Core/Src/button_driver.c ****         if (_this->rawInputSet == INPUT_HIGH) {
+  30:Core/Src/button_driver.c ****             _this->pendingEdge = myRISING_EDGE;
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\cc2ex4H6.s 			page 2
+
+
+  31:Core/Src/button_driver.c ****             _this->inputState = true;
+  32:Core/Src/button_driver.c ****         }
+  33:Core/Src/button_driver.c ****     }
+  34:Core/Src/button_driver.c **** }
+  35:Core/Src/button_driver.c **** 
+  36:Core/Src/button_driver.c **** static edge InputFilter_getEdge(InputFilter *const _this)
+  37:Core/Src/button_driver.c **** {
+  29              		.loc 1 37 1 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		@ link register save eliminated.
+  34              		.loc 1 37 1 is_stmt 0 view .LVU1
+  35 0000 0346     		mov	r3, r0
+  38:Core/Src/button_driver.c ****     edge pendingEdge = _this->pendingEdge;
+  36              		.loc 1 38 5 is_stmt 1 view .LVU2
+  37              		.loc 1 38 10 is_stmt 0 view .LVU3
+  38 0002 C078     		ldrb	r0, [r0, #3]	@ zero_extendqisi2
+  39              	.LVL1:
+  39:Core/Src/button_driver.c ****     _this->pendingEdge = myNO_EDGE;
+  40              		.loc 1 39 5 is_stmt 1 view .LVU4
+  41              		.loc 1 39 24 is_stmt 0 view .LVU5
+  42 0004 0122     		movs	r2, #1
+  43 0006 DA70     		strb	r2, [r3, #3]
+  44              	.LVL2:
+  40:Core/Src/button_driver.c ****     return pendingEdge;
+  45              		.loc 1 40 5 is_stmt 1 view .LVU6
+  41:Core/Src/button_driver.c **** }
+  46              		.loc 1 41 1 is_stmt 0 view .LVU7
+  47 0008 7047     		bx	lr
+  48              		.cfi_endproc
+  49              	.LFE240:
+  51              		.section	.text.InputFilter_sample,"ax",%progbits
+  52              		.align	1
+  53              		.syntax unified
+  54              		.thumb
+  55              		.thumb_func
+  57              	InputFilter_sample:
+  58              	.LVL3:
+  59              	.LFB239:
+  15:Core/Src/button_driver.c ****     GPIO_PinState currentInputState = GPIO_PIN_RESET;
+  60              		.loc 1 15 1 is_stmt 1 view -0
+  61              		.cfi_startproc
+  62              		@ args = 0, pretend = 0, frame = 0
+  63              		@ frame_needed = 0, uses_anonymous_args = 0
+  15:Core/Src/button_driver.c ****     GPIO_PinState currentInputState = GPIO_PIN_RESET;
+  64              		.loc 1 15 1 is_stmt 0 view .LVU9
+  65 0000 10B5     		push	{r4, lr}
+  66              		.cfi_def_cfa_offset 8
+  67              		.cfi_offset 4, -8
+  68              		.cfi_offset 14, -4
+  69 0002 0446     		mov	r4, r0
+  16:Core/Src/button_driver.c ****     currentInputState = HAL_GPIO_ReadPin(_this->port, _this->pin);
+  70              		.loc 1 16 5 is_stmt 1 view .LVU10
+  71              	.LVL4:
+  17:Core/Src/button_driver.c **** 
+  72              		.loc 1 17 5 view .LVU11
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\cc2ex4H6.s 			page 3
+
+
+  17:Core/Src/button_driver.c **** 
+  73              		.loc 1 17 25 is_stmt 0 view .LVU12
+  74 0004 0189     		ldrh	r1, [r0, #8]
+  75 0006 4068     		ldr	r0, [r0, #4]
+  76              	.LVL5:
+  17:Core/Src/button_driver.c **** 
+  77              		.loc 1 17 25 view .LVU13
+  78 0008 FFF7FEFF 		bl	HAL_GPIO_ReadPin
+  79              	.LVL6:
+  19:Core/Src/button_driver.c ****     _this->rawInputSet |= currentInputState;
+  80              		.loc 1 19 5 is_stmt 1 view .LVU14
+  19:Core/Src/button_driver.c ****     _this->rawInputSet |= currentInputState;
+  81              		.loc 1 19 31 is_stmt 0 view .LVU15
+  82 000c 2388     		ldrh	r3, [r4]
+  19:Core/Src/button_driver.c ****     _this->rawInputSet |= currentInputState;
+  83              		.loc 1 19 45 view .LVU16
+  84 000e 5B00     		lsls	r3, r3, #1
+  85 0010 9BB2     		uxth	r3, r3
+  19:Core/Src/button_driver.c ****     _this->rawInputSet |= currentInputState;
+  86              		.loc 1 19 24 view .LVU17
+  87 0012 2380     		strh	r3, [r4]	@ movhi
+  20:Core/Src/button_driver.c **** 
+  88              		.loc 1 20 5 is_stmt 1 view .LVU18
+  20:Core/Src/button_driver.c **** 
+  89              		.loc 1 20 24 is_stmt 0 view .LVU19
+  90 0014 1843     		orrs	r0, r0, r3
+  91              	.LVL7:
+  20:Core/Src/button_driver.c **** 
+  92              		.loc 1 20 24 view .LVU20
+  93 0016 80B2     		uxth	r0, r0
+  94 0018 2080     		strh	r0, [r4]	@ movhi
+  22:Core/Src/button_driver.c ****         if (_this->rawInputSet == INPUT_LOW) {
+  95              		.loc 1 22 5 is_stmt 1 view .LVU21
+  22:Core/Src/button_driver.c ****         if (_this->rawInputSet == INPUT_LOW) {
+  96              		.loc 1 22 14 is_stmt 0 view .LVU22
+  97 001a A378     		ldrb	r3, [r4, #2]	@ zero_extendqisi2
+  22:Core/Src/button_driver.c ****         if (_this->rawInputSet == INPUT_LOW) {
+  98              		.loc 1 22 8 view .LVU23
+  99 001c 23B1     		cbz	r3, .L3
+  23:Core/Src/button_driver.c ****             _this->pendingEdge = myFALLING_EDGE;
+ 100              		.loc 1 23 9 is_stmt 1 view .LVU24
+  23:Core/Src/button_driver.c ****             _this->pendingEdge = myFALLING_EDGE;
+ 101              		.loc 1 23 12 is_stmt 0 view .LVU25
+ 102 001e 38B9     		cbnz	r0, .L2
+  24:Core/Src/button_driver.c ****             _this->inputState = false;
+ 103              		.loc 1 24 13 is_stmt 1 view .LVU26
+  24:Core/Src/button_driver.c ****             _this->inputState = false;
+ 104              		.loc 1 24 32 is_stmt 0 view .LVU27
+ 105 0020 0023     		movs	r3, #0
+ 106 0022 E370     		strb	r3, [r4, #3]
+  25:Core/Src/button_driver.c ****         }
+ 107              		.loc 1 25 13 is_stmt 1 view .LVU28
+  25:Core/Src/button_driver.c ****         }
+ 108              		.loc 1 25 31 is_stmt 0 view .LVU29
+ 109 0024 A370     		strb	r3, [r4, #2]
+ 110 0026 03E0     		b	.L2
+ 111              	.L3:
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\cc2ex4H6.s 			page 4
+
+
+  29:Core/Src/button_driver.c ****             _this->pendingEdge = myRISING_EDGE;
+ 112              		.loc 1 29 9 is_stmt 1 view .LVU30
+  29:Core/Src/button_driver.c ****             _this->pendingEdge = myRISING_EDGE;
+ 113              		.loc 1 29 12 is_stmt 0 view .LVU31
+ 114 0028 4FF6FF73 		movw	r3, #65535
+ 115 002c 9842     		cmp	r0, r3
+ 116 002e 00D0     		beq	.L6
+ 117              	.L2:
+  34:Core/Src/button_driver.c **** 
+ 118              		.loc 1 34 1 view .LVU32
+ 119 0030 10BD     		pop	{r4, pc}
+ 120              	.LVL8:
+ 121              	.L6:
+  30:Core/Src/button_driver.c ****             _this->inputState = true;
+ 122              		.loc 1 30 13 is_stmt 1 view .LVU33
+  30:Core/Src/button_driver.c ****             _this->inputState = true;
+ 123              		.loc 1 30 32 is_stmt 0 view .LVU34
+ 124 0032 0223     		movs	r3, #2
+ 125 0034 E370     		strb	r3, [r4, #3]
+  31:Core/Src/button_driver.c ****         }
+ 126              		.loc 1 31 13 is_stmt 1 view .LVU35
+  31:Core/Src/button_driver.c ****         }
+ 127              		.loc 1 31 31 is_stmt 0 view .LVU36
+ 128 0036 0123     		movs	r3, #1
+ 129 0038 A370     		strb	r3, [r4, #2]
+  34:Core/Src/button_driver.c **** 
+ 130              		.loc 1 34 1 view .LVU37
+ 131 003a F9E7     		b	.L2
+ 132              		.cfi_endproc
+ 133              	.LFE239:
+ 135              		.section	.text.InputFilter_init,"ax",%progbits
+ 136              		.align	1
+ 137              		.global	InputFilter_init
+ 138              		.syntax unified
+ 139              		.thumb
+ 140              		.thumb_func
+ 142              	InputFilter_init:
+ 143              	.LVL9:
+ 144              	.LFB241:
+  42:Core/Src/button_driver.c **** 
+  43:Core/Src/button_driver.c **** uint8_t InputFilter_init(InputFilter *const _this, GPIO_TypeDef *const port, uint16_t pin)
+  44:Core/Src/button_driver.c **** {
+ 145              		.loc 1 44 1 is_stmt 1 view -0
+ 146              		.cfi_startproc
+ 147              		@ args = 0, pretend = 0, frame = 0
+ 148              		@ frame_needed = 0, uses_anonymous_args = 0
+ 149              		@ link register save eliminated.
+ 150              		.loc 1 44 1 is_stmt 0 view .LVU39
+ 151 0000 0346     		mov	r3, r0
+  45:Core/Src/button_driver.c ****     _this->rawInputSet = 0;
+ 152              		.loc 1 45 5 is_stmt 1 view .LVU40
+ 153              		.loc 1 45 24 is_stmt 0 view .LVU41
+ 154 0002 0020     		movs	r0, #0
+ 155              	.LVL10:
+ 156              		.loc 1 45 24 view .LVU42
+ 157 0004 1880     		strh	r0, [r3]	@ movhi
+  46:Core/Src/button_driver.c ****     _this->inputState = false;
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\cc2ex4H6.s 			page 5
+
+
+ 158              		.loc 1 46 5 is_stmt 1 view .LVU43
+ 159              		.loc 1 46 23 is_stmt 0 view .LVU44
+ 160 0006 9870     		strb	r0, [r3, #2]
+  47:Core/Src/button_driver.c ****     _this->pendingEdge = myNO_EDGE;
+ 161              		.loc 1 47 5 is_stmt 1 view .LVU45
+ 162              		.loc 1 47 24 is_stmt 0 view .LVU46
+ 163 0008 4FF0010C 		mov	ip, #1
+ 164 000c 83F803C0 		strb	ip, [r3, #3]
+  48:Core/Src/button_driver.c ****     _this->port = port;
+ 165              		.loc 1 48 5 is_stmt 1 view .LVU47
+ 166              		.loc 1 48 17 is_stmt 0 view .LVU48
+ 167 0010 5960     		str	r1, [r3, #4]
+  49:Core/Src/button_driver.c ****     _this->pin = pin;
+ 168              		.loc 1 49 5 is_stmt 1 view .LVU49
+ 169              		.loc 1 49 16 is_stmt 0 view .LVU50
+ 170 0012 1A81     		strh	r2, [r3, #8]	@ movhi
+  50:Core/Src/button_driver.c ****     _this->sample = InputFilter_sample;
+ 171              		.loc 1 50 5 is_stmt 1 view .LVU51
+ 172              		.loc 1 50 19 is_stmt 0 view .LVU52
+ 173 0014 024A     		ldr	r2, .L8
+ 174              	.LVL11:
+ 175              		.loc 1 50 19 view .LVU53
+ 176 0016 DA60     		str	r2, [r3, #12]
+  51:Core/Src/button_driver.c ****     _this->getEdge = InputFilter_getEdge;
+ 177              		.loc 1 51 5 is_stmt 1 view .LVU54
+ 178              		.loc 1 51 20 is_stmt 0 view .LVU55
+ 179 0018 024A     		ldr	r2, .L8+4
+ 180 001a 1A61     		str	r2, [r3, #16]
+  52:Core/Src/button_driver.c ****     return EXIT_SUCCESS;
+ 181              		.loc 1 52 5 is_stmt 1 view .LVU56
+  53:Core/Src/button_driver.c **** }
+ 182              		.loc 1 53 1 is_stmt 0 view .LVU57
+ 183 001c 7047     		bx	lr
+ 184              	.L9:
+ 185 001e 00BF     		.align	2
+ 186              	.L8:
+ 187 0020 00000000 		.word	InputFilter_sample
+ 188 0024 00000000 		.word	InputFilter_getEdge
+ 189              		.cfi_endproc
+ 190              	.LFE241:
+ 192              		.text
+ 193              	.Letext0:
+ 194              		.file 2 "C:/Users/silsp/AppData/Roaming/Code/User/globalStorage/bmd.stm32-for-vscode/@xpack-dev-to
+ 195              		.file 3 "C:/Users/silsp/AppData/Roaming/Code/User/globalStorage/bmd.stm32-for-vscode/@xpack-dev-to
+ 196              		.file 4 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f446xx.h"
+ 197              		.file 5 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h"
+ 198              		.file 6 "Core/Inc/button_driver.h"
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\cc2ex4H6.s 			page 6
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 button_driver.c
+C:\Users\silsp\AppData\Local\Temp\cc2ex4H6.s:21     .text.InputFilter_getEdge:00000000 $t
+C:\Users\silsp\AppData\Local\Temp\cc2ex4H6.s:26     .text.InputFilter_getEdge:00000000 InputFilter_getEdge
+C:\Users\silsp\AppData\Local\Temp\cc2ex4H6.s:52     .text.InputFilter_sample:00000000 $t
+C:\Users\silsp\AppData\Local\Temp\cc2ex4H6.s:57     .text.InputFilter_sample:00000000 InputFilter_sample
+C:\Users\silsp\AppData\Local\Temp\cc2ex4H6.s:136    .text.InputFilter_init:00000000 $t
+C:\Users\silsp\AppData\Local\Temp\cc2ex4H6.s:142    .text.InputFilter_init:00000000 InputFilter_init
+C:\Users\silsp\AppData\Local\Temp\cc2ex4H6.s:187    .text.InputFilter_init:00000020 $d
+
+UNDEFINED SYMBOLS
+HAL_GPIO_ReadPin

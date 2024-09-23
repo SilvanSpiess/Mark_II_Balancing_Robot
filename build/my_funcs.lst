@@ -1,0 +1,957 @@
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\cchSrkIv.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"my_funcs.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "Core/Src/my_funcs.c"
+  20              		.section	.rodata.screen_setup.str1.4,"aMS",%progbits,1
+  21              		.align	2
+  22              	.LC0:
+  23 0000 57454C43 		.ascii	"WELCOME!\000"
+  23      4F4D4521 
+  23      00
+  24 0009 000000   		.align	2
+  25              	.LC1:
+  26 000c 6C6F6164 		.ascii	"loading.\000"
+  26      696E672E 
+  26      00
+  27 0015 000000   		.align	2
+  28              	.LC2:
+  29 0018 2E00     		.ascii	".\000"
+  30              		.section	.text.screen_setup,"ax",%progbits
+  31              		.align	1
+  32              		.global	screen_setup
+  33              		.syntax unified
+  34              		.thumb
+  35              		.thumb_func
+  37              	screen_setup:
+  38              	.LFB242:
+   1:Core/Src/my_funcs.c **** /**
+   2:Core/Src/my_funcs.c ****  * @file my_funcs.c
+   3:Core/Src/my_funcs.c ****  * @ref <MechatronicsProjectOne>
+   4:Core/Src/my_funcs.c ****  * @author Silvan Spiess <silvan.spiess@bfh-student.ch>
+   5:Core/Src/my_funcs.c ****  * @copyright Bern University of Applied Sciences
+   6:Core/Src/my_funcs.c ****  *            Silvan Spiess 
+   7:Core/Src/my_funcs.c ****  * @version v1.0.0
+   8:Core/Src/my_funcs.c ****  * @date 16. March. 2024
+   9:Core/Src/my_funcs.c ****  * 
+  10:Core/Src/my_funcs.c ****  * @brief This file handles functions which handles processes such as motor usage and and joystick 
+  11:Core/Src/my_funcs.c ****  * General functions can be found in this file.
+  12:Core/Src/my_funcs.c ****  */
+  13:Core/Src/my_funcs.c **** #include "my_funcs.h"
+  14:Core/Src/my_funcs.c **** 
+  15:Core/Src/my_funcs.c **** volatile int32_t message_counter = 0;
+  16:Core/Src/my_funcs.c **** 
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\cchSrkIv.s 			page 2
+
+
+  17:Core/Src/my_funcs.c **** void screen_setup() {
+  39              		.loc 1 17 21 view -0
+  40              		.cfi_startproc
+  41              		@ args = 0, pretend = 0, frame = 0
+  42              		@ frame_needed = 0, uses_anonymous_args = 0
+  43 0000 30B5     		push	{r4, r5, lr}
+  44              		.cfi_def_cfa_offset 12
+  45              		.cfi_offset 4, -12
+  46              		.cfi_offset 5, -8
+  47              		.cfi_offset 14, -4
+  48 0002 83B0     		sub	sp, sp, #12
+  49              		.cfi_def_cfa_offset 24
+  18:Core/Src/my_funcs.c ****   lcd_setFrame(0, 0, 127, 31);
+  50              		.loc 1 18 3 view .LVU1
+  51 0004 1F23     		movs	r3, #31
+  52 0006 7F22     		movs	r2, #127
+  53 0008 0021     		movs	r1, #0
+  54 000a 0846     		mov	r0, r1
+  55 000c FFF7FEFF 		bl	lcd_setFrame
+  56              	.LVL0:
+  19:Core/Src/my_funcs.c ****   lcd_setString(43, 5, "WELCOME!", LCD_FONT_8, 0);
+  57              		.loc 1 19 3 view .LVU2
+  58 0010 0024     		movs	r4, #0
+  59 0012 0094     		str	r4, [sp]
+  60 0014 2346     		mov	r3, r4
+  61 0016 1B4A     		ldr	r2, .L3
+  62 0018 0521     		movs	r1, #5
+  63 001a 2B20     		movs	r0, #43
+  64 001c FFF7FEFF 		bl	lcd_setString
+  65              	.LVL1:
+  20:Core/Src/my_funcs.c ****   lcd_setString(38, 20, "loading.", LCD_FONT_8, 0);
+  66              		.loc 1 20 3 view .LVU3
+  67 0020 0094     		str	r4, [sp]
+  68 0022 2346     		mov	r3, r4
+  69 0024 184A     		ldr	r2, .L3+4
+  70 0026 1421     		movs	r1, #20
+  71 0028 2620     		movs	r0, #38
+  72 002a FFF7FEFF 		bl	lcd_setString
+  73              	.LVL2:
+  21:Core/Src/my_funcs.c ****   lcd_show();
+  74              		.loc 1 21 3 view .LVU4
+  75 002e FFF7FEFF 		bl	lcd_show
+  76              	.LVL3:
+  22:Core/Src/my_funcs.c ****   HAL_Delay(700);
+  77              		.loc 1 22 3 view .LVU5
+  78 0032 4FF42F70 		mov	r0, #700
+  79 0036 FFF7FEFF 		bl	HAL_Delay
+  80              	.LVL4:
+  23:Core/Src/my_funcs.c ****   lcd_setString(85, 20, ".", LCD_FONT_8, 0);
+  81              		.loc 1 23 3 view .LVU6
+  82 003a 144D     		ldr	r5, .L3+8
+  83 003c 0094     		str	r4, [sp]
+  84 003e 2346     		mov	r3, r4
+  85 0040 2A46     		mov	r2, r5
+  86 0042 1421     		movs	r1, #20
+  87 0044 5520     		movs	r0, #85
+  88 0046 FFF7FEFF 		bl	lcd_setString
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\cchSrkIv.s 			page 3
+
+
+  89              	.LVL5:
+  24:Core/Src/my_funcs.c ****   lcd_show();
+  90              		.loc 1 24 3 view .LVU7
+  91 004a FFF7FEFF 		bl	lcd_show
+  92              	.LVL6:
+  25:Core/Src/my_funcs.c ****   HAL_Delay(700);
+  93              		.loc 1 25 3 view .LVU8
+  94 004e 4FF42F70 		mov	r0, #700
+  95 0052 FFF7FEFF 		bl	HAL_Delay
+  96              	.LVL7:
+  26:Core/Src/my_funcs.c ****   lcd_setString(90, 20, ".", LCD_FONT_8, 0);
+  97              		.loc 1 26 3 view .LVU9
+  98 0056 0094     		str	r4, [sp]
+  99 0058 2346     		mov	r3, r4
+ 100 005a 2A46     		mov	r2, r5
+ 101 005c 1421     		movs	r1, #20
+ 102 005e 5A20     		movs	r0, #90
+ 103 0060 FFF7FEFF 		bl	lcd_setString
+ 104              	.LVL8:
+  27:Core/Src/my_funcs.c ****   lcd_show();
+ 105              		.loc 1 27 3 view .LVU10
+ 106 0064 FFF7FEFF 		bl	lcd_show
+ 107              	.LVL9:
+  28:Core/Src/my_funcs.c ****   lcd_clear(); 
+ 108              		.loc 1 28 3 view .LVU11
+ 109 0068 FFF7FEFF 		bl	lcd_clear
+ 110              	.LVL10:
+  29:Core/Src/my_funcs.c ****   lcd_setFrame(0, 0, 127, 31);
+ 111              		.loc 1 29 3 view .LVU12
+ 112 006c 1F23     		movs	r3, #31
+ 113 006e 7F22     		movs	r2, #127
+ 114 0070 2146     		mov	r1, r4
+ 115 0072 2046     		mov	r0, r4
+ 116 0074 FFF7FEFF 		bl	lcd_setFrame
+ 117              	.LVL11:
+  30:Core/Src/my_funcs.c ****   HAL_Delay(700);
+ 118              		.loc 1 30 3 view .LVU13
+ 119 0078 4FF42F70 		mov	r0, #700
+ 120 007c FFF7FEFF 		bl	HAL_Delay
+ 121              	.LVL12:
+  31:Core/Src/my_funcs.c **** }
+ 122              		.loc 1 31 1 is_stmt 0 view .LVU14
+ 123 0080 03B0     		add	sp, sp, #12
+ 124              		.cfi_def_cfa_offset 12
+ 125              		@ sp needed
+ 126 0082 30BD     		pop	{r4, r5, pc}
+ 127              	.L4:
+ 128              		.align	2
+ 129              	.L3:
+ 130 0084 00000000 		.word	.LC0
+ 131 0088 0C000000 		.word	.LC1
+ 132 008c 18000000 		.word	.LC2
+ 133              		.cfi_endproc
+ 134              	.LFE242:
+ 136              		.section	.text.check_joystick,"ax",%progbits
+ 137              		.align	1
+ 138              		.global	check_joystick
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\cchSrkIv.s 			page 4
+
+
+ 139              		.syntax unified
+ 140              		.thumb
+ 141              		.thumb_func
+ 143              	check_joystick:
+ 144              	.LVL13:
+ 145              	.LFB243:
+  32:Core/Src/my_funcs.c **** 
+  33:Core/Src/my_funcs.c **** void check_joystick(menu_navigation direction, menu_event current_event, void *data) {
+ 146              		.loc 1 33 86 is_stmt 1 view -0
+ 147              		.cfi_startproc
+ 148              		@ args = 0, pretend = 0, frame = 0
+ 149              		@ frame_needed = 0, uses_anonymous_args = 0
+ 150              		@ link register save eliminated.
+  34:Core/Src/my_funcs.c **** 
+  35:Core/Src/my_funcs.c ****   AppData* joystick_data = data;
+ 151              		.loc 1 35 3 view .LVU16
+  36:Core/Src/my_funcs.c ****   if(current_event == MENU_DC_EVENT) {
+ 152              		.loc 1 36 3 view .LVU17
+ 153              		.loc 1 36 5 is_stmt 0 view .LVU18
+ 154 0000 1429     		cmp	r1, #20
+ 155 0002 04D0     		beq	.L19
+  37:Core/Src/my_funcs.c ****     switch (direction) {
+  38:Core/Src/my_funcs.c ****     case MENU_UP:
+  39:Core/Src/my_funcs.c ****       joystick_data->current.mode = SOFT_STOP;
+  40:Core/Src/my_funcs.c ****       break;
+  41:Core/Src/my_funcs.c ****     case MENU_DOWN:
+  42:Core/Src/my_funcs.c ****       joystick_data->current.mode = FAST_STOP;
+  43:Core/Src/my_funcs.c ****       break;
+  44:Core/Src/my_funcs.c ****     case MENU_BACKWARD:
+  45:Core/Src/my_funcs.c ****       joystick_data->current.mode = COUNTER_CLOCK_WISE;
+  46:Core/Src/my_funcs.c ****       break;
+  47:Core/Src/my_funcs.c ****     case MENU_FORWARD:
+  48:Core/Src/my_funcs.c ****       joystick_data->current.mode = CLOCK_WISE;
+  49:Core/Src/my_funcs.c ****       break;        
+  50:Core/Src/my_funcs.c ****     default:
+  51:Core/Src/my_funcs.c ****       break;
+  52:Core/Src/my_funcs.c ****     }
+  53:Core/Src/my_funcs.c ****   }
+  54:Core/Src/my_funcs.c ****   else if(current_event == MENU_SETTINGS_DC_EVENT) {
+ 156              		.loc 1 54 8 is_stmt 1 view .LVU19
+ 157              		.loc 1 54 10 is_stmt 0 view .LVU20
+ 158 0004 1029     		cmp	r1, #16
+ 159 0006 15D0     		beq	.L20
+  55:Core/Src/my_funcs.c ****     switch (direction) {        
+  56:Core/Src/my_funcs.c ****     case MENU_DOWN:
+  57:Core/Src/my_funcs.c ****       joystick_data->current.number_of_samples = 5;
+  58:Core/Src/my_funcs.c ****       break;
+  59:Core/Src/my_funcs.c ****     case MENU_BACKWARD:
+  60:Core/Src/my_funcs.c ****       if(joystick_data->current.number_of_samples > 1)
+  61:Core/Src/my_funcs.c ****         joystick_data->current.number_of_samples--;
+  62:Core/Src/my_funcs.c ****       break;
+  63:Core/Src/my_funcs.c ****     case MENU_FORWARD:
+  64:Core/Src/my_funcs.c ****       if(joystick_data->current.number_of_samples < 20)
+  65:Core/Src/my_funcs.c ****         joystick_data->current.number_of_samples++;
+  66:Core/Src/my_funcs.c ****       break;        
+  67:Core/Src/my_funcs.c ****     default:
+  68:Core/Src/my_funcs.c ****       break;
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\cchSrkIv.s 			page 5
+
+
+  69:Core/Src/my_funcs.c ****     }    
+  70:Core/Src/my_funcs.c ****   }
+  71:Core/Src/my_funcs.c ****   else if(current_event == MENU_SETTINGS_PSC_EVENT) {
+ 160              		.loc 1 71 8 is_stmt 1 view .LVU21
+ 161              		.loc 1 71 10 is_stmt 0 view .LVU22
+ 162 0008 1129     		cmp	r1, #17
+ 163 000a 28D0     		beq	.L21
+ 164              	.LVL14:
+ 165              	.L5:
+  72:Core/Src/my_funcs.c ****     switch (direction) {        
+  73:Core/Src/my_funcs.c ****     case MENU_BACKWARD:      
+  74:Core/Src/my_funcs.c ****         joystick_data->current.PSC_on = 0;
+  75:Core/Src/my_funcs.c ****       break;
+  76:Core/Src/my_funcs.c ****     case MENU_FORWARD:
+  77:Core/Src/my_funcs.c ****         joystick_data->current.PSC_on = 1;
+  78:Core/Src/my_funcs.c ****       break;        
+  79:Core/Src/my_funcs.c ****     default:
+  80:Core/Src/my_funcs.c ****       break;
+  81:Core/Src/my_funcs.c ****     }
+  82:Core/Src/my_funcs.c ****   }
+  83:Core/Src/my_funcs.c **** }
+ 166              		.loc 1 83 1 view .LVU23
+ 167 000c 7047     		bx	lr
+ 168              	.LVL15:
+ 169              	.L19:
+  37:Core/Src/my_funcs.c ****     case MENU_UP:
+ 170              		.loc 1 37 5 is_stmt 1 view .LVU24
+ 171 000e 0138     		subs	r0, r0, #1
+ 172              	.LVL16:
+  37:Core/Src/my_funcs.c ****     case MENU_UP:
+ 173              		.loc 1 37 5 is_stmt 0 view .LVU25
+ 174 0010 0328     		cmp	r0, #3
+ 175 0012 FBD8     		bhi	.L5
+ 176 0014 DFE800F0 		tbb	[pc, r0]
+ 177              	.L9:
+ 178 0018 02       		.byte	(.L12-.L9)/2
+ 179 0019 05       		.byte	(.L11-.L9)/2
+ 180 001a 08       		.byte	(.L10-.L9)/2
+ 181 001b 0B       		.byte	(.L8-.L9)/2
+ 182              		.p2align 1
+ 183              	.L12:
+  39:Core/Src/my_funcs.c ****       break;
+ 184              		.loc 1 39 7 is_stmt 1 view .LVU26
+  39:Core/Src/my_funcs.c ****       break;
+ 185              		.loc 1 39 35 is_stmt 0 view .LVU27
+ 186 001c 0223     		movs	r3, #2
+ 187 001e 1374     		strb	r3, [r2, #16]
+  40:Core/Src/my_funcs.c ****     case MENU_DOWN:
+ 188              		.loc 1 40 7 is_stmt 1 view .LVU28
+ 189 0020 7047     		bx	lr
+ 190              	.L11:
+  42:Core/Src/my_funcs.c ****       break;
+ 191              		.loc 1 42 7 view .LVU29
+  42:Core/Src/my_funcs.c ****       break;
+ 192              		.loc 1 42 35 is_stmt 0 view .LVU30
+ 193 0022 0323     		movs	r3, #3
+ 194 0024 1374     		strb	r3, [r2, #16]
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\cchSrkIv.s 			page 6
+
+
+  43:Core/Src/my_funcs.c ****     case MENU_BACKWARD:
+ 195              		.loc 1 43 7 is_stmt 1 view .LVU31
+ 196 0026 7047     		bx	lr
+ 197              	.L10:
+  45:Core/Src/my_funcs.c ****       break;
+ 198              		.loc 1 45 7 view .LVU32
+  45:Core/Src/my_funcs.c ****       break;
+ 199              		.loc 1 45 35 is_stmt 0 view .LVU33
+ 200 0028 0123     		movs	r3, #1
+ 201 002a 1374     		strb	r3, [r2, #16]
+  46:Core/Src/my_funcs.c ****     case MENU_FORWARD:
+ 202              		.loc 1 46 7 is_stmt 1 view .LVU34
+ 203 002c 7047     		bx	lr
+ 204              	.L8:
+  48:Core/Src/my_funcs.c ****       break;        
+ 205              		.loc 1 48 7 view .LVU35
+  48:Core/Src/my_funcs.c ****       break;        
+ 206              		.loc 1 48 35 is_stmt 0 view .LVU36
+ 207 002e 0023     		movs	r3, #0
+ 208 0030 1374     		strb	r3, [r2, #16]
+  49:Core/Src/my_funcs.c ****     default:
+ 209              		.loc 1 49 7 is_stmt 1 view .LVU37
+ 210 0032 7047     		bx	lr
+ 211              	.LVL17:
+ 212              	.L20:
+  55:Core/Src/my_funcs.c ****     case MENU_DOWN:
+ 213              		.loc 1 55 5 view .LVU38
+ 214 0034 0328     		cmp	r0, #3
+ 215 0036 06D0     		beq	.L14
+ 216 0038 0428     		cmp	r0, #4
+ 217 003a 0AD0     		beq	.L15
+ 218 003c 0228     		cmp	r0, #2
+ 219 003e E5D1     		bne	.L5
+  57:Core/Src/my_funcs.c ****       break;
+ 220              		.loc 1 57 7 view .LVU39
+  57:Core/Src/my_funcs.c ****       break;
+ 221              		.loc 1 57 48 is_stmt 0 view .LVU40
+ 222 0040 0523     		movs	r3, #5
+ 223 0042 9381     		strh	r3, [r2, #12]	@ movhi
+  58:Core/Src/my_funcs.c ****     case MENU_BACKWARD:
+ 224              		.loc 1 58 7 is_stmt 1 view .LVU41
+ 225 0044 7047     		bx	lr
+ 226              	.L14:
+  60:Core/Src/my_funcs.c ****         joystick_data->current.number_of_samples--;
+ 227              		.loc 1 60 7 view .LVU42
+  60:Core/Src/my_funcs.c ****         joystick_data->current.number_of_samples--;
+ 228              		.loc 1 60 32 is_stmt 0 view .LVU43
+ 229 0046 9389     		ldrh	r3, [r2, #12]
+  60:Core/Src/my_funcs.c ****         joystick_data->current.number_of_samples--;
+ 230              		.loc 1 60 9 view .LVU44
+ 231 0048 012B     		cmp	r3, #1
+ 232 004a DFD9     		bls	.L5
+  61:Core/Src/my_funcs.c ****       break;
+ 233              		.loc 1 61 9 is_stmt 1 view .LVU45
+  61:Core/Src/my_funcs.c ****       break;
+ 234              		.loc 1 61 49 is_stmt 0 view .LVU46
+ 235 004c 013B     		subs	r3, r3, #1
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\cchSrkIv.s 			page 7
+
+
+ 236 004e 9381     		strh	r3, [r2, #12]	@ movhi
+ 237 0050 7047     		bx	lr
+ 238              	.L15:
+  64:Core/Src/my_funcs.c ****         joystick_data->current.number_of_samples++;
+ 239              		.loc 1 64 7 is_stmt 1 view .LVU47
+  64:Core/Src/my_funcs.c ****         joystick_data->current.number_of_samples++;
+ 240              		.loc 1 64 32 is_stmt 0 view .LVU48
+ 241 0052 9389     		ldrh	r3, [r2, #12]
+  64:Core/Src/my_funcs.c ****         joystick_data->current.number_of_samples++;
+ 242              		.loc 1 64 9 view .LVU49
+ 243 0054 132B     		cmp	r3, #19
+ 244 0056 D9D8     		bhi	.L5
+  65:Core/Src/my_funcs.c ****       break;        
+ 245              		.loc 1 65 9 is_stmt 1 view .LVU50
+  65:Core/Src/my_funcs.c ****       break;        
+ 246              		.loc 1 65 49 is_stmt 0 view .LVU51
+ 247 0058 0133     		adds	r3, r3, #1
+ 248 005a 9381     		strh	r3, [r2, #12]	@ movhi
+ 249 005c 7047     		bx	lr
+ 250              	.L21:
+  72:Core/Src/my_funcs.c ****     case MENU_BACKWARD:      
+ 251              		.loc 1 72 5 is_stmt 1 view .LVU52
+ 252 005e 0328     		cmp	r0, #3
+ 253 0060 02D0     		beq	.L16
+ 254 0062 0428     		cmp	r0, #4
+ 255 0064 03D0     		beq	.L17
+ 256 0066 7047     		bx	lr
+ 257              	.L16:
+  74:Core/Src/my_funcs.c ****       break;
+ 258              		.loc 1 74 9 view .LVU53
+  74:Core/Src/my_funcs.c ****       break;
+ 259              		.loc 1 74 39 is_stmt 0 view .LVU54
+ 260 0068 0023     		movs	r3, #0
+ 261 006a D381     		strh	r3, [r2, #14]	@ movhi
+  75:Core/Src/my_funcs.c ****     case MENU_FORWARD:
+ 262              		.loc 1 75 7 is_stmt 1 view .LVU55
+ 263 006c 7047     		bx	lr
+ 264              	.L17:
+  77:Core/Src/my_funcs.c ****       break;        
+ 265              		.loc 1 77 9 view .LVU56
+  77:Core/Src/my_funcs.c ****       break;        
+ 266              		.loc 1 77 39 is_stmt 0 view .LVU57
+ 267 006e 0123     		movs	r3, #1
+ 268 0070 D381     		strh	r3, [r2, #14]	@ movhi
+  78:Core/Src/my_funcs.c ****     default:
+ 269              		.loc 1 78 7 is_stmt 1 view .LVU58
+ 270              		.loc 1 83 1 is_stmt 0 view .LVU59
+ 271 0072 CBE7     		b	.L5
+ 272              		.cfi_endproc
+ 273              	.LFE243:
+ 275              		.section	.text.motor_menu,"ax",%progbits
+ 276              		.align	1
+ 277              		.global	motor_menu
+ 278              		.syntax unified
+ 279              		.thumb
+ 280              		.thumb_func
+ 282              	motor_menu:
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\cchSrkIv.s 			page 8
+
+
+ 283              	.LVL18:
+ 284              	.LFB244:
+  84:Core/Src/my_funcs.c **** 
+  85:Core/Src/my_funcs.c **** void motor_menu(void *data) {
+ 285              		.loc 1 85 29 is_stmt 1 view -0
+ 286              		.cfi_startproc
+ 287              		@ args = 0, pretend = 0, frame = 0
+ 288              		@ frame_needed = 0, uses_anonymous_args = 0
+ 289              		.loc 1 85 29 is_stmt 0 view .LVU61
+ 290 0000 10B5     		push	{r4, lr}
+ 291              		.cfi_def_cfa_offset 8
+ 292              		.cfi_offset 4, -8
+ 293              		.cfi_offset 14, -4
+ 294 0002 0446     		mov	r4, r0
+  86:Core/Src/my_funcs.c **** 	AppData* motor_data = data;
+ 295              		.loc 1 86 2 is_stmt 1 view .LVU62
+ 296              	.LVL19:
+  87:Core/Src/my_funcs.c ****   
+  88:Core/Src/my_funcs.c ****   switch (motor_data->current.mode) {
+ 297              		.loc 1 88 3 view .LVU63
+ 298              		.loc 1 88 30 is_stmt 0 view .LVU64
+ 299 0004 037C     		ldrb	r3, [r0, #16]	@ zero_extendqisi2
+ 300              		.loc 1 88 3 view .LVU65
+ 301 0006 032B     		cmp	r3, #3
+ 302 0008 1CD8     		bhi	.L22
+ 303 000a DFE803F0 		tbb	[pc, r3]
+ 304              	.L25:
+ 305 000e 02       		.byte	(.L28-.L25)/2
+ 306 000f 21       		.byte	(.L27-.L25)/2
+ 307 0010 42       		.byte	(.L26-.L25)/2
+ 308 0011 49       		.byte	(.L24-.L25)/2
+ 309              		.p2align 1
+ 310              	.L28:
+  89:Core/Src/my_funcs.c ****   case CLOCK_WISE:
+  90:Core/Src/my_funcs.c ****     HAL_GPIO_WritePin(DC_EN_GPIO_Port, DC_EN_Pin, GPIO_PIN_SET);
+ 311              		.loc 1 90 5 is_stmt 1 view .LVU66
+ 312 0012 0122     		movs	r2, #1
+ 313 0014 4FF48061 		mov	r1, #1024
+ 314 0018 2848     		ldr	r0, .L35
+ 315              	.LVL20:
+ 316              		.loc 1 90 5 is_stmt 0 view .LVU67
+ 317 001a FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 318              	.LVL21:
+  91:Core/Src/my_funcs.c ****     if(motor_data->current.PSC_on)
+ 319              		.loc 1 91 5 is_stmt 1 view .LVU68
+ 320              		.loc 1 91 27 is_stmt 0 view .LVU69
+ 321 001e E389     		ldrh	r3, [r4, #14]
+ 322              		.loc 1 91 7 view .LVU70
+ 323 0020 8BB1     		cbz	r3, .L29
+  92:Core/Src/my_funcs.c ****       htim3.Instance->PSC = motor_data->averaged_over_5.pot1/100;
+ 324              		.loc 1 92 7 is_stmt 1 view .LVU71
+ 325              		.loc 1 92 56 is_stmt 0 view .LVU72
+ 326 0022 638A     		ldrh	r3, [r4, #18]
+ 327              		.loc 1 92 12 view .LVU73
+ 328 0024 264A     		ldr	r2, .L35+4
+ 329 0026 1168     		ldr	r1, [r2]
+ 330              		.loc 1 92 61 view .LVU74
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\cchSrkIv.s 			page 9
+
+
+ 331 0028 264A     		ldr	r2, .L35+8
+ 332 002a A2FB0323 		umull	r2, r3, r2, r3
+ 333 002e 5B09     		lsrs	r3, r3, #5
+ 334              		.loc 1 92 27 view .LVU75
+ 335 0030 8B62     		str	r3, [r1, #40]
+ 336              	.L30:
+  93:Core/Src/my_funcs.c ****     else
+  94:Core/Src/my_funcs.c ****       htim3.Instance->PSC = Example_PSC-1;
+  95:Core/Src/my_funcs.c ****     htim3.Instance->CCR1 = (ADCresolution + motor_data->averaged_over_5.pot2)/2;
+ 337              		.loc 1 95 5 is_stmt 1 view .LVU76
+ 338              		.loc 1 95 72 is_stmt 0 view .LVU77
+ 339 0032 A38A     		ldrh	r3, [r4, #20]
+ 340              		.loc 1 95 10 view .LVU78
+ 341 0034 224A     		ldr	r2, .L35+4
+ 342 0036 1268     		ldr	r2, [r2]
+ 343              		.loc 1 95 78 view .LVU79
+ 344 0038 03F58053 		add	r3, r3, #4096
+ 345 003c 5B10     		asrs	r3, r3, #1
+ 346              		.loc 1 95 26 view .LVU80
+ 347 003e 5363     		str	r3, [r2, #52]
+  96:Core/Src/my_funcs.c ****     htim3.Instance->CCR2 = htim3.Instance->CCR1;
+ 348              		.loc 1 96 5 is_stmt 1 view .LVU81
+ 349              		.loc 1 96 42 is_stmt 0 view .LVU82
+ 350 0040 536B     		ldr	r3, [r2, #52]
+ 351              		.loc 1 96 26 view .LVU83
+ 352 0042 9363     		str	r3, [r2, #56]
+  97:Core/Src/my_funcs.c ****     break;
+ 353              		.loc 1 97 5 is_stmt 1 view .LVU84
+ 354              	.L22:
+  98:Core/Src/my_funcs.c ****   case COUNTER_CLOCK_WISE:
+  99:Core/Src/my_funcs.c ****     HAL_GPIO_WritePin(DC_EN_GPIO_Port, DC_EN_Pin, GPIO_PIN_SET);
+ 100:Core/Src/my_funcs.c ****     if(motor_data->current.PSC_on)
+ 101:Core/Src/my_funcs.c ****       htim3.Instance->PSC = motor_data->averaged_over_5.pot1/100;
+ 102:Core/Src/my_funcs.c ****     else
+ 103:Core/Src/my_funcs.c ****       htim3.Instance->PSC = Example_PSC-1;
+ 104:Core/Src/my_funcs.c ****     htim3.Instance->CCR1 = (ADCresolution - motor_data->averaged_over_5.pot2)/2;
+ 105:Core/Src/my_funcs.c ****     htim3.Instance->CCR2 = htim3.Instance->CCR1;
+ 106:Core/Src/my_funcs.c ****     break;
+ 107:Core/Src/my_funcs.c ****   case SOFT_STOP:
+ 108:Core/Src/my_funcs.c ****     HAL_GPIO_WritePin(DC_EN_GPIO_Port, DC_EN_Pin, GPIO_PIN_RESET);
+ 109:Core/Src/my_funcs.c ****     break;
+ 110:Core/Src/my_funcs.c ****   case FAST_STOP:
+ 111:Core/Src/my_funcs.c ****     HAL_GPIO_WritePin(DC_EN_GPIO_Port, DC_EN_Pin, GPIO_PIN_SET);
+ 112:Core/Src/my_funcs.c ****     htim3.Instance->CCR1 = ADCresolution;
+ 113:Core/Src/my_funcs.c ****     htim3.Instance->CCR2 = 0;
+ 114:Core/Src/my_funcs.c ****     break;
+ 115:Core/Src/my_funcs.c ****   default:
+ 116:Core/Src/my_funcs.c ****     break;
+ 117:Core/Src/my_funcs.c ****   }
+ 118:Core/Src/my_funcs.c **** }
+ 355              		.loc 1 118 1 is_stmt 0 view .LVU85
+ 356 0044 10BD     		pop	{r4, pc}
+ 357              	.LVL22:
+ 358              	.L29:
+  94:Core/Src/my_funcs.c ****     htim3.Instance->CCR1 = (ADCresolution + motor_data->averaged_over_5.pot2)/2;
+ 359              		.loc 1 94 7 is_stmt 1 view .LVU86
+  94:Core/Src/my_funcs.c ****     htim3.Instance->CCR1 = (ADCresolution + motor_data->averaged_over_5.pot2)/2;
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\cchSrkIv.s 			page 10
+
+
+ 360              		.loc 1 94 12 is_stmt 0 view .LVU87
+ 361 0046 1E4B     		ldr	r3, .L35+4
+ 362 0048 1B68     		ldr	r3, [r3]
+  94:Core/Src/my_funcs.c ****     htim3.Instance->CCR1 = (ADCresolution + motor_data->averaged_over_5.pot2)/2;
+ 363              		.loc 1 94 27 view .LVU88
+ 364 004a 0022     		movs	r2, #0
+ 365 004c 9A62     		str	r2, [r3, #40]
+ 366 004e F0E7     		b	.L30
+ 367              	.LVL23:
+ 368              	.L27:
+  99:Core/Src/my_funcs.c ****     if(motor_data->current.PSC_on)
+ 369              		.loc 1 99 5 is_stmt 1 view .LVU89
+ 370 0050 0122     		movs	r2, #1
+ 371 0052 4FF48061 		mov	r1, #1024
+ 372 0056 1948     		ldr	r0, .L35
+ 373              	.LVL24:
+  99:Core/Src/my_funcs.c ****     if(motor_data->current.PSC_on)
+ 374              		.loc 1 99 5 is_stmt 0 view .LVU90
+ 375 0058 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 376              	.LVL25:
+ 100:Core/Src/my_funcs.c ****       htim3.Instance->PSC = motor_data->averaged_over_5.pot1/100;
+ 377              		.loc 1 100 5 is_stmt 1 view .LVU91
+ 100:Core/Src/my_funcs.c ****       htim3.Instance->PSC = motor_data->averaged_over_5.pot1/100;
+ 378              		.loc 1 100 27 is_stmt 0 view .LVU92
+ 379 005c E389     		ldrh	r3, [r4, #14]
+ 100:Core/Src/my_funcs.c ****       htim3.Instance->PSC = motor_data->averaged_over_5.pot1/100;
+ 380              		.loc 1 100 7 view .LVU93
+ 381 005e 9BB1     		cbz	r3, .L31
+ 101:Core/Src/my_funcs.c ****     else
+ 382              		.loc 1 101 7 is_stmt 1 view .LVU94
+ 101:Core/Src/my_funcs.c ****     else
+ 383              		.loc 1 101 56 is_stmt 0 view .LVU95
+ 384 0060 638A     		ldrh	r3, [r4, #18]
+ 101:Core/Src/my_funcs.c ****     else
+ 385              		.loc 1 101 12 view .LVU96
+ 386 0062 174A     		ldr	r2, .L35+4
+ 387 0064 1168     		ldr	r1, [r2]
+ 101:Core/Src/my_funcs.c ****     else
+ 388              		.loc 1 101 61 view .LVU97
+ 389 0066 174A     		ldr	r2, .L35+8
+ 390 0068 A2FB0323 		umull	r2, r3, r2, r3
+ 391 006c 5B09     		lsrs	r3, r3, #5
+ 101:Core/Src/my_funcs.c ****     else
+ 392              		.loc 1 101 27 view .LVU98
+ 393 006e 8B62     		str	r3, [r1, #40]
+ 394              	.L32:
+ 104:Core/Src/my_funcs.c ****     htim3.Instance->CCR2 = htim3.Instance->CCR1;
+ 395              		.loc 1 104 5 is_stmt 1 view .LVU99
+ 104:Core/Src/my_funcs.c ****     htim3.Instance->CCR2 = htim3.Instance->CCR1;
+ 396              		.loc 1 104 72 is_stmt 0 view .LVU100
+ 397 0070 A38A     		ldrh	r3, [r4, #20]
+ 104:Core/Src/my_funcs.c ****     htim3.Instance->CCR2 = htim3.Instance->CCR1;
+ 398              		.loc 1 104 43 view .LVU101
+ 399 0072 C3F58053 		rsb	r3, r3, #4096
+ 104:Core/Src/my_funcs.c ****     htim3.Instance->CCR2 = htim3.Instance->CCR1;
+ 400              		.loc 1 104 10 view .LVU102
+ 401 0076 124A     		ldr	r2, .L35+4
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\cchSrkIv.s 			page 11
+
+
+ 402 0078 1268     		ldr	r2, [r2]
+ 104:Core/Src/my_funcs.c ****     htim3.Instance->CCR2 = htim3.Instance->CCR1;
+ 403              		.loc 1 104 78 view .LVU103
+ 404 007a 03EBD373 		add	r3, r3, r3, lsr #31
+ 405 007e 5B10     		asrs	r3, r3, #1
+ 104:Core/Src/my_funcs.c ****     htim3.Instance->CCR2 = htim3.Instance->CCR1;
+ 406              		.loc 1 104 26 view .LVU104
+ 407 0080 5363     		str	r3, [r2, #52]
+ 105:Core/Src/my_funcs.c ****     break;
+ 408              		.loc 1 105 5 is_stmt 1 view .LVU105
+ 105:Core/Src/my_funcs.c ****     break;
+ 409              		.loc 1 105 42 is_stmt 0 view .LVU106
+ 410 0082 536B     		ldr	r3, [r2, #52]
+ 105:Core/Src/my_funcs.c ****     break;
+ 411              		.loc 1 105 26 view .LVU107
+ 412 0084 9363     		str	r3, [r2, #56]
+ 106:Core/Src/my_funcs.c ****   case SOFT_STOP:
+ 413              		.loc 1 106 5 is_stmt 1 view .LVU108
+ 414 0086 DDE7     		b	.L22
+ 415              	.L31:
+ 103:Core/Src/my_funcs.c ****     htim3.Instance->CCR1 = (ADCresolution - motor_data->averaged_over_5.pot2)/2;
+ 416              		.loc 1 103 7 view .LVU109
+ 103:Core/Src/my_funcs.c ****     htim3.Instance->CCR1 = (ADCresolution - motor_data->averaged_over_5.pot2)/2;
+ 417              		.loc 1 103 12 is_stmt 0 view .LVU110
+ 418 0088 0D4B     		ldr	r3, .L35+4
+ 419 008a 1B68     		ldr	r3, [r3]
+ 103:Core/Src/my_funcs.c ****     htim3.Instance->CCR1 = (ADCresolution - motor_data->averaged_over_5.pot2)/2;
+ 420              		.loc 1 103 27 view .LVU111
+ 421 008c 0022     		movs	r2, #0
+ 422 008e 9A62     		str	r2, [r3, #40]
+ 423 0090 EEE7     		b	.L32
+ 424              	.LVL26:
+ 425              	.L26:
+ 108:Core/Src/my_funcs.c ****     break;
+ 426              		.loc 1 108 5 is_stmt 1 view .LVU112
+ 427 0092 0022     		movs	r2, #0
+ 428 0094 4FF48061 		mov	r1, #1024
+ 429 0098 0848     		ldr	r0, .L35
+ 430              	.LVL27:
+ 108:Core/Src/my_funcs.c ****     break;
+ 431              		.loc 1 108 5 is_stmt 0 view .LVU113
+ 432 009a FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 433              	.LVL28:
+ 109:Core/Src/my_funcs.c ****   case FAST_STOP:
+ 434              		.loc 1 109 5 is_stmt 1 view .LVU114
+ 435 009e D1E7     		b	.L22
+ 436              	.LVL29:
+ 437              	.L24:
+ 111:Core/Src/my_funcs.c ****     htim3.Instance->CCR1 = ADCresolution;
+ 438              		.loc 1 111 5 view .LVU115
+ 439 00a0 0122     		movs	r2, #1
+ 440 00a2 4FF48061 		mov	r1, #1024
+ 441 00a6 0548     		ldr	r0, .L35
+ 442              	.LVL30:
+ 111:Core/Src/my_funcs.c ****     htim3.Instance->CCR1 = ADCresolution;
+ 443              		.loc 1 111 5 is_stmt 0 view .LVU116
+ 444 00a8 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\cchSrkIv.s 			page 12
+
+
+ 445              	.LVL31:
+ 112:Core/Src/my_funcs.c ****     htim3.Instance->CCR2 = 0;
+ 446              		.loc 1 112 5 is_stmt 1 view .LVU117
+ 112:Core/Src/my_funcs.c ****     htim3.Instance->CCR2 = 0;
+ 447              		.loc 1 112 10 is_stmt 0 view .LVU118
+ 448 00ac 044B     		ldr	r3, .L35+4
+ 449 00ae 1B68     		ldr	r3, [r3]
+ 112:Core/Src/my_funcs.c ****     htim3.Instance->CCR2 = 0;
+ 450              		.loc 1 112 26 view .LVU119
+ 451 00b0 4FF48052 		mov	r2, #4096
+ 452 00b4 5A63     		str	r2, [r3, #52]
+ 113:Core/Src/my_funcs.c ****     break;
+ 453              		.loc 1 113 5 is_stmt 1 view .LVU120
+ 113:Core/Src/my_funcs.c ****     break;
+ 454              		.loc 1 113 26 is_stmt 0 view .LVU121
+ 455 00b6 0022     		movs	r2, #0
+ 456 00b8 9A63     		str	r2, [r3, #56]
+ 114:Core/Src/my_funcs.c ****   default:
+ 457              		.loc 1 114 5 is_stmt 1 view .LVU122
+ 458              		.loc 1 118 1 is_stmt 0 view .LVU123
+ 459 00ba C3E7     		b	.L22
+ 460              	.L36:
+ 461              		.align	2
+ 462              	.L35:
+ 463 00bc 00000240 		.word	1073872896
+ 464 00c0 00000000 		.word	htim3
+ 465 00c4 1F85EB51 		.word	1374389535
+ 466              		.cfi_endproc
+ 467              	.LFE244:
+ 469              		.section	.rodata.sendToUart.str1.4,"aMS",%progbits,1
+ 470              		.align	2
+ 471              	.LC3:
+ 472 0000 636F756E 		.ascii	"counter = %6ld,Systick = %6ld,PWM_frequency = %d, r"
+ 472      74657220 
+ 472      3D202536 
+ 472      6C642C53 
+ 472      79737469 
+ 473 0033 6F746174 		.ascii	"otation_speed = %d\012\000"
+ 473      696F6E5F 
+ 473      73706565 
+ 473      64203D20 
+ 473      25640A00 
+ 474              		.section	.text.sendToUart,"ax",%progbits
+ 475              		.align	1
+ 476              		.global	sendToUart
+ 477              		.syntax unified
+ 478              		.thumb
+ 479              		.thumb_func
+ 481              	sendToUart:
+ 482              	.LVL32:
+ 483              	.LFB245:
+ 119:Core/Src/my_funcs.c **** 
+ 120:Core/Src/my_funcs.c **** void sendToUart(uint16_t curr_rot_speed) {
+ 484              		.loc 1 120 42 is_stmt 1 view -0
+ 485              		.cfi_startproc
+ 486              		@ args = 0, pretend = 0, frame = 104
+ 487              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\cchSrkIv.s 			page 13
+
+
+ 488              		.loc 1 120 42 is_stmt 0 view .LVU125
+ 489 0000 70B5     		push	{r4, r5, r6, lr}
+ 490              		.cfi_def_cfa_offset 16
+ 491              		.cfi_offset 4, -16
+ 492              		.cfi_offset 5, -12
+ 493              		.cfi_offset 6, -8
+ 494              		.cfi_offset 14, -4
+ 495 0002 9CB0     		sub	sp, sp, #112
+ 496              		.cfi_def_cfa_offset 128
+ 497 0004 0546     		mov	r5, r0
+ 121:Core/Src/my_funcs.c **** 
+ 122:Core/Src/my_funcs.c ****   uint16_t PWM_frequncy;
+ 498              		.loc 1 122 3 is_stmt 1 view .LVU126
+ 123:Core/Src/my_funcs.c ****   char txBuffer[100];
+ 499              		.loc 1 123 3 view .LVU127
+ 124:Core/Src/my_funcs.c ****   // Systick; counter; PWM frequency in [Hz]; speed of rotation in [rpm]
+ 125:Core/Src/my_funcs.c ****   ++message_counter;
+ 500              		.loc 1 125 3 view .LVU128
+ 501 0006 134E     		ldr	r6, .L39
+ 502 0008 3368     		ldr	r3, [r6]
+ 503 000a 0133     		adds	r3, r3, #1
+ 504 000c 3360     		str	r3, [r6]
+ 126:Core/Src/my_funcs.c ****   PWM_frequncy = HAL_RCC_GetPCLK1Freq()*2/((htim3.Instance->PSC+1)*(htim3.Instance->ARR+1));
+ 505              		.loc 1 126 3 view .LVU129
+ 506              		.loc 1 126 18 is_stmt 0 view .LVU130
+ 507 000e FFF7FEFF 		bl	HAL_RCC_GetPCLK1Freq
+ 508              	.LVL33:
+ 509              		.loc 1 126 40 discriminator 1 view .LVU131
+ 510 0012 4400     		lsls	r4, r0, #1
+ 511              		.loc 1 126 50 discriminator 1 view .LVU132
+ 512 0014 104B     		ldr	r3, .L39+4
+ 513 0016 1B68     		ldr	r3, [r3]
+ 514              		.loc 1 126 59 discriminator 1 view .LVU133
+ 515 0018 9A6A     		ldr	r2, [r3, #40]
+ 516              		.loc 1 126 83 discriminator 1 view .LVU134
+ 517 001a DB6A     		ldr	r3, [r3, #44]
+ 518              		.loc 1 126 88 discriminator 1 view .LVU135
+ 519 001c 0133     		adds	r3, r3, #1
+ 520              		.loc 1 126 67 discriminator 1 view .LVU136
+ 521 001e 02FB0333 		mla	r3, r2, r3, r3
+ 522              		.loc 1 126 42 discriminator 1 view .LVU137
+ 523 0022 B4FBF3F4 		udiv	r4, r4, r3
+ 524              	.LVL34:
+ 127:Core/Src/my_funcs.c **** 	sprintf(&txBuffer[0],"counter = %6ld,Systick = %6ld,PWM_frequency = %d, rotation_speed = %d\n", me
+ 525              		.loc 1 127 2 is_stmt 1 view .LVU138
+ 526 0026 3668     		ldr	r6, [r6]
+ 527 0028 FFF7FEFF 		bl	HAL_GetTick
+ 528              	.LVL35:
+ 529 002c 0346     		mov	r3, r0
+ 530              		.loc 1 127 2 is_stmt 0 discriminator 1 view .LVU139
+ 531 002e 0195     		str	r5, [sp, #4]
+ 532 0030 A4B2     		uxth	r4, r4
+ 533              		.loc 1 127 2 discriminator 1 view .LVU140
+ 534 0032 0094     		str	r4, [sp]
+ 535 0034 3246     		mov	r2, r6
+ 536 0036 0949     		ldr	r1, .L39+8
+ 537 0038 03A8     		add	r0, sp, #12
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\cchSrkIv.s 			page 14
+
+
+ 538 003a FFF7FEFF 		bl	sprintf
+ 539              	.LVL36:
+ 128:Core/Src/my_funcs.c **** 	HAL_UART_Transmit(&huart2, (uint8_t *) &txBuffer[0], strlen(txBuffer),10);
+ 540              		.loc 1 128 2 is_stmt 1 view .LVU141
+ 541              		.loc 1 128 55 is_stmt 0 view .LVU142
+ 542 003e 03A8     		add	r0, sp, #12
+ 543 0040 FFF7FEFF 		bl	strlen
+ 544              	.LVL37:
+ 545              		.loc 1 128 2 discriminator 1 view .LVU143
+ 546 0044 0A23     		movs	r3, #10
+ 547 0046 82B2     		uxth	r2, r0
+ 548 0048 03A9     		add	r1, sp, #12
+ 549 004a 0548     		ldr	r0, .L39+12
+ 550 004c FFF7FEFF 		bl	HAL_UART_Transmit
+ 551              	.LVL38:
+ 129:Core/Src/my_funcs.c **** }
+ 552              		.loc 1 129 1 view .LVU144
+ 553 0050 1CB0     		add	sp, sp, #112
+ 554              		.cfi_def_cfa_offset 16
+ 555              		@ sp needed
+ 556 0052 70BD     		pop	{r4, r5, r6, pc}
+ 557              	.LVL39:
+ 558              	.L40:
+ 559              		.loc 1 129 1 view .LVU145
+ 560              		.align	2
+ 561              	.L39:
+ 562 0054 00000000 		.word	message_counter
+ 563 0058 00000000 		.word	htim3
+ 564 005c 00000000 		.word	.LC3
+ 565 0060 00000000 		.word	huart2
+ 566              		.cfi_endproc
+ 567              	.LFE245:
+ 569              		.section	.text.buzz_regulator,"ax",%progbits
+ 570              		.align	1
+ 571              		.global	buzz_regulator
+ 572              		.syntax unified
+ 573              		.thumb
+ 574              		.thumb_func
+ 576              	buzz_regulator:
+ 577              	.LVL40:
+ 578              	.LFB246:
+ 130:Core/Src/my_funcs.c **** 
+ 131:Core/Src/my_funcs.c **** void buzz_regulator(void *data) {
+ 579              		.loc 1 131 33 is_stmt 1 view -0
+ 580              		.cfi_startproc
+ 581              		@ args = 0, pretend = 0, frame = 0
+ 582              		@ frame_needed = 0, uses_anonymous_args = 0
+ 583              		.loc 1 131 33 is_stmt 0 view .LVU147
+ 584 0000 10B5     		push	{r4, lr}
+ 585              		.cfi_def_cfa_offset 8
+ 586              		.cfi_offset 4, -8
+ 587              		.cfi_offset 14, -4
+ 588 0002 0446     		mov	r4, r0
+ 132:Core/Src/my_funcs.c **** 	AppData* buzz_data = data;
+ 589              		.loc 1 132 2 is_stmt 1 view .LVU148
+ 590              	.LVL41:
+ 133:Core/Src/my_funcs.c **** 
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\cchSrkIv.s 			page 15
+
+
+ 134:Core/Src/my_funcs.c ****   HAL_GPIO_WritePin(SPEAKER_GPIO_Port, SPEAKER_Pin, GPIO_PIN_SET);
+ 591              		.loc 1 134 3 view .LVU149
+ 592 0004 0122     		movs	r2, #1
+ 593 0006 4FF48061 		mov	r1, #1024
+ 594 000a 0748     		ldr	r0, .L43
+ 595              	.LVL42:
+ 596              		.loc 1 134 3 is_stmt 0 view .LVU150
+ 597 000c FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 598              	.LVL43:
+ 135:Core/Src/my_funcs.c ****   htim2.Instance->PSC = buzz_data->current.pot2*2;
+ 599              		.loc 1 135 3 is_stmt 1 view .LVU151
+ 600              		.loc 1 135 43 is_stmt 0 view .LVU152
+ 601 0010 6388     		ldrh	r3, [r4, #2]
+ 602              		.loc 1 135 8 view .LVU153
+ 603 0012 064A     		ldr	r2, .L43+4
+ 604 0014 1268     		ldr	r2, [r2]
+ 605              		.loc 1 135 48 view .LVU154
+ 606 0016 5B00     		lsls	r3, r3, #1
+ 607              		.loc 1 135 23 view .LVU155
+ 608 0018 9362     		str	r3, [r2, #40]
+ 136:Core/Src/my_funcs.c ****   htim2.Instance->CCR3 = buzz_data->current.pot1/410;
+ 609              		.loc 1 136 3 is_stmt 1 view .LVU156
+ 610              		.loc 1 136 44 is_stmt 0 view .LVU157
+ 611 001a 2388     		ldrh	r3, [r4]
+ 612              		.loc 1 136 49 view .LVU158
+ 613 001c 0449     		ldr	r1, .L43+8
+ 614 001e A1FB0313 		umull	r1, r3, r1, r3
+ 615 0022 DB09     		lsrs	r3, r3, #7
+ 616              		.loc 1 136 24 view .LVU159
+ 617 0024 D363     		str	r3, [r2, #60]
+ 137:Core/Src/my_funcs.c **** }...
+ 618              		.loc 1 137 1 view .LVU160
+ 619 0026 10BD     		pop	{r4, pc}
+ 620              	.LVL44:
+ 621              	.L44:
+ 622              		.loc 1 137 1 view .LVU161
+ 623              		.align	2
+ 624              	.L43:
+ 625 0028 00040240 		.word	1073873920
+ 626 002c 00000000 		.word	htim2
+ 627 0030 FF04EC4F 		.word	1340867839
+ 628              		.cfi_endproc
+ 629              	.LFE246:
+ 631              		.global	message_counter
+ 632              		.section	.bss.message_counter,"aw",%nobits
+ 633              		.align	2
+ 636              	message_counter:
+ 637 0000 00000000 		.space	4
+ 638              		.text
+ 639              	.Letext0:
+ 640              		.file 2 "C:/Users/silsp/AppData/Roaming/Code/User/globalStorage/bmd.stm32-for-vscode/@xpack-dev-to
+ 641              		.file 3 "C:/Users/silsp/AppData/Roaming/Code/User/globalStorage/bmd.stm32-for-vscode/@xpack-dev-to
+ 642              		.file 4 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f446xx.h"
+ 643              		.file 5 "C:/Users/silsp/AppData/Roaming/Code/User/globalStorage/bmd.stm32-for-vscode/@xpack-dev-to
+ 644              		.file 6 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+ 645              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h"
+ 646              		.file 8 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\cchSrkIv.s 			page 16
+
+
+ 647              		.file 9 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h"
+ 648              		.file 10 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h"
+ 649              		.file 11 "Core/Inc/main.h"
+ 650              		.file 12 "Core/Inc/lcd_driver.h"
+ 651              		.file 13 "Core/Inc/lcd_menu.h"
+ 652              		.file 14 "Core/Inc/tim.h"
+ 653              		.file 15 "Core/Inc/usart.h"
+ 654              		.file 16 "C:/Users/silsp/AppData/Roaming/Code/User/globalStorage/bmd.stm32-for-vscode/@xpack-dev-t
+ 655              		.file 17 "C:/Users/silsp/AppData/Roaming/Code/User/globalStorage/bmd.stm32-for-vscode/@xpack-dev-t
+ 656              		.file 18 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
+ 657              		.file 19 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h"
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\cchSrkIv.s 			page 17
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 my_funcs.c
+C:\Users\silsp\AppData\Local\Temp\cchSrkIv.s:21     .rodata.screen_setup.str1.4:00000000 $d
+C:\Users\silsp\AppData\Local\Temp\cchSrkIv.s:31     .text.screen_setup:00000000 $t
+C:\Users\silsp\AppData\Local\Temp\cchSrkIv.s:37     .text.screen_setup:00000000 screen_setup
+C:\Users\silsp\AppData\Local\Temp\cchSrkIv.s:130    .text.screen_setup:00000084 $d
+C:\Users\silsp\AppData\Local\Temp\cchSrkIv.s:137    .text.check_joystick:00000000 $t
+C:\Users\silsp\AppData\Local\Temp\cchSrkIv.s:143    .text.check_joystick:00000000 check_joystick
+C:\Users\silsp\AppData\Local\Temp\cchSrkIv.s:178    .text.check_joystick:00000018 $d
+C:\Users\silsp\AppData\Local\Temp\cchSrkIv.s:182    .text.check_joystick:0000001c $t
+C:\Users\silsp\AppData\Local\Temp\cchSrkIv.s:276    .text.motor_menu:00000000 $t
+C:\Users\silsp\AppData\Local\Temp\cchSrkIv.s:282    .text.motor_menu:00000000 motor_menu
+C:\Users\silsp\AppData\Local\Temp\cchSrkIv.s:305    .text.motor_menu:0000000e $d
+C:\Users\silsp\AppData\Local\Temp\cchSrkIv.s:309    .text.motor_menu:00000012 $t
+C:\Users\silsp\AppData\Local\Temp\cchSrkIv.s:463    .text.motor_menu:000000bc $d
+C:\Users\silsp\AppData\Local\Temp\cchSrkIv.s:470    .rodata.sendToUart.str1.4:00000000 $d
+C:\Users\silsp\AppData\Local\Temp\cchSrkIv.s:475    .text.sendToUart:00000000 $t
+C:\Users\silsp\AppData\Local\Temp\cchSrkIv.s:481    .text.sendToUart:00000000 sendToUart
+C:\Users\silsp\AppData\Local\Temp\cchSrkIv.s:562    .text.sendToUart:00000054 $d
+C:\Users\silsp\AppData\Local\Temp\cchSrkIv.s:636    .bss.message_counter:00000000 message_counter
+C:\Users\silsp\AppData\Local\Temp\cchSrkIv.s:570    .text.buzz_regulator:00000000 $t
+C:\Users\silsp\AppData\Local\Temp\cchSrkIv.s:576    .text.buzz_regulator:00000000 buzz_regulator
+C:\Users\silsp\AppData\Local\Temp\cchSrkIv.s:625    .text.buzz_regulator:00000028 $d
+C:\Users\silsp\AppData\Local\Temp\cchSrkIv.s:633    .bss.message_counter:00000000 $d
+
+UNDEFINED SYMBOLS
+lcd_setFrame
+lcd_setString
+lcd_show
+HAL_Delay
+lcd_clear
+HAL_GPIO_WritePin
+htim3
+HAL_RCC_GetPCLK1Freq
+HAL_GetTick
+sprintf
+strlen
+HAL_UART_Transmit
+huart2
+htim2

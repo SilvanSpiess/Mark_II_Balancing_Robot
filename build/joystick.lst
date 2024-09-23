@@ -1,0 +1,441 @@
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccCDGWEh.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"joystick.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "Core/Src/joystick.c"
+  20              		.section	.text.Joystick_sample,"ax",%progbits
+  21              		.align	1
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	Joystick_sample:
+  27              	.LVL0:
+  28              	.LFB239:
+   1:Core/Src/joystick.c **** /**
+   2:Core/Src/joystick.c ****   * @file   joystick.c
+   3:Core/Src/joystick.c ****   * @author BFH-TI / Matthias WAELTI <waltm5@bfh.ch>
+   4:Core/Src/joystick.c ****   * @author BFH-TI / Daniel DEBRUNNER <dnd1@bfh.ch>
+   5:Core/Src/joystick.c **** 	* @version 1.0.0
+   6:Core/Src/joystick.c **** 	* @date 09.12.2018
+   7:Core/Src/joystick.c ****   * @date 23.04.2018
+   8:Core/Src/joystick.c ****   * @brief  Driver for the joystick on a mbed-016.1-application-shield.
+   9:Core/Src/joystick.c ****   * @hardware NucleoF446RE (RISING_EDGE), mbed-016.1-application-shield, STM32F407 printer FALLING 
+  10:Core/Src/joystick.c ****   */
+  11:Core/Src/joystick.c **** 
+  12:Core/Src/joystick.c **** #include "joystick.h"
+  13:Core/Src/joystick.c **** 
+  14:Core/Src/joystick.c **** static Button up, down, left, right, center;
+  15:Core/Src/joystick.c **** 
+  16:Core/Src/joystick.c **** static void Joystick_sample(Joystick *const _this){
+  29              		.loc 1 16 51 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		.loc 1 16 51 is_stmt 0 view .LVU1
+  34 0000 10B5     		push	{r4, lr}
+  35              		.cfi_def_cfa_offset 8
+  36              		.cfi_offset 4, -8
+  37              		.cfi_offset 14, -4
+  38 0002 0446     		mov	r4, r0
+  17:Core/Src/joystick.c ****         _this->up->sample(_this->up);
+  39              		.loc 1 17 9 is_stmt 1 view .LVU2
+  40              		.loc 1 17 14 is_stmt 0 view .LVU3
+  41 0004 0068     		ldr	r0, [r0]
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccCDGWEh.s 			page 2
+
+
+  42              	.LVL1:
+  43              		.loc 1 17 18 view .LVU4
+  44 0006 4368     		ldr	r3, [r0, #4]
+  45              		.loc 1 17 9 view .LVU5
+  46 0008 9847     		blx	r3
+  47              	.LVL2:
+  18:Core/Src/joystick.c ****         _this->down->sample(_this->down);
+  48              		.loc 1 18 9 is_stmt 1 view .LVU6
+  49              		.loc 1 18 14 is_stmt 0 view .LVU7
+  50 000a 6068     		ldr	r0, [r4, #4]
+  51              		.loc 1 18 20 view .LVU8
+  52 000c 4368     		ldr	r3, [r0, #4]
+  53              		.loc 1 18 9 view .LVU9
+  54 000e 9847     		blx	r3
+  55              	.LVL3:
+  19:Core/Src/joystick.c ****         _this->left->sample(_this->left);
+  56              		.loc 1 19 9 is_stmt 1 view .LVU10
+  57              		.loc 1 19 14 is_stmt 0 view .LVU11
+  58 0010 A068     		ldr	r0, [r4, #8]
+  59              		.loc 1 19 20 view .LVU12
+  60 0012 4368     		ldr	r3, [r0, #4]
+  61              		.loc 1 19 9 view .LVU13
+  62 0014 9847     		blx	r3
+  63              	.LVL4:
+  20:Core/Src/joystick.c ****         _this->right->sample(_this->right);
+  64              		.loc 1 20 9 is_stmt 1 view .LVU14
+  65              		.loc 1 20 14 is_stmt 0 view .LVU15
+  66 0016 E068     		ldr	r0, [r4, #12]
+  67              		.loc 1 20 21 view .LVU16
+  68 0018 4368     		ldr	r3, [r0, #4]
+  69              		.loc 1 20 9 view .LVU17
+  70 001a 9847     		blx	r3
+  71              	.LVL5:
+  21:Core/Src/joystick.c **** #ifdef SWITCH_CENTER_Pin
+  22:Core/Src/joystick.c ****         _this->center->sample(_this->center);
+  72              		.loc 1 22 9 is_stmt 1 view .LVU18
+  73              		.loc 1 22 14 is_stmt 0 view .LVU19
+  74 001c 2069     		ldr	r0, [r4, #16]
+  75              		.loc 1 22 22 view .LVU20
+  76 001e 4368     		ldr	r3, [r0, #4]
+  77              		.loc 1 22 9 view .LVU21
+  78 0020 9847     		blx	r3
+  79              	.LVL6:
+  23:Core/Src/joystick.c **** #endif
+  24:Core/Src/joystick.c **** }
+  80              		.loc 1 24 1 view .LVU22
+  81 0022 10BD     		pop	{r4, pc}
+  82              		.loc 1 24 1 view .LVU23
+  83              		.cfi_endproc
+  84              	.LFE239:
+  86              		.section	.text.Joystick_getDirection,"ax",%progbits
+  87              		.align	1
+  88              		.global	Joystick_getDirection
+  89              		.syntax unified
+  90              		.thumb
+  91              		.thumb_func
+  93              	Joystick_getDirection:
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccCDGWEh.s 			page 3
+
+
+  94              	.LVL7:
+  95              	.LFB240:
+  25:Core/Src/joystick.c **** 
+  26:Core/Src/joystick.c **** 
+  27:Core/Src/joystick.c **** joystickDirection Joystick_getDirection(Joystick *const  _this)
+  28:Core/Src/joystick.c **** {
+  96              		.loc 1 28 1 is_stmt 1 view -0
+  97              		.cfi_startproc
+  98              		@ args = 0, pretend = 0, frame = 0
+  99              		@ frame_needed = 0, uses_anonymous_args = 0
+ 100              		.loc 1 28 1 is_stmt 0 view .LVU25
+ 101 0000 10B5     		push	{r4, lr}
+ 102              		.cfi_def_cfa_offset 8
+ 103              		.cfi_offset 4, -8
+ 104              		.cfi_offset 14, -4
+ 105 0002 0446     		mov	r4, r0
+  29:Core/Src/joystick.c **** 
+  30:Core/Src/joystick.c **** // STM32F407 Polar Plotter
+  31:Core/Src/joystick.c **** //    if (_this->up->getEdge(_this->up) == FALLING_EDGE)           return JOYSTICK_UP;
+  32:Core/Src/joystick.c **** //    if (_this->down->getEdge(_this->down) == FALLING_EDGE)       return JOYSTICK_DOWN;
+  33:Core/Src/joystick.c **** //    if (_this->left->getEdge(_this->left) == FALLING_EDGE)       return JOYSTICK_LEFT;
+  34:Core/Src/joystick.c **** //    if (_this->right->getEdge(_this->right) == FALLING_EDGE)     return JOYSTICK_RIGHT;
+  35:Core/Src/joystick.c **** //#ifdef SWITCH_CENTER_Pin
+  36:Core/Src/joystick.c **** //	//$DND Bypass solution with User Button PC13. Use FALLING_EDGE
+  37:Core/Src/joystick.c **** //    if (_this->center->getEdge(_this->center) == FALLING_EDGE)   return JOYSTICK_CENTER;
+  38:Core/Src/joystick.c **** 	
+  39:Core/Src/joystick.c **** 
+  40:Core/Src/joystick.c **** // STM32F446 rising edge on MBED016!	
+  41:Core/Src/joystick.c ****   	if (_this->up->getEdge(_this->up) == myRISING_EDGE)           return JOYSTICK_UP;
+ 106              		.loc 1 41 4 is_stmt 1 view .LVU26
+ 107              		.loc 1 41 13 is_stmt 0 view .LVU27
+ 108 0004 0068     		ldr	r0, [r0]
+ 109              	.LVL8:
+ 110              		.loc 1 41 17 view .LVU28
+ 111 0006 8368     		ldr	r3, [r0, #8]
+ 112              		.loc 1 41 8 view .LVU29
+ 113 0008 9847     		blx	r3
+ 114              	.LVL9:
+ 115              		.loc 1 41 7 discriminator 1 view .LVU30
+ 116 000a 0228     		cmp	r0, #2
+ 117 000c 17D0     		beq	.L5
+  42:Core/Src/joystick.c ****     if (_this->down->getEdge(_this->down) == myRISING_EDGE)       return JOYSTICK_DOWN;
+ 118              		.loc 1 42 5 is_stmt 1 view .LVU31
+ 119              		.loc 1 42 14 is_stmt 0 view .LVU32
+ 120 000e 6068     		ldr	r0, [r4, #4]
+ 121              		.loc 1 42 20 view .LVU33
+ 122 0010 8368     		ldr	r3, [r0, #8]
+ 123              		.loc 1 42 9 view .LVU34
+ 124 0012 9847     		blx	r3
+ 125              	.LVL10:
+ 126              		.loc 1 42 8 discriminator 1 view .LVU35
+ 127 0014 0228     		cmp	r0, #2
+ 128 0016 0FD0     		beq	.L4
+  43:Core/Src/joystick.c ****     if (_this->left->getEdge(_this->left) == myRISING_EDGE)       return JOYSTICK_LEFT;
+ 129              		.loc 1 43 5 is_stmt 1 view .LVU36
+ 130              		.loc 1 43 14 is_stmt 0 view .LVU37
+ 131 0018 A068     		ldr	r0, [r4, #8]
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccCDGWEh.s 			page 4
+
+
+ 132              		.loc 1 43 20 view .LVU38
+ 133 001a 8368     		ldr	r3, [r0, #8]
+ 134              		.loc 1 43 9 view .LVU39
+ 135 001c 9847     		blx	r3
+ 136              	.LVL11:
+ 137              		.loc 1 43 8 discriminator 1 view .LVU40
+ 138 001e 0228     		cmp	r0, #2
+ 139 0020 0FD0     		beq	.L6
+  44:Core/Src/joystick.c ****     if (_this->right->getEdge(_this->right) == myRISING_EDGE)     return JOYSTICK_RIGHT;
+ 140              		.loc 1 44 5 is_stmt 1 view .LVU41
+ 141              		.loc 1 44 14 is_stmt 0 view .LVU42
+ 142 0022 E068     		ldr	r0, [r4, #12]
+ 143              		.loc 1 44 21 view .LVU43
+ 144 0024 8368     		ldr	r3, [r0, #8]
+ 145              		.loc 1 44 9 view .LVU44
+ 146 0026 9847     		blx	r3
+ 147              	.LVL12:
+ 148              		.loc 1 44 8 discriminator 1 view .LVU45
+ 149 0028 0228     		cmp	r0, #2
+ 150 002a 0CD0     		beq	.L7
+  45:Core/Src/joystick.c **** #ifdef SWITCH_CENTER_Pin
+  46:Core/Src/joystick.c **** 	//$DND Bypass solution with User Button PC13. Use FALLING_EDGE
+  47:Core/Src/joystick.c ****     if (_this->center->getEdge(_this->center) == myRISING_EDGE)   return JOYSTICK_CENTER;
+ 151              		.loc 1 47 5 is_stmt 1 view .LVU46
+ 152              		.loc 1 47 14 is_stmt 0 view .LVU47
+ 153 002c 2069     		ldr	r0, [r4, #16]
+ 154              		.loc 1 47 22 view .LVU48
+ 155 002e 8368     		ldr	r3, [r0, #8]
+ 156              		.loc 1 47 9 view .LVU49
+ 157 0030 9847     		blx	r3
+ 158              	.LVL13:
+ 159              		.loc 1 47 8 discriminator 1 view .LVU50
+ 160 0032 0228     		cmp	r0, #2
+ 161 0034 01D0     		beq	.L10
+  48:Core/Src/joystick.c **** #endif
+  49:Core/Src/joystick.c ****     else                                                        return JOYSTICK_NEUTRAL;
+ 162              		.loc 1 49 72 view .LVU51
+ 163 0036 0020     		movs	r0, #0
+ 164              	.L4:
+  50:Core/Src/joystick.c **** }
+ 165              		.loc 1 50 1 view .LVU52
+ 166 0038 10BD     		pop	{r4, pc}
+ 167              	.LVL14:
+ 168              	.L10:
+  47:Core/Src/joystick.c **** #endif
+ 169              		.loc 1 47 74 discriminator 1 view .LVU53
+ 170 003a 0520     		movs	r0, #5
+ 171 003c FCE7     		b	.L4
+ 172              	.L5:
+  41:Core/Src/joystick.c ****     if (_this->down->getEdge(_this->down) == myRISING_EDGE)       return JOYSTICK_DOWN;
+ 173              		.loc 1 41 73 discriminator 1 view .LVU54
+ 174 003e 0120     		movs	r0, #1
+ 175 0040 FAE7     		b	.L4
+ 176              	.L6:
+  43:Core/Src/joystick.c ****     if (_this->right->getEdge(_this->right) == myRISING_EDGE)     return JOYSTICK_RIGHT;
+ 177              		.loc 1 43 74 discriminator 1 view .LVU55
+ 178 0042 0320     		movs	r0, #3
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccCDGWEh.s 			page 5
+
+
+ 179 0044 F8E7     		b	.L4
+ 180              	.L7:
+  44:Core/Src/joystick.c **** #ifdef SWITCH_CENTER_Pin
+ 181              		.loc 1 44 74 discriminator 1 view .LVU56
+ 182 0046 0420     		movs	r0, #4
+ 183 0048 F6E7     		b	.L4
+ 184              		.cfi_endproc
+ 185              	.LFE240:
+ 187              		.section	.text.Joystick_init,"ax",%progbits
+ 188              		.align	1
+ 189              		.global	Joystick_init
+ 190              		.syntax unified
+ 191              		.thumb
+ 192              		.thumb_func
+ 194              	Joystick_init:
+ 195              	.LVL15:
+ 196              	.LFB241:
+  51:Core/Src/joystick.c **** 
+  52:Core/Src/joystick.c **** uint8_t Joystick_init(Joystick *const _this){
+ 197              		.loc 1 52 45 is_stmt 1 view -0
+ 198              		.cfi_startproc
+ 199              		@ args = 0, pretend = 0, frame = 0
+ 200              		@ frame_needed = 0, uses_anonymous_args = 0
+ 201              		.loc 1 52 45 is_stmt 0 view .LVU58
+ 202 0000 70B5     		push	{r4, r5, r6, lr}
+ 203              		.cfi_def_cfa_offset 16
+ 204              		.cfi_offset 4, -16
+ 205              		.cfi_offset 5, -12
+ 206              		.cfi_offset 6, -8
+ 207              		.cfi_offset 14, -4
+ 208 0002 0446     		mov	r4, r0
+  53:Core/Src/joystick.c ****     Button_init(&up, SWITCH_UP_GPIO_Port, SWITCH_UP_Pin);
+ 209              		.loc 1 53 5 is_stmt 1 view .LVU59
+ 210 0004 154D     		ldr	r5, .L13
+ 211 0006 1022     		movs	r2, #16
+ 212 0008 1549     		ldr	r1, .L13+4
+ 213 000a 2846     		mov	r0, r5
+ 214              	.LVL16:
+ 215              		.loc 1 53 5 is_stmt 0 view .LVU60
+ 216 000c FFF7FEFF 		bl	Button_init
+ 217              	.LVL17:
+  54:Core/Src/joystick.c ****     _this->up = &up;
+ 218              		.loc 1 54 5 is_stmt 1 view .LVU61
+ 219              		.loc 1 54 15 is_stmt 0 view .LVU62
+ 220 0010 2560     		str	r5, [r4]
+  55:Core/Src/joystick.c ****     Button_init(&down, SWITCH_DOWN_GPIO_Port, SWITCH_DOWN_Pin);
+ 221              		.loc 1 55 5 is_stmt 1 view .LVU63
+ 222 0012 144D     		ldr	r5, .L13+8
+ 223 0014 0122     		movs	r2, #1
+ 224 0016 1449     		ldr	r1, .L13+12
+ 225 0018 2846     		mov	r0, r5
+ 226 001a FFF7FEFF 		bl	Button_init
+ 227              	.LVL18:
+  56:Core/Src/joystick.c ****     _this->down = &down;
+ 228              		.loc 1 56 5 view .LVU64
+ 229              		.loc 1 56 17 is_stmt 0 view .LVU65
+ 230 001e 6560     		str	r5, [r4, #4]
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccCDGWEh.s 			page 6
+
+
+  57:Core/Src/joystick.c ****     Button_init(&left, SWITCH_LEFT_GPIO_Port, SWITCH_LEFT_Pin);
+ 231              		.loc 1 57 5 is_stmt 1 view .LVU66
+ 232 0020 124D     		ldr	r5, .L13+16
+ 233 0022 134E     		ldr	r6, .L13+20
+ 234 0024 0222     		movs	r2, #2
+ 235 0026 2946     		mov	r1, r5
+ 236 0028 3046     		mov	r0, r6
+ 237 002a FFF7FEFF 		bl	Button_init
+ 238              	.LVL19:
+  58:Core/Src/joystick.c ****     _this->left = &left;
+ 239              		.loc 1 58 5 view .LVU67
+ 240              		.loc 1 58 17 is_stmt 0 view .LVU68
+ 241 002e A660     		str	r6, [r4, #8]
+  59:Core/Src/joystick.c ****     Button_init(&right, SWITCH_RIGHT_GPIO_Port, SWITCH_RIGHT_Pin);
+ 242              		.loc 1 59 5 is_stmt 1 view .LVU69
+ 243 0030 104E     		ldr	r6, .L13+24
+ 244 0032 0122     		movs	r2, #1
+ 245 0034 2946     		mov	r1, r5
+ 246 0036 3046     		mov	r0, r6
+ 247 0038 FFF7FEFF 		bl	Button_init
+ 248              	.LVL20:
+  60:Core/Src/joystick.c ****     _this->right = &right;
+ 249              		.loc 1 60 5 view .LVU70
+ 250              		.loc 1 60 18 is_stmt 0 view .LVU71
+ 251 003c E660     		str	r6, [r4, #12]
+  61:Core/Src/joystick.c **** #ifdef SWITCH_CENTER_Pin
+  62:Core/Src/joystick.c ****   	Button_init(&center, SWITCH_CENTER_GPIO_Port, SWITCH_CENTER_Pin);
+ 252              		.loc 1 62 4 is_stmt 1 view .LVU72
+ 253 003e 0E4E     		ldr	r6, .L13+28
+ 254 0040 4FF40052 		mov	r2, #8192
+ 255 0044 2946     		mov	r1, r5
+ 256 0046 3046     		mov	r0, r6
+ 257 0048 FFF7FEFF 		bl	Button_init
+ 258              	.LVL21:
+  63:Core/Src/joystick.c ****     _this->center = &center;
+ 259              		.loc 1 63 5 view .LVU73
+ 260              		.loc 1 63 19 is_stmt 0 view .LVU74
+ 261 004c 2661     		str	r6, [r4, #16]
+  64:Core/Src/joystick.c **** #endif
+  65:Core/Src/joystick.c ****     _this->getDirection = Joystick_getDirection;
+ 262              		.loc 1 65 5 is_stmt 1 view .LVU75
+ 263              		.loc 1 65 25 is_stmt 0 view .LVU76
+ 264 004e 0B4B     		ldr	r3, .L13+32
+ 265 0050 A361     		str	r3, [r4, #24]
+  66:Core/Src/joystick.c ****     _this->sample = Joystick_sample;
+ 266              		.loc 1 66 5 is_stmt 1 view .LVU77
+ 267              		.loc 1 66 19 is_stmt 0 view .LVU78
+ 268 0052 0B4B     		ldr	r3, .L13+36
+ 269 0054 6361     		str	r3, [r4, #20]
+  67:Core/Src/joystick.c ****     return EXIT_SUCCESS;
+ 270              		.loc 1 67 5 is_stmt 1 view .LVU79
+  68:Core/Src/joystick.c **** }
+ 271              		.loc 1 68 1 is_stmt 0 view .LVU80
+ 272 0056 0020     		movs	r0, #0
+ 273 0058 70BD     		pop	{r4, r5, r6, pc}
+ 274              	.LVL22:
+ 275              	.L14:
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccCDGWEh.s 			page 7
+
+
+ 276              		.loc 1 68 1 view .LVU81
+ 277 005a 00BF     		.align	2
+ 278              	.L13:
+ 279 005c 00000000 		.word	up
+ 280 0060 00000240 		.word	1073872896
+ 281 0064 00000000 		.word	down
+ 282 0068 00040240 		.word	1073873920
+ 283 006c 00080240 		.word	1073874944
+ 284 0070 00000000 		.word	left
+ 285 0074 00000000 		.word	right
+ 286 0078 00000000 		.word	center
+ 287 007c 00000000 		.word	Joystick_getDirection
+ 288 0080 00000000 		.word	Joystick_sample
+ 289              		.cfi_endproc
+ 290              	.LFE241:
+ 292              		.section	.bss.center,"aw",%nobits
+ 293              		.align	2
+ 296              	center:
+ 297 0000 00000000 		.space	12
+ 297      00000000 
+ 297      00000000 
+ 298              		.section	.bss.right,"aw",%nobits
+ 299              		.align	2
+ 302              	right:
+ 303 0000 00000000 		.space	12
+ 303      00000000 
+ 303      00000000 
+ 304              		.section	.bss.left,"aw",%nobits
+ 305              		.align	2
+ 308              	left:
+ 309 0000 00000000 		.space	12
+ 309      00000000 
+ 309      00000000 
+ 310              		.section	.bss.down,"aw",%nobits
+ 311              		.align	2
+ 314              	down:
+ 315 0000 00000000 		.space	12
+ 315      00000000 
+ 315      00000000 
+ 316              		.section	.bss.up,"aw",%nobits
+ 317              		.align	2
+ 320              	up:
+ 321 0000 00000000 		.space	12
+ 321      00000000 
+ 321      00000000 
+ 322              		.text
+ 323              	.Letext0:
+ 324              		.file 2 "C:/Users/silsp/AppData/Roaming/Code/User/globalStorage/bmd.stm32-for-vscode/@xpack-dev-to
+ 325              		.file 3 "C:/Users/silsp/AppData/Roaming/Code/User/globalStorage/bmd.stm32-for-vscode/@xpack-dev-to
+ 326              		.file 4 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f446xx.h"
+ 327              		.file 5 "Core/Inc/button_driver.h"
+ 328              		.file 6 "Core/Inc/button.h"
+ 329              		.file 7 "Core/Inc/joystick.h"
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccCDGWEh.s 			page 8
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 joystick.c
+C:\Users\silsp\AppData\Local\Temp\ccCDGWEh.s:21     .text.Joystick_sample:00000000 $t
+C:\Users\silsp\AppData\Local\Temp\ccCDGWEh.s:26     .text.Joystick_sample:00000000 Joystick_sample
+C:\Users\silsp\AppData\Local\Temp\ccCDGWEh.s:87     .text.Joystick_getDirection:00000000 $t
+C:\Users\silsp\AppData\Local\Temp\ccCDGWEh.s:93     .text.Joystick_getDirection:00000000 Joystick_getDirection
+C:\Users\silsp\AppData\Local\Temp\ccCDGWEh.s:188    .text.Joystick_init:00000000 $t
+C:\Users\silsp\AppData\Local\Temp\ccCDGWEh.s:194    .text.Joystick_init:00000000 Joystick_init
+C:\Users\silsp\AppData\Local\Temp\ccCDGWEh.s:279    .text.Joystick_init:0000005c $d
+C:\Users\silsp\AppData\Local\Temp\ccCDGWEh.s:320    .bss.up:00000000 up
+C:\Users\silsp\AppData\Local\Temp\ccCDGWEh.s:314    .bss.down:00000000 down
+C:\Users\silsp\AppData\Local\Temp\ccCDGWEh.s:308    .bss.left:00000000 left
+C:\Users\silsp\AppData\Local\Temp\ccCDGWEh.s:302    .bss.right:00000000 right
+C:\Users\silsp\AppData\Local\Temp\ccCDGWEh.s:296    .bss.center:00000000 center
+C:\Users\silsp\AppData\Local\Temp\ccCDGWEh.s:293    .bss.center:00000000 $d
+C:\Users\silsp\AppData\Local\Temp\ccCDGWEh.s:299    .bss.right:00000000 $d
+C:\Users\silsp\AppData\Local\Temp\ccCDGWEh.s:305    .bss.left:00000000 $d
+C:\Users\silsp\AppData\Local\Temp\ccCDGWEh.s:311    .bss.down:00000000 $d
+C:\Users\silsp\AppData\Local\Temp\ccCDGWEh.s:317    .bss.up:00000000 $d
+
+UNDEFINED SYMBOLS
+Button_init

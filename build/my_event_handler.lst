@@ -1,0 +1,1002 @@
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\cc1ly3Bw.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"my_event_handler.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "Core/Src/my_event_handler.c"
+  20              		.section	.text.drawMenuItem_Callback2,"ax",%progbits
+  21              		.align	1
+  22              		.global	drawMenuItem_Callback2
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	drawMenuItem_Callback2:
+  28              	.LVL0:
+  29              	.LFB242:
+   1:Core/Src/my_event_handler.c **** /**
+   2:Core/Src/my_event_handler.c ****  * @file my_event_handler.c
+   3:Core/Src/my_event_handler.c ****  * @ref <MechatronicsProjectOne>
+   4:Core/Src/my_event_handler.c ****  * @author Silvan Spiess <silvan.spiess@bfh-student.ch>
+   5:Core/Src/my_event_handler.c ****  * @copyright Bern University of Applied Sciences
+   6:Core/Src/my_event_handler.c ****  *            Silvan Spiess 
+   7:Core/Src/my_event_handler.c ****  * @version v1.0.0
+   8:Core/Src/my_event_handler.c ****  * @date 16. March. 2024
+   9:Core/Src/my_event_handler.c ****  * 
+  10:Core/Src/my_event_handler.c ****  * @brief This file handles functions process events, such as menu entry, menu exit and menu call b
+  11:Core/Src/my_event_handler.c ****  */
+  12:Core/Src/my_event_handler.c **** 
+  13:Core/Src/my_event_handler.c **** #include "my_event_handler.h"
+  14:Core/Src/my_event_handler.c **** 
+  15:Core/Src/my_event_handler.c **** void drawMenuItem_Callback2(int event, void* data) {
+  30              		.loc 1 15 52 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		.loc 1 15 52 is_stmt 0 view .LVU1
+  35 0000 38B5     		push	{r3, r4, r5, lr}
+  36              		.cfi_def_cfa_offset 16
+  37              		.cfi_offset 3, -16
+  38              		.cfi_offset 4, -12
+  39              		.cfi_offset 5, -8
+  40              		.cfi_offset 14, -4
+  41 0002 0446     		mov	r4, r0
+  42 0004 0D46     		mov	r5, r1
+  16:Core/Src/my_event_handler.c ****   AppData* data_callback = data;
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\cc1ly3Bw.s 			page 2
+
+
+  43              		.loc 1 16 3 is_stmt 1 view .LVU2
+  44              	.LVL1:
+  17:Core/Src/my_event_handler.c **** 
+  18:Core/Src/my_event_handler.c **** 	switch (event) {
+  45              		.loc 1 18 2 view .LVU3
+  46 0006 831E     		subs	r3, r0, #2
+  47 0008 122B     		cmp	r3, #18
+  48 000a 0ED8     		bhi	.L1
+  49 000c DFE803F0 		tbb	[pc, r3]
+  50              	.L4:
+  51 0010 0A       		.byte	(.L11-.L4)/2
+  52 0011 0D       		.byte	(.L1-.L4)/2
+  53 0012 0D       		.byte	(.L1-.L4)/2
+  54 0013 0E       		.byte	(.L10-.L4)/2
+  55 0014 0D       		.byte	(.L1-.L4)/2
+  56 0015 34       		.byte	(.L9-.L4)/2
+  57 0016 0D       		.byte	(.L1-.L4)/2
+  58 0017 0D       		.byte	(.L1-.L4)/2
+  59 0018 0D       		.byte	(.L1-.L4)/2
+  60 0019 0D       		.byte	(.L1-.L4)/2
+  61 001a 0D       		.byte	(.L1-.L4)/2
+  62 001b 0D       		.byte	(.L1-.L4)/2
+  63 001c 0D       		.byte	(.L1-.L4)/2
+  64 001d 0D       		.byte	(.L1-.L4)/2
+  65 001e 43       		.byte	(.L8-.L4)/2
+  66 001f 47       		.byte	(.L7-.L4)/2
+  67 0020 1E       		.byte	(.L6-.L4)/2
+  68 0021 26       		.byte	(.L5-.L4)/2
+  69 0022 38       		.byte	(.L3-.L4)/2
+  70 0023 00       		.p2align 1
+  71              	.L11:
+  19:Core/Src/my_event_handler.c ****   case MENU_RLED_EVENT:
+  20:Core/Src/my_event_handler.c ****     print_display(event, data_callback);
+  72              		.loc 1 20 5 view .LVU4
+  73 0024 C0B2     		uxtb	r0, r0
+  74              	.LVL2:
+  75              		.loc 1 20 5 is_stmt 0 view .LVU5
+  76 0026 FFF7FEFF 		bl	print_display
+  77              	.LVL3:
+  21:Core/Src/my_event_handler.c **** 		break;
+  78              		.loc 1 21 3 is_stmt 1 view .LVU6
+  79              	.L1:
+  22:Core/Src/my_event_handler.c ****   case MENU_GLED_EVENT:
+  23:Core/Src/my_event_handler.c **** 		break;
+  24:Core/Src/my_event_handler.c ****   case MENU_BLED_EVENT:
+  25:Core/Src/my_event_handler.c **** 		break;
+  26:Core/Src/my_event_handler.c **** 	case MENU_MANUAL_SUB1_EVENT:
+  27:Core/Src/my_event_handler.c ****     HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, 1);
+  28:Core/Src/my_event_handler.c ****  		HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, 0);
+  29:Core/Src/my_event_handler.c ****     print_display(event, data_callback);
+  30:Core/Src/my_event_handler.c **** 		break;
+  31:Core/Src/my_event_handler.c ****   case MENU_MANUAL_SUB2_EVENT:
+  32:Core/Src/my_event_handler.c **** 		break;
+  33:Core/Src/my_event_handler.c ****   case MENU_SPEAKER_NOR_EVENT:
+  34:Core/Src/my_event_handler.c ****     buzz_regulator(data_callback);
+  35:Core/Src/my_event_handler.c ****     print_display(event, data_callback);
+  36:Core/Src/my_event_handler.c ****     break;
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\cc1ly3Bw.s 			page 3
+
+
+  37:Core/Src/my_event_handler.c ****   case MENU_SPEAKER_MEL_EVENT:
+  38:Core/Src/my_event_handler.c ****     htim2.Instance->PSC = data_callback->current.pot1;
+  39:Core/Src/my_event_handler.c ****     MusicPlayer(0, -50);
+  40:Core/Src/my_event_handler.c ****     print_display(event, data_callback);
+  41:Core/Src/my_event_handler.c ****     break;
+  42:Core/Src/my_event_handler.c **** 	case MENU_POT_EVENT:
+  43:Core/Src/my_event_handler.c **** 		print_display(event, data_callback);
+  44:Core/Src/my_event_handler.c **** 		break; 
+  45:Core/Src/my_event_handler.c ****   case MENU_DC_EVENT:
+  46:Core/Src/my_event_handler.c ****     motor_menu(data_callback);    
+  47:Core/Src/my_event_handler.c ****     print_display(event, data_callback); 
+  48:Core/Src/my_event_handler.c ****     sendToUart(data_callback->current.rotation_speed);  
+  49:Core/Src/my_event_handler.c **** 		break;
+  50:Core/Src/my_event_handler.c ****   case MENU_SETTINGS_DC_EVENT:
+  51:Core/Src/my_event_handler.c ****  		print_display(event, data_callback);
+  52:Core/Src/my_event_handler.c ****     break;
+  53:Core/Src/my_event_handler.c ****   case MENU_SETTINGS_PSC_EVENT:
+  54:Core/Src/my_event_handler.c ****  		print_display(event, data_callback);
+  55:Core/Src/my_event_handler.c **** 		break;
+  56:Core/Src/my_event_handler.c **** 	default: 
+  57:Core/Src/my_event_handler.c ****     break;
+  58:Core/Src/my_event_handler.c **** 	}
+  59:Core/Src/my_event_handler.c **** }
+  80              		.loc 1 59 1 is_stmt 0 view .LVU7
+  81 002a 38BD     		pop	{r3, r4, r5, pc}
+  82              	.LVL4:
+  83              	.L10:
+  27:Core/Src/my_event_handler.c ****  		HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, 0);
+  84              		.loc 1 27 5 is_stmt 1 view .LVU8
+  85 002c 0122     		movs	r2, #1
+  86 002e 4FF40071 		mov	r1, #512
+  87              	.LVL5:
+  27:Core/Src/my_event_handler.c ****  		HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, 0);
+  88              		.loc 1 27 5 is_stmt 0 view .LVU9
+  89 0032 1D48     		ldr	r0, .L14
+  90              	.LVL6:
+  27:Core/Src/my_event_handler.c ****  		HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, 0);
+  91              		.loc 1 27 5 view .LVU10
+  92 0034 FFF7FEFF 		bl	HAL_GPIO_WritePin
+  93              	.LVL7:
+  28:Core/Src/my_event_handler.c ****     print_display(event, data_callback);
+  94              		.loc 1 28 4 is_stmt 1 view .LVU11
+  95 0038 0022     		movs	r2, #0
+  96 003a 8021     		movs	r1, #128
+  97 003c 1B48     		ldr	r0, .L14+4
+  98 003e FFF7FEFF 		bl	HAL_GPIO_WritePin
+  99              	.LVL8:
+  29:Core/Src/my_event_handler.c **** 		break;
+ 100              		.loc 1 29 5 view .LVU12
+ 101 0042 2946     		mov	r1, r5
+ 102 0044 E0B2     		uxtb	r0, r4
+ 103 0046 FFF7FEFF 		bl	print_display
+ 104              	.LVL9:
+  30:Core/Src/my_event_handler.c ****   case MENU_MANUAL_SUB2_EVENT:
+ 105              		.loc 1 30 3 view .LVU13
+ 106 004a EEE7     		b	.L1
+ 107              	.LVL10:
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\cc1ly3Bw.s 			page 4
+
+
+ 108              	.L6:
+  34:Core/Src/my_event_handler.c ****     print_display(event, data_callback);
+ 109              		.loc 1 34 5 view .LVU14
+ 110 004c 0846     		mov	r0, r1
+ 111              	.LVL11:
+  34:Core/Src/my_event_handler.c ****     print_display(event, data_callback);
+ 112              		.loc 1 34 5 is_stmt 0 view .LVU15
+ 113 004e FFF7FEFF 		bl	buzz_regulator
+ 114              	.LVL12:
+  35:Core/Src/my_event_handler.c ****     break;
+ 115              		.loc 1 35 5 is_stmt 1 view .LVU16
+ 116 0052 2946     		mov	r1, r5
+ 117 0054 E0B2     		uxtb	r0, r4
+ 118 0056 FFF7FEFF 		bl	print_display
+ 119              	.LVL13:
+  36:Core/Src/my_event_handler.c ****   case MENU_SPEAKER_MEL_EVENT:
+ 120              		.loc 1 36 5 view .LVU17
+ 121 005a E6E7     		b	.L1
+ 122              	.LVL14:
+ 123              	.L5:
+  38:Core/Src/my_event_handler.c ****     MusicPlayer(0, -50);
+ 124              		.loc 1 38 5 view .LVU18
+  38:Core/Src/my_event_handler.c ****     MusicPlayer(0, -50);
+ 125              		.loc 1 38 10 is_stmt 0 view .LVU19
+ 126 005c 144B     		ldr	r3, .L14+8
+ 127 005e 1B68     		ldr	r3, [r3]
+  38:Core/Src/my_event_handler.c ****     MusicPlayer(0, -50);
+ 128              		.loc 1 38 49 view .LVU20
+ 129 0060 0A88     		ldrh	r2, [r1]
+  38:Core/Src/my_event_handler.c ****     MusicPlayer(0, -50);
+ 130              		.loc 1 38 25 view .LVU21
+ 131 0062 9A62     		str	r2, [r3, #40]
+  39:Core/Src/my_event_handler.c ****     print_display(event, data_callback);
+ 132              		.loc 1 39 5 is_stmt 1 view .LVU22
+ 133 0064 6FF03101 		mvn	r1, #49
+ 134              	.LVL15:
+  39:Core/Src/my_event_handler.c ****     print_display(event, data_callback);
+ 135              		.loc 1 39 5 is_stmt 0 view .LVU23
+ 136 0068 0020     		movs	r0, #0
+ 137              	.LVL16:
+  39:Core/Src/my_event_handler.c ****     print_display(event, data_callback);
+ 138              		.loc 1 39 5 view .LVU24
+ 139 006a FFF7FEFF 		bl	MusicPlayer
+ 140              	.LVL17:
+  40:Core/Src/my_event_handler.c ****     break;
+ 141              		.loc 1 40 5 is_stmt 1 view .LVU25
+ 142 006e 2946     		mov	r1, r5
+ 143 0070 E0B2     		uxtb	r0, r4
+ 144 0072 FFF7FEFF 		bl	print_display
+ 145              	.LVL18:
+  41:Core/Src/my_event_handler.c **** 	case MENU_POT_EVENT:
+ 146              		.loc 1 41 5 view .LVU26
+ 147 0076 D8E7     		b	.L1
+ 148              	.LVL19:
+ 149              	.L9:
+  43:Core/Src/my_event_handler.c **** 		break; 
+ 150              		.loc 1 43 3 view .LVU27
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\cc1ly3Bw.s 			page 5
+
+
+ 151 0078 C0B2     		uxtb	r0, r0
+ 152              	.LVL20:
+  43:Core/Src/my_event_handler.c **** 		break; 
+ 153              		.loc 1 43 3 is_stmt 0 view .LVU28
+ 154 007a FFF7FEFF 		bl	print_display
+ 155              	.LVL21:
+  44:Core/Src/my_event_handler.c ****   case MENU_DC_EVENT:
+ 156              		.loc 1 44 3 is_stmt 1 view .LVU29
+ 157 007e D4E7     		b	.L1
+ 158              	.LVL22:
+ 159              	.L3:
+  46:Core/Src/my_event_handler.c ****     print_display(event, data_callback); 
+ 160              		.loc 1 46 5 view .LVU30
+ 161 0080 0846     		mov	r0, r1
+ 162              	.LVL23:
+  46:Core/Src/my_event_handler.c ****     print_display(event, data_callback); 
+ 163              		.loc 1 46 5 is_stmt 0 view .LVU31
+ 164 0082 FFF7FEFF 		bl	motor_menu
+ 165              	.LVL24:
+  47:Core/Src/my_event_handler.c ****     sendToUart(data_callback->current.rotation_speed);  
+ 166              		.loc 1 47 5 is_stmt 1 view .LVU32
+ 167 0086 2946     		mov	r1, r5
+ 168 0088 E0B2     		uxtb	r0, r4
+ 169 008a FFF7FEFF 		bl	print_display
+ 170              	.LVL25:
+  48:Core/Src/my_event_handler.c **** 		break;
+ 171              		.loc 1 48 5 view .LVU33
+ 172 008e E888     		ldrh	r0, [r5, #6]
+ 173 0090 FFF7FEFF 		bl	sendToUart
+ 174              	.LVL26:
+  49:Core/Src/my_event_handler.c ****   case MENU_SETTINGS_DC_EVENT:
+ 175              		.loc 1 49 3 view .LVU34
+ 176 0094 C9E7     		b	.L1
+ 177              	.LVL27:
+ 178              	.L8:
+  51:Core/Src/my_event_handler.c ****     break;
+ 179              		.loc 1 51 4 view .LVU35
+ 180 0096 C0B2     		uxtb	r0, r0
+ 181              	.LVL28:
+  51:Core/Src/my_event_handler.c ****     break;
+ 182              		.loc 1 51 4 is_stmt 0 view .LVU36
+ 183 0098 FFF7FEFF 		bl	print_display
+ 184              	.LVL29:
+  52:Core/Src/my_event_handler.c ****   case MENU_SETTINGS_PSC_EVENT:
+ 185              		.loc 1 52 5 is_stmt 1 view .LVU37
+ 186 009c C5E7     		b	.L1
+ 187              	.LVL30:
+ 188              	.L7:
+  54:Core/Src/my_event_handler.c **** 		break;
+ 189              		.loc 1 54 4 view .LVU38
+ 190 009e C0B2     		uxtb	r0, r0
+ 191              	.LVL31:
+  54:Core/Src/my_event_handler.c **** 		break;
+ 192              		.loc 1 54 4 is_stmt 0 view .LVU39
+ 193 00a0 FFF7FEFF 		bl	print_display
+ 194              	.LVL32:
+  55:Core/Src/my_event_handler.c **** 	default: 
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\cc1ly3Bw.s 			page 6
+
+
+ 195              		.loc 1 55 3 is_stmt 1 view .LVU40
+ 196              		.loc 1 59 1 is_stmt 0 view .LVU41
+ 197 00a4 C1E7     		b	.L1
+ 198              	.L15:
+ 199 00a6 00BF     		.align	2
+ 200              	.L14:
+ 201 00a8 00000240 		.word	1073872896
+ 202 00ac 00080240 		.word	1073874944
+ 203 00b0 00000000 		.word	htim2
+ 204              		.cfi_endproc
+ 205              	.LFE242:
+ 207              		.section	.text.handleMenuEntryEvent,"ax",%progbits
+ 208              		.align	1
+ 209              		.global	handleMenuEntryEvent
+ 210              		.syntax unified
+ 211              		.thumb
+ 212              		.thumb_func
+ 214              	handleMenuEntryEvent:
+ 215              	.LVL33:
+ 216              	.LFB243:
+  60:Core/Src/my_event_handler.c **** 
+  61:Core/Src/my_event_handler.c **** void handleMenuEntryEvent(int event, AppData *data) {
+ 217              		.loc 1 61 53 is_stmt 1 view -0
+ 218              		.cfi_startproc
+ 219              		@ args = 0, pretend = 0, frame = 0
+ 220              		@ frame_needed = 0, uses_anonymous_args = 0
+ 221              		.loc 1 61 53 is_stmt 0 view .LVU43
+ 222 0000 10B5     		push	{r4, lr}
+ 223              		.cfi_def_cfa_offset 8
+ 224              		.cfi_offset 4, -8
+ 225              		.cfi_offset 14, -4
+  62:Core/Src/my_event_handler.c ****   switch (event) {
+ 226              		.loc 1 62 3 is_stmt 1 view .LVU44
+ 227 0002 0338     		subs	r0, r0, #3
+ 228              	.LVL34:
+ 229              		.loc 1 62 3 is_stmt 0 view .LVU45
+ 230 0004 1128     		cmp	r0, #17
+ 231 0006 0ED8     		bhi	.L16
+ 232 0008 DFE800F0 		tbb	[pc, r0]
+ 233              	.L19:
+ 234 000c 09       		.byte	(.L26-.L19)/2
+ 235 000d 0E       		.byte	(.L25-.L19)/2
+ 236 000e 0D       		.byte	(.L16-.L19)/2
+ 237 000f 0D       		.byte	(.L16-.L19)/2
+ 238 0010 35       		.byte	(.L24-.L19)/2
+ 239 0011 0D       		.byte	(.L16-.L19)/2
+ 240 0012 0D       		.byte	(.L16-.L19)/2
+ 241 0013 0D       		.byte	(.L16-.L19)/2
+ 242 0014 0D       		.byte	(.L16-.L19)/2
+ 243 0015 0D       		.byte	(.L16-.L19)/2
+ 244 0016 0D       		.byte	(.L16-.L19)/2
+ 245 0017 0D       		.byte	(.L16-.L19)/2
+ 246 0018 0D       		.byte	(.L16-.L19)/2
+ 247 0019 56       		.byte	(.L23-.L19)/2
+ 248 001a 62       		.byte	(.L22-.L19)/2
+ 249 001b 14       		.byte	(.L21-.L19)/2
+ 250 001c 24       		.byte	(.L20-.L19)/2
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\cc1ly3Bw.s 			page 7
+
+
+ 251 001d 41       		.byte	(.L18-.L19)/2
+ 252              		.p2align 1
+ 253              	.L26:
+  63:Core/Src/my_event_handler.c ****   case MENU_RLED_EVENT:
+  64:Core/Src/my_event_handler.c **** 		break;
+  65:Core/Src/my_event_handler.c ****   case MENU_GLED_EVENT: 
+  66:Core/Src/my_event_handler.c **** 		HAL_GPIO_TogglePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin);
+ 254              		.loc 1 66 3 is_stmt 1 view .LVU46
+ 255 001e 8021     		movs	r1, #128
+ 256              	.LVL35:
+ 257              		.loc 1 66 3 is_stmt 0 view .LVU47
+ 258 0020 3148     		ldr	r0, .L29
+ 259              	.LVL36:
+ 260              		.loc 1 66 3 view .LVU48
+ 261 0022 FFF7FEFF 		bl	HAL_GPIO_TogglePin
+ 262              	.LVL37:
+  67:Core/Src/my_event_handler.c **** 		break;
+ 263              		.loc 1 67 3 is_stmt 1 view .LVU49
+ 264              	.L16:
+  68:Core/Src/my_event_handler.c ****   case MENU_BLED_EVENT: 
+  69:Core/Src/my_event_handler.c **** 		HAL_GPIO_TogglePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin);
+  70:Core/Src/my_event_handler.c **** 		break;
+  71:Core/Src/my_event_handler.c ****   case MENU_MANUAL_SUB1_EVENT:
+  72:Core/Src/my_event_handler.c **** 		break;
+  73:Core/Src/my_event_handler.c ****   case MENU_MANUAL_SUB2_EVENT:
+  74:Core/Src/my_event_handler.c **** 		break;
+  75:Core/Src/my_event_handler.c ****   case MENU_SPEAKER_NOR_EVENT:
+  76:Core/Src/my_event_handler.c ****     HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_3);
+  77:Core/Src/my_event_handler.c ****  		HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, 1);
+  78:Core/Src/my_event_handler.c ****  		HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, 0);
+  79:Core/Src/my_event_handler.c ****     break;
+  80:Core/Src/my_event_handler.c ****   case MENU_SPEAKER_MEL_EVENT:
+  81:Core/Src/my_event_handler.c ****     MusicPlayer(1, -50);
+  82:Core/Src/my_event_handler.c ****  		HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, 1);
+  83:Core/Src/my_event_handler.c ****  		HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, 0);
+  84:Core/Src/my_event_handler.c ****     break;
+  85:Core/Src/my_event_handler.c ****   case MENU_POT_EVENT:
+  86:Core/Src/my_event_handler.c ****  		HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, 1);
+  87:Core/Src/my_event_handler.c ****  		HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, 0);
+  88:Core/Src/my_event_handler.c **** 		break;
+  89:Core/Src/my_event_handler.c ****   case MENU_DC_EVENT:
+  90:Core/Src/my_event_handler.c ****     HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);    
+  91:Core/Src/my_event_handler.c ****     HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
+  92:Core/Src/my_event_handler.c ****  		HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, 1);
+  93:Core/Src/my_event_handler.c ****  		HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, 1);
+  94:Core/Src/my_event_handler.c ****     break;
+  95:Core/Src/my_event_handler.c ****   case MENU_SETTINGS_DC_EVENT:
+  96:Core/Src/my_event_handler.c ****  		HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, 1);
+  97:Core/Src/my_event_handler.c ****  		HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, 0);
+  98:Core/Src/my_event_handler.c ****     break;
+  99:Core/Src/my_event_handler.c ****   case MENU_SETTINGS_PSC_EVENT:
+ 100:Core/Src/my_event_handler.c ****  		HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, 1);
+ 101:Core/Src/my_event_handler.c ****  		HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, 0);
+ 102:Core/Src/my_event_handler.c ****     break;
+ 103:Core/Src/my_event_handler.c ****   default:
+ 104:Core/Src/my_event_handler.c ****     break;
+ 105:Core/Src/my_event_handler.c ****   }
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\cc1ly3Bw.s 			page 8
+
+
+ 106:Core/Src/my_event_handler.c **** }
+ 265              		.loc 1 106 1 is_stmt 0 view .LVU50
+ 266 0026 10BD     		pop	{r4, pc}
+ 267              	.LVL38:
+ 268              	.L25:
+  69:Core/Src/my_event_handler.c **** 		break;
+ 269              		.loc 1 69 3 is_stmt 1 view .LVU51
+ 270 0028 4FF40071 		mov	r1, #512
+ 271              	.LVL39:
+  69:Core/Src/my_event_handler.c **** 		break;
+ 272              		.loc 1 69 3 is_stmt 0 view .LVU52
+ 273 002c 2F48     		ldr	r0, .L29+4
+ 274 002e FFF7FEFF 		bl	HAL_GPIO_TogglePin
+ 275              	.LVL40:
+  70:Core/Src/my_event_handler.c ****   case MENU_MANUAL_SUB1_EVENT:
+ 276              		.loc 1 70 3 is_stmt 1 view .LVU53
+ 277 0032 F8E7     		b	.L16
+ 278              	.LVL41:
+ 279              	.L21:
+  76:Core/Src/my_event_handler.c ****  		HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, 1);
+ 280              		.loc 1 76 5 view .LVU54
+ 281 0034 0821     		movs	r1, #8
+ 282              	.LVL42:
+  76:Core/Src/my_event_handler.c ****  		HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, 1);
+ 283              		.loc 1 76 5 is_stmt 0 view .LVU55
+ 284 0036 2E48     		ldr	r0, .L29+8
+ 285 0038 FFF7FEFF 		bl	HAL_TIM_PWM_Start
+ 286              	.LVL43:
+  77:Core/Src/my_event_handler.c ****  		HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, 0);
+ 287              		.loc 1 77 4 is_stmt 1 view .LVU56
+ 288 003c 0122     		movs	r2, #1
+ 289 003e 4FF40071 		mov	r1, #512
+ 290 0042 2A48     		ldr	r0, .L29+4
+ 291 0044 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 292              	.LVL44:
+  78:Core/Src/my_event_handler.c ****     break;
+ 293              		.loc 1 78 4 view .LVU57
+ 294 0048 0022     		movs	r2, #0
+ 295 004a 8021     		movs	r1, #128
+ 296 004c 2648     		ldr	r0, .L29
+ 297 004e FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 298              	.LVL45:
+  79:Core/Src/my_event_handler.c ****   case MENU_SPEAKER_MEL_EVENT:
+ 299              		.loc 1 79 5 view .LVU58
+ 300 0052 E8E7     		b	.L16
+ 301              	.LVL46:
+ 302              	.L20:
+  81:Core/Src/my_event_handler.c ****  		HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, 1);
+ 303              		.loc 1 81 5 view .LVU59
+ 304 0054 6FF03101 		mvn	r1, #49
+ 305              	.LVL47:
+  81:Core/Src/my_event_handler.c ****  		HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, 1);
+ 306              		.loc 1 81 5 is_stmt 0 view .LVU60
+ 307 0058 0120     		movs	r0, #1
+ 308 005a FFF7FEFF 		bl	MusicPlayer
+ 309              	.LVL48:
+  82:Core/Src/my_event_handler.c ****  		HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, 0);
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\cc1ly3Bw.s 			page 9
+
+
+ 310              		.loc 1 82 4 is_stmt 1 view .LVU61
+ 311 005e 0122     		movs	r2, #1
+ 312 0060 4FF40071 		mov	r1, #512
+ 313 0064 2148     		ldr	r0, .L29+4
+ 314 0066 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 315              	.LVL49:
+  83:Core/Src/my_event_handler.c ****     break;
+ 316              		.loc 1 83 4 view .LVU62
+ 317 006a 0022     		movs	r2, #0
+ 318 006c 8021     		movs	r1, #128
+ 319 006e 1E48     		ldr	r0, .L29
+ 320 0070 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 321              	.LVL50:
+  84:Core/Src/my_event_handler.c ****   case MENU_POT_EVENT:
+ 322              		.loc 1 84 5 view .LVU63
+ 323 0074 D7E7     		b	.L16
+ 324              	.LVL51:
+ 325              	.L24:
+  86:Core/Src/my_event_handler.c ****  		HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, 0);
+ 326              		.loc 1 86 4 view .LVU64
+ 327 0076 0122     		movs	r2, #1
+ 328 0078 4FF40071 		mov	r1, #512
+ 329              	.LVL52:
+  86:Core/Src/my_event_handler.c ****  		HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, 0);
+ 330              		.loc 1 86 4 is_stmt 0 view .LVU65
+ 331 007c 1B48     		ldr	r0, .L29+4
+ 332 007e FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 333              	.LVL53:
+  87:Core/Src/my_event_handler.c **** 		break;
+ 334              		.loc 1 87 4 is_stmt 1 view .LVU66
+ 335 0082 0022     		movs	r2, #0
+ 336 0084 8021     		movs	r1, #128
+ 337 0086 1848     		ldr	r0, .L29
+ 338 0088 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 339              	.LVL54:
+  88:Core/Src/my_event_handler.c ****   case MENU_DC_EVENT:
+ 340              		.loc 1 88 3 view .LVU67
+ 341 008c CBE7     		b	.L16
+ 342              	.LVL55:
+ 343              	.L18:
+  90:Core/Src/my_event_handler.c ****     HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
+ 344              		.loc 1 90 5 view .LVU68
+ 345 008e 194C     		ldr	r4, .L29+12
+ 346 0090 0021     		movs	r1, #0
+ 347              	.LVL56:
+  90:Core/Src/my_event_handler.c ****     HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
+ 348              		.loc 1 90 5 is_stmt 0 view .LVU69
+ 349 0092 2046     		mov	r0, r4
+ 350 0094 FFF7FEFF 		bl	HAL_TIM_PWM_Start
+ 351              	.LVL57:
+  91:Core/Src/my_event_handler.c ****  		HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, 1);
+ 352              		.loc 1 91 5 is_stmt 1 view .LVU70
+ 353 0098 0421     		movs	r1, #4
+ 354 009a 2046     		mov	r0, r4
+ 355 009c FFF7FEFF 		bl	HAL_TIM_PWM_Start
+ 356              	.LVL58:
+  92:Core/Src/my_event_handler.c ****  		HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, 1);
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\cc1ly3Bw.s 			page 10
+
+
+ 357              		.loc 1 92 4 view .LVU71
+ 358 00a0 0122     		movs	r2, #1
+ 359 00a2 4FF40071 		mov	r1, #512
+ 360 00a6 1148     		ldr	r0, .L29+4
+ 361 00a8 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 362              	.LVL59:
+  93:Core/Src/my_event_handler.c ****     break;
+ 363              		.loc 1 93 4 view .LVU72
+ 364 00ac 0122     		movs	r2, #1
+ 365 00ae 8021     		movs	r1, #128
+ 366 00b0 0D48     		ldr	r0, .L29
+ 367 00b2 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 368              	.LVL60:
+  94:Core/Src/my_event_handler.c ****   case MENU_SETTINGS_DC_EVENT:
+ 369              		.loc 1 94 5 view .LVU73
+ 370 00b6 B6E7     		b	.L16
+ 371              	.LVL61:
+ 372              	.L23:
+  96:Core/Src/my_event_handler.c ****  		HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, 0);
+ 373              		.loc 1 96 4 view .LVU74
+ 374 00b8 0122     		movs	r2, #1
+ 375 00ba 4FF40071 		mov	r1, #512
+ 376              	.LVL62:
+  96:Core/Src/my_event_handler.c ****  		HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, 0);
+ 377              		.loc 1 96 4 is_stmt 0 view .LVU75
+ 378 00be 0B48     		ldr	r0, .L29+4
+ 379 00c0 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 380              	.LVL63:
+  97:Core/Src/my_event_handler.c ****     break;
+ 381              		.loc 1 97 4 is_stmt 1 view .LVU76
+ 382 00c4 0022     		movs	r2, #0
+ 383 00c6 8021     		movs	r1, #128
+ 384 00c8 0748     		ldr	r0, .L29
+ 385 00ca FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 386              	.LVL64:
+  98:Core/Src/my_event_handler.c ****   case MENU_SETTINGS_PSC_EVENT:
+ 387              		.loc 1 98 5 view .LVU77
+ 388 00ce AAE7     		b	.L16
+ 389              	.LVL65:
+ 390              	.L22:
+ 100:Core/Src/my_event_handler.c ****  		HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, 0);
+ 391              		.loc 1 100 4 view .LVU78
+ 392 00d0 0122     		movs	r2, #1
+ 393 00d2 4FF40071 		mov	r1, #512
+ 394              	.LVL66:
+ 100:Core/Src/my_event_handler.c ****  		HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, 0);
+ 395              		.loc 1 100 4 is_stmt 0 view .LVU79
+ 396 00d6 0548     		ldr	r0, .L29+4
+ 397 00d8 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 398              	.LVL67:
+ 101:Core/Src/my_event_handler.c ****     break;
+ 399              		.loc 1 101 4 is_stmt 1 view .LVU80
+ 400 00dc 0022     		movs	r2, #0
+ 401 00de 8021     		movs	r1, #128
+ 402 00e0 0148     		ldr	r0, .L29
+ 403 00e2 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 404              	.LVL68:
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\cc1ly3Bw.s 			page 11
+
+
+ 102:Core/Src/my_event_handler.c ****   default:
+ 405              		.loc 1 102 5 view .LVU81
+ 406              		.loc 1 106 1 is_stmt 0 view .LVU82
+ 407 00e6 9EE7     		b	.L16
+ 408              	.L30:
+ 409              		.align	2
+ 410              	.L29:
+ 411 00e8 00080240 		.word	1073874944
+ 412 00ec 00000240 		.word	1073872896
+ 413 00f0 00000000 		.word	htim2
+ 414 00f4 00000000 		.word	htim3
+ 415              		.cfi_endproc
+ 416              	.LFE243:
+ 418              		.section	.text.handleMenuExitEvent,"ax",%progbits
+ 419              		.align	1
+ 420              		.global	handleMenuExitEvent
+ 421              		.syntax unified
+ 422              		.thumb
+ 423              		.thumb_func
+ 425              	handleMenuExitEvent:
+ 426              	.LVL69:
+ 427              	.LFB244:
+ 107:Core/Src/my_event_handler.c **** 
+ 108:Core/Src/my_event_handler.c **** void handleMenuExitEvent(int event, AppData *data) {
+ 428              		.loc 1 108 52 is_stmt 1 view -0
+ 429              		.cfi_startproc
+ 430              		@ args = 0, pretend = 0, frame = 0
+ 431              		@ frame_needed = 0, uses_anonymous_args = 0
+ 432              		.loc 1 108 52 is_stmt 0 view .LVU84
+ 433 0000 38B5     		push	{r3, r4, r5, lr}
+ 434              		.cfi_def_cfa_offset 16
+ 435              		.cfi_offset 3, -16
+ 436              		.cfi_offset 4, -12
+ 437              		.cfi_offset 5, -8
+ 438              		.cfi_offset 14, -4
+ 109:Core/Src/my_event_handler.c ****   switch (event) {
+ 439              		.loc 1 109 3 is_stmt 1 view .LVU85
+ 440 0002 0538     		subs	r0, r0, #5
+ 441              	.LVL70:
+ 442              		.loc 1 109 3 is_stmt 0 view .LVU86
+ 443 0004 0F28     		cmp	r0, #15
+ 444 0006 1ED8     		bhi	.L31
+ 445 0008 DFE800F0 		tbb	[pc, r0]
+ 446              	.L34:
+ 447 000c 34       		.byte	(.L41-.L34)/2
+ 448 000d 40       		.byte	(.L40-.L34)/2
+ 449 000e 4C       		.byte	(.L39-.L34)/2
+ 450 000f 1D       		.byte	(.L31-.L34)/2
+ 451 0010 1D       		.byte	(.L31-.L34)/2
+ 452 0011 1D       		.byte	(.L31-.L34)/2
+ 453 0012 1D       		.byte	(.L31-.L34)/2
+ 454 0013 1D       		.byte	(.L31-.L34)/2
+ 455 0014 1D       		.byte	(.L31-.L34)/2
+ 456 0015 1D       		.byte	(.L31-.L34)/2
+ 457 0016 1D       		.byte	(.L31-.L34)/2
+ 458 0017 74       		.byte	(.L38-.L34)/2
+ 459 0018 80       		.byte	(.L37-.L34)/2
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\cc1ly3Bw.s 			page 12
+
+
+ 460 0019 08       		.byte	(.L36-.L34)/2
+ 461 001a 1E       		.byte	(.L35-.L34)/2
+ 462 001b 58       		.byte	(.L33-.L34)/2
+ 463              		.p2align 1
+ 464              	.L36:
+ 110:Core/Src/my_event_handler.c ****   case MENU_SPEAKER_NOR_EVENT:
+ 111:Core/Src/my_event_handler.c ****     HAL_GPIO_WritePin(SPEAKER_GPIO_Port, SPEAKER_Pin, GPIO_PIN_RESET);
+ 465              		.loc 1 111 5 is_stmt 1 view .LVU87
+ 466 001c 0022     		movs	r2, #0
+ 467 001e 4FF48061 		mov	r1, #1024
+ 468              	.LVL71:
+ 469              		.loc 1 111 5 is_stmt 0 view .LVU88
+ 470 0022 4048     		ldr	r0, .L44
+ 471              	.LVL72:
+ 472              		.loc 1 111 5 view .LVU89
+ 473 0024 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 474              	.LVL73:
+ 112:Core/Src/my_event_handler.c ****     HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_3);
+ 475              		.loc 1 112 5 is_stmt 1 view .LVU90
+ 476 0028 0821     		movs	r1, #8
+ 477 002a 3F48     		ldr	r0, .L44+4
+ 478 002c FFF7FEFF 		bl	HAL_TIM_PWM_Stop
+ 479              	.LVL74:
+ 113:Core/Src/my_event_handler.c ****  		HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, 0);
+ 480              		.loc 1 113 4 view .LVU91
+ 481 0030 0022     		movs	r2, #0
+ 482 0032 4FF40071 		mov	r1, #512
+ 483 0036 3D48     		ldr	r0, .L44+8
+ 484 0038 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 485              	.LVL75:
+ 114:Core/Src/my_event_handler.c ****  		HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, 1);
+ 486              		.loc 1 114 4 view .LVU92
+ 487 003c 0122     		movs	r2, #1
+ 488 003e 8021     		movs	r1, #128
+ 489 0040 3B48     		ldr	r0, .L44+12
+ 490 0042 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 491              	.LVL76:
+ 115:Core/Src/my_event_handler.c ****     break;
+ 492              		.loc 1 115 5 view .LVU93
+ 493              	.L31:
+ 116:Core/Src/my_event_handler.c ****    case MENU_SPEAKER_MEL_EVENT:
+ 117:Core/Src/my_event_handler.c ****     HAL_GPIO_WritePin(SPEAKER_GPIO_Port, SPEAKER_Pin, GPIO_PIN_RESET);
+ 118:Core/Src/my_event_handler.c ****     HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_3);
+ 119:Core/Src/my_event_handler.c ****  		HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, 0);
+ 120:Core/Src/my_event_handler.c ****  		HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, 1);
+ 121:Core/Src/my_event_handler.c ****     break;
+ 122:Core/Src/my_event_handler.c ****   case MENU_MANUAL_SUB1_EVENT:
+ 123:Core/Src/my_event_handler.c ****     HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, 0);
+ 124:Core/Src/my_event_handler.c ****  		HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, 1);
+ 125:Core/Src/my_event_handler.c **** 		break;
+ 126:Core/Src/my_event_handler.c ****   case MENU_MANUAL_SUB2_EVENT:
+ 127:Core/Src/my_event_handler.c ****     HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, 0);
+ 128:Core/Src/my_event_handler.c ****  		HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, 1);
+ 129:Core/Src/my_event_handler.c **** 		break;
+ 130:Core/Src/my_event_handler.c ****   case MENU_POT_EVENT:
+ 131:Core/Src/my_event_handler.c ****  		HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, 0);
+ 132:Core/Src/my_event_handler.c ****  		HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, 1);
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\cc1ly3Bw.s 			page 13
+
+
+ 133:Core/Src/my_event_handler.c **** 		break;
+ 134:Core/Src/my_event_handler.c ****   case MENU_DC_EVENT:
+ 135:Core/Src/my_event_handler.c ****     HAL_GPIO_WritePin(DC_EN_GPIO_Port, DC_EN_Pin, GPIO_PIN_RESET);    
+ 136:Core/Src/my_event_handler.c ****     HAL_TIM_PWM_Stop(&htim3, TIM_CHANNEL_1);    
+ 137:Core/Src/my_event_handler.c ****     HAL_TIM_PWM_Stop(&htim3, TIM_CHANNEL_2);
+ 138:Core/Src/my_event_handler.c ****     HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, 0);
+ 139:Core/Src/my_event_handler.c ****  		HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, 1);
+ 140:Core/Src/my_event_handler.c ****     break;
+ 141:Core/Src/my_event_handler.c ****   case MENU_SETTINGS_DC_EVENT:
+ 142:Core/Src/my_event_handler.c ****  		HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, 0);
+ 143:Core/Src/my_event_handler.c ****  		HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, 1);
+ 144:Core/Src/my_event_handler.c ****     break;
+ 145:Core/Src/my_event_handler.c ****   case MENU_SETTINGS_PSC_EVENT:
+ 146:Core/Src/my_event_handler.c ****  		HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, 0);
+ 147:Core/Src/my_event_handler.c ****  		HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, 1);
+ 148:Core/Src/my_event_handler.c ****   default:
+ 149:Core/Src/my_event_handler.c ****     break;
+ 150:Core/Src/my_event_handler.c ****   }
+ 151:Core/Src/my_event_handler.c **** }...
+ 494              		.loc 1 151 1 is_stmt 0 view .LVU94
+ 495 0046 38BD     		pop	{r3, r4, r5, pc}
+ 496              	.LVL77:
+ 497              	.L35:
+ 117:Core/Src/my_event_handler.c ****     HAL_GPIO_WritePin(SPEAKER_GPIO_Port, SPEAKER_Pin, GPIO_PIN_RESET);
+ 498              		.loc 1 117 5 is_stmt 1 view .LVU95
+ 499 0048 0022     		movs	r2, #0
+ 500 004a 4FF48061 		mov	r1, #1024
+ 501              	.LVL78:
+ 117:Core/Src/my_event_handler.c ****     HAL_GPIO_WritePin(SPEAKER_GPIO_Port, SPEAKER_Pin, GPIO_PIN_RESET);
+ 502              		.loc 1 117 5 is_stmt 0 view .LVU96
+ 503 004e 3548     		ldr	r0, .L44
+ 504 0050 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 505              	.LVL79:
+ 118:Core/Src/my_event_handler.c ****     HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_3);
+ 506              		.loc 1 118 5 is_stmt 1 view .LVU97
+ 507 0054 0821     		movs	r1, #8
+ 508 0056 3448     		ldr	r0, .L44+4
+ 509 0058 FFF7FEFF 		bl	HAL_TIM_PWM_Stop
+ 510              	.LVL80:
+ 119:Core/Src/my_event_handler.c ****  		HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, 0);
+ 511              		.loc 1 119 4 view .LVU98
+ 512 005c 0022     		movs	r2, #0
+ 513 005e 4FF40071 		mov	r1, #512
+ 514 0062 3248     		ldr	r0, .L44+8
+ 515 0064 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 516              	.LVL81:
+ 120:Core/Src/my_event_handler.c ****  		HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, 1);
+ 517              		.loc 1 120 4 view .LVU99
+ 518 0068 0122     		movs	r2, #1
+ 519 006a 8021     		movs	r1, #128
+ 520 006c 3048     		ldr	r0, .L44+12
+ 521 006e FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 522              	.LVL82:
+ 121:Core/Src/my_event_handler.c ****     break;
+ 523              		.loc 1 121 5 view .LVU100
+ 524 0072 E8E7     		b	.L31
+ 525              	.LVL83:
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\cc1ly3Bw.s 			page 14
+
+
+ 526              	.L41:
+ 123:Core/Src/my_event_handler.c ****     HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, 0);
+ 527              		.loc 1 123 5 view .LVU101
+ 528 0074 0022     		movs	r2, #0
+ 529 0076 4FF40071 		mov	r1, #512
+ 530              	.LVL84:
+ 123:Core/Src/my_event_handler.c ****     HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, 0);
+ 531              		.loc 1 123 5 is_stmt 0 view .LVU102
+ 532 007a 2C48     		ldr	r0, .L44+8
+ 533 007c FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 534              	.LVL85:
+ 124:Core/Src/my_event_handler.c ****  		HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, 1);
+ 535              		.loc 1 124 4 is_stmt 1 view .LVU103
+ 536 0080 0122     		movs	r2, #1
+ 537 0082 8021     		movs	r1, #128
+ 538 0084 2A48     		ldr	r0, .L44+12
+ 539 0086 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 540              	.LVL86:
+ 125:Core/Src/my_event_handler.c **** 		break;
+ 541              		.loc 1 125 3 view .LVU104
+ 542 008a DCE7     		b	.L31
+ 543              	.LVL87:
+ 544              	.L40:
+ 127:Core/Src/my_event_handler.c ****     HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, 0);
+ 545              		.loc 1 127 5 view .LVU105
+ 546 008c 0022     		movs	r2, #0
+ 547 008e 4FF40071 		mov	r1, #512
+ 548              	.LVL88:
+ 127:Core/Src/my_event_handler.c ****     HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, 0);
+ 549              		.loc 1 127 5 is_stmt 0 view .LVU106
+ 550 0092 2648     		ldr	r0, .L44+8
+ 551 0094 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 552              	.LVL89:
+ 128:Core/Src/my_event_handler.c ****  		HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, 1);
+ 553              		.loc 1 128 4 is_stmt 1 view .LVU107
+ 554 0098 0122     		movs	r2, #1
+ 555 009a 8021     		movs	r1, #128
+ 556 009c 2448     		ldr	r0, .L44+12
+ 557 009e FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 558              	.LVL90:
+ 129:Core/Src/my_event_handler.c **** 		break;
+ 559              		.loc 1 129 3 view .LVU108
+ 560 00a2 D0E7     		b	.L31
+ 561              	.LVL91:
+ 562              	.L39:
+ 131:Core/Src/my_event_handler.c ****  		HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, 0);
+ 563              		.loc 1 131 4 view .LVU109
+ 564 00a4 0022     		movs	r2, #0
+ 565 00a6 4FF40071 		mov	r1, #512
+ 566              	.LVL92:
+ 131:Core/Src/my_event_handler.c ****  		HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, 0);
+ 567              		.loc 1 131 4 is_stmt 0 view .LVU110
+ 568 00aa 2048     		ldr	r0, .L44+8
+ 569 00ac FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 570              	.LVL93:
+ 132:Core/Src/my_event_handler.c ****  		HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, 1);
+ 571              		.loc 1 132 4 is_stmt 1 view .LVU111
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\cc1ly3Bw.s 			page 15
+
+
+ 572 00b0 0122     		movs	r2, #1
+ 573 00b2 8021     		movs	r1, #128
+ 574 00b4 1E48     		ldr	r0, .L44+12
+ 575 00b6 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 576              	.LVL94:
+ 133:Core/Src/my_event_handler.c **** 		break;
+ 577              		.loc 1 133 3 view .LVU112
+ 578 00ba C4E7     		b	.L31
+ 579              	.LVL95:
+ 580              	.L33:
+ 135:Core/Src/my_event_handler.c ****     HAL_GPIO_WritePin(DC_EN_GPIO_Port, DC_EN_Pin, GPIO_PIN_RESET);    
+ 581              		.loc 1 135 5 view .LVU113
+ 582 00bc 1B4C     		ldr	r4, .L44+8
+ 583 00be 0022     		movs	r2, #0
+ 584 00c0 4FF48061 		mov	r1, #1024
+ 585              	.LVL96:
+ 135:Core/Src/my_event_handler.c ****     HAL_GPIO_WritePin(DC_EN_GPIO_Port, DC_EN_Pin, GPIO_PIN_RESET);    
+ 586              		.loc 1 135 5 is_stmt 0 view .LVU114
+ 587 00c4 2046     		mov	r0, r4
+ 588 00c6 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 589              	.LVL97:
+ 136:Core/Src/my_event_handler.c ****     HAL_TIM_PWM_Stop(&htim3, TIM_CHANNEL_1);    
+ 590              		.loc 1 136 5 is_stmt 1 view .LVU115
+ 591 00ca 1A4D     		ldr	r5, .L44+16
+ 592 00cc 0021     		movs	r1, #0
+ 593 00ce 2846     		mov	r0, r5
+ 594 00d0 FFF7FEFF 		bl	HAL_TIM_PWM_Stop
+ 595              	.LVL98:
+ 137:Core/Src/my_event_handler.c ****     HAL_TIM_PWM_Stop(&htim3, TIM_CHANNEL_2);
+ 596              		.loc 1 137 5 view .LVU116
+ 597 00d4 0421     		movs	r1, #4
+ 598 00d6 2846     		mov	r0, r5
+ 599 00d8 FFF7FEFF 		bl	HAL_TIM_PWM_Stop
+ 600              	.LVL99:
+ 138:Core/Src/my_event_handler.c ****     HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, 0);
+ 601              		.loc 1 138 5 view .LVU117
+ 602 00dc 0022     		movs	r2, #0
+ 603 00de 4FF40071 		mov	r1, #512
+ 604 00e2 2046     		mov	r0, r4
+ 605 00e4 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 606              	.LVL100:
+ 139:Core/Src/my_event_handler.c ****  		HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, 1);
+ 607              		.loc 1 139 4 view .LVU118
+ 608 00e8 0122     		movs	r2, #1
+ 609 00ea 8021     		movs	r1, #128
+ 610 00ec 1048     		ldr	r0, .L44+12
+ 611 00ee FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 612              	.LVL101:
+ 140:Core/Src/my_event_handler.c ****     break;
+ 613              		.loc 1 140 5 view .LVU119
+ 614 00f2 A8E7     		b	.L31
+ 615              	.LVL102:
+ 616              	.L38:
+ 142:Core/Src/my_event_handler.c ****  		HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, 0);
+ 617              		.loc 1 142 4 view .LVU120
+ 618 00f4 0022     		movs	r2, #0
+ 619 00f6 4FF40071 		mov	r1, #512
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\cc1ly3Bw.s 			page 16
+
+
+ 620              	.LVL103:
+ 142:Core/Src/my_event_handler.c ****  		HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, 0);
+ 621              		.loc 1 142 4 is_stmt 0 view .LVU121
+ 622 00fa 0C48     		ldr	r0, .L44+8
+ 623 00fc FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 624              	.LVL104:
+ 143:Core/Src/my_event_handler.c ****  		HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, 1);
+ 625              		.loc 1 143 4 is_stmt 1 view .LVU122
+ 626 0100 0122     		movs	r2, #1
+ 627 0102 8021     		movs	r1, #128
+ 628 0104 0A48     		ldr	r0, .L44+12
+ 629 0106 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 630              	.LVL105:
+ 144:Core/Src/my_event_handler.c ****     break;
+ 631              		.loc 1 144 5 view .LVU123
+ 632 010a 9CE7     		b	.L31
+ 633              	.LVL106:
+ 634              	.L37:
+ 146:Core/Src/my_event_handler.c ****  		HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, 0);
+ 635              		.loc 1 146 4 view .LVU124
+ 636 010c 0022     		movs	r2, #0
+ 637 010e 4FF40071 		mov	r1, #512
+ 638              	.LVL107:
+ 146:Core/Src/my_event_handler.c ****  		HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, 0);
+ 639              		.loc 1 146 4 is_stmt 0 view .LVU125
+ 640 0112 0648     		ldr	r0, .L44+8
+ 641 0114 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 642              	.LVL108:
+ 147:Core/Src/my_event_handler.c ****  		HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, 1);
+ 643              		.loc 1 147 4 is_stmt 1 view .LVU126
+ 644 0118 0122     		movs	r2, #1
+ 645 011a 8021     		movs	r1, #128
+ 646 011c 0448     		ldr	r0, .L44+12
+ 647 011e FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 648              	.LVL109:
+ 649              		.loc 1 151 1 is_stmt 0 view .LVU127
+ 650 0122 90E7     		b	.L31
+ 651              	.L45:
+ 652              		.align	2
+ 653              	.L44:
+ 654 0124 00040240 		.word	1073873920
+ 655 0128 00000000 		.word	htim2
+ 656 012c 00000240 		.word	1073872896
+ 657 0130 00080240 		.word	1073874944
+ 658 0134 00000000 		.word	htim3
+ 659              		.cfi_endproc
+ 660              	.LFE244:
+ 662              		.text
+ 663              	.Letext0:
+ 664              		.file 2 "C:/Users/silsp/AppData/Roaming/Code/User/globalStorage/bmd.stm32-for-vscode/@xpack-dev-to
+ 665              		.file 3 "C:/Users/silsp/AppData/Roaming/Code/User/globalStorage/bmd.stm32-for-vscode/@xpack-dev-to
+ 666              		.file 4 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f446xx.h"
+ 667              		.file 5 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+ 668              		.file 6 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h"
+ 669              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
+ 670              		.file 8 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h"
+ 671              		.file 9 "Core/Inc/main.h"
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\cc1ly3Bw.s 			page 17
+
+
+ 672              		.file 10 "Core/Inc/lcd_menu.h"
+ 673              		.file 11 "Core/Inc/tim.h"
+ 674              		.file 12 "Core/Inc/my_funcs.h"
+ 675              		.file 13 "Core/Inc/music_player.h"
+ 676              		.file 14 "Core/Inc/my_display_handler.h"
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\cc1ly3Bw.s 			page 18
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 my_event_handler.c
+C:\Users\silsp\AppData\Local\Temp\cc1ly3Bw.s:21     .text.drawMenuItem_Callback2:00000000 $t
+C:\Users\silsp\AppData\Local\Temp\cc1ly3Bw.s:27     .text.drawMenuItem_Callback2:00000000 drawMenuItem_Callback2
+C:\Users\silsp\AppData\Local\Temp\cc1ly3Bw.s:51     .text.drawMenuItem_Callback2:00000010 $d
+C:\Users\silsp\AppData\Local\Temp\cc1ly3Bw.s:201    .text.drawMenuItem_Callback2:000000a8 $d
+C:\Users\silsp\AppData\Local\Temp\cc1ly3Bw.s:208    .text.handleMenuEntryEvent:00000000 $t
+C:\Users\silsp\AppData\Local\Temp\cc1ly3Bw.s:214    .text.handleMenuEntryEvent:00000000 handleMenuEntryEvent
+C:\Users\silsp\AppData\Local\Temp\cc1ly3Bw.s:234    .text.handleMenuEntryEvent:0000000c $d
+C:\Users\silsp\AppData\Local\Temp\cc1ly3Bw.s:252    .text.handleMenuEntryEvent:0000001e $t
+C:\Users\silsp\AppData\Local\Temp\cc1ly3Bw.s:411    .text.handleMenuEntryEvent:000000e8 $d
+C:\Users\silsp\AppData\Local\Temp\cc1ly3Bw.s:419    .text.handleMenuExitEvent:00000000 $t
+C:\Users\silsp\AppData\Local\Temp\cc1ly3Bw.s:425    .text.handleMenuExitEvent:00000000 handleMenuExitEvent
+C:\Users\silsp\AppData\Local\Temp\cc1ly3Bw.s:447    .text.handleMenuExitEvent:0000000c $d
+C:\Users\silsp\AppData\Local\Temp\cc1ly3Bw.s:463    .text.handleMenuExitEvent:0000001c $t
+C:\Users\silsp\AppData\Local\Temp\cc1ly3Bw.s:654    .text.handleMenuExitEvent:00000124 $d
+C:\Users\silsp\AppData\Local\Temp\cc1ly3Bw.s:70     .text.drawMenuItem_Callback2:00000023 $d
+C:\Users\silsp\AppData\Local\Temp\cc1ly3Bw.s:70     .text.drawMenuItem_Callback2:00000024 $t
+
+UNDEFINED SYMBOLS
+print_display
+HAL_GPIO_WritePin
+buzz_regulator
+MusicPlayer
+motor_menu
+sendToUart
+htim2
+HAL_GPIO_TogglePin
+HAL_TIM_PWM_Start
+htim3
+HAL_TIM_PWM_Stop

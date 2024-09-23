@@ -1,0 +1,1033 @@
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccDzbEJq.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"my_display_handler.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "Core/Src/my_display_handler.c"
+  20              		.section	.rodata.print_display.str1.4,"aMS",%progbits,1
+  21              		.align	2
+  22              	.LC0:
+  23 0000 636F6C6F 		.ascii	"color n/a \000"
+  23      72206E2F 
+  23      612000
+  24 000b 00       		.align	2
+  25              	.LC1:
+  26 000c 20257300 		.ascii	" %s\000"
+  27              		.align	2
+  28              	.LC2:
+  29 0010 53746172 		.ascii	"Star Wars Episode 3\000"
+  29      20576172 
+  29      73204570 
+  29      69736F64 
+  29      65203300 
+  30              		.align	2
+  31              	.LC3:
+  32 0024 52657665 		.ascii	"Revenge of the Sith\000"
+  32      6E676520 
+  32      6F662074 
+  32      68652053 
+  32      69746800 
+  33              		.global	__aeabi_ui2d
+  34              		.global	__aeabi_dmul
+  35              		.global	__aeabi_d2iz
+  36              		.align	2
+  37              	.LC4:
+  38 0038 20536F75 		.ascii	" Sound   Pitch\000"
+  38      6E642020 
+  38      20506974 
+  38      636800
+  39 0047 00       		.align	2
+  40              	.LC5:
+  41 0048 25202020 		.ascii	"%    <<H>>\000"
+  41      203C3C48 
+  41      3E3E00
+  42 0053 00       		.align	2
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccDzbEJq.s 			page 2
+
+
+  43              	.LC6:
+  44 0054 20253364 		.ascii	" %3d %s\000"
+  44      20257300 
+  45              		.align	2
+  46              	.LC7:
+  47 005c 25202020 		.ascii	"%    <<L>>\000"
+  47      203C3C4C 
+  47      3E3E00
+  48 0067 00       		.align	2
+  49              	.LC8:
+  50 0068 25202020 		.ascii	"%    <<M>>\000"
+  50      203C3C4D 
+  50      3E3E00
+  51 0073 00       		.align	2
+  52              	.LC9:
+  53 0074 4A6F686E 		.ascii	"John Williams 1980\000"
+  53      2057696C 
+  53      6C69616D 
+  53      73203139 
+  53      383000
+  54 0087 00       		.align	2
+  55              	.LC10:
+  56 0088 20253564 		.ascii	" %5d %5d\000"
+  56      20253564 
+  56      00
+  57 0091 000000   		.align	2
+  58              	.LC11:
+  59 0094 5053433A 		.ascii	"PSC:\000"
+  59      00
+  60 0099 000000   		.align	2
+  61              	.LC12:
+  62 009c 25357320 		.ascii	"%5s %3d %s %4d\000"
+  62      25336420 
+  62      25732025 
+  62      346400
+  63 00ab 00       		.align	2
+  64              	.LC13:
+  65 00ac 524F543A 		.ascii	"ROT:\000"
+  65      00
+  66 00b1 000000   		.align	2
+  67              	.LC14:
+  68 00b4 726F7420 		.ascii	"rot speed\000"
+  68      73706565 
+  68      6400
+  69 00be 0000     		.align	2
+  70              	.LC15:
+  71 00c0 20257320 		.ascii	" %s %4d\000"
+  71      25346400 
+  72              		.align	2
+  73              	.LC16:
+  74 00c8 5B43575D 		.ascii	"[CW]\000"
+  74      00
+  75 00cd 000000   		.align	2
+  76              	.LC17:
+  77 00d0 20253573 		.ascii	" %5s\000"
+  77      00
+  78 00d5 000000   		.align	2
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccDzbEJq.s 			page 3
+
+
+  79              	.LC18:
+  80 00d8 5B434357 		.ascii	"[CCW]\000"
+  80      5D00
+  81 00de 0000     		.align	2
+  82              	.LC19:
+  83 00e0 5B46535D 		.ascii	"[FS]\000"
+  83      00
+  84 00e5 000000   		.align	2
+  85              	.LC20:
+  86 00e8 5B53535D 		.ascii	"[SS]\000"
+  86      00
+  87 00ed 000000   		.align	2
+  88              	.LC21:
+  89 00f0 3C00     		.ascii	"<\000"
+  90 00f2 0000     		.align	2
+  91              	.LC22:
+  92 00f4 25357320 		.ascii	"%5s %3s %3d %s\000"
+  92      25337320 
+  92      25336420 
+  92      257300
+  93 0103 00       		.align	2
+  94              	.LC23:
+  95 0104 253E00   		.ascii	"%>\000"
+  96 0107 00       		.align	2
+  97              	.LC24:
+  98 0108 3C3C3C00 		.ascii	"<<<\000"
+  99              		.align	2
+ 100              	.LC25:
+ 101 010c 253E3E3E 		.ascii	"%>>>\000"
+ 101      00
+ 102 0111 000000   		.align	2
+ 103              	.LC26:
+ 104 0114 3C3C00   		.ascii	"<<\000"
+ 105 0117 00       		.align	2
+ 106              	.LC27:
+ 107 0118 253E3E00 		.ascii	"%>>\000"
+ 108              		.align	2
+ 109              	.LC28:
+ 110 011c 536D6F6F 		.ascii	"Smooth value <\000"
+ 110      74682076 
+ 110      616C7565 
+ 110      203C00
+ 111 012b 00       		.align	2
+ 112              	.LC29:
+ 113 012c 25732025 		.ascii	"%s %2d %s\000"
+ 113      32642025 
+ 113      7300
+ 114 0136 0000     		.align	2
+ 115              	.LC30:
+ 116 0138 3E00     		.ascii	">\000"
+ 117 013a 0000     		.align	2
+ 118              	.LC31:
+ 119 013c 546F2072 		.ascii	"To reset:         v\000"
+ 119      65736574 
+ 119      3A202020 
+ 119      20202020 
+ 119      20207600 
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccDzbEJq.s 			page 4
+
+
+ 120              		.align	2
+ 121              	.LC32:
+ 122 0150 5475726E 		.ascii	"Turn PSC on for motor\000"
+ 122      20505343 
+ 122      206F6E20 
+ 122      666F7220 
+ 122      6D6F746F 
+ 123 0166 0000     		.align	2
+ 124              	.LC33:
+ 125 0168 3C204F4E 		.ascii	"< ON\000"
+ 125      00
+ 126 016d 000000   		.align	2
+ 127              	.LC34:
+ 128 0170 4F464620 		.ascii	"OFF >\000"
+ 128      3E00
+ 129              		.section	.text.print_display,"ax",%progbits
+ 130              		.align	1
+ 131              		.global	print_display
+ 132              		.syntax unified
+ 133              		.thumb
+ 134              		.thumb_func
+ 136              	print_display:
+ 137              	.LVL0:
+ 138              	.LFB242:
+   1:Core/Src/my_display_handler.c **** /**
+   2:Core/Src/my_display_handler.c ****  * @file my_display_handler.c
+   3:Core/Src/my_display_handler.c ****  * @ref <MechatronicsProjectOne>
+   4:Core/Src/my_display_handler.c ****  * @author Silvan Spiess <silvan.spiess@bfh-student.ch>
+   5:Core/Src/my_display_handler.c ****  * @copyright Bern University of Applied Sciences
+   6:Core/Src/my_display_handler.c ****  *            Silvan Spiess 
+   7:Core/Src/my_display_handler.c ****  * @version v1.0.0
+   8:Core/Src/my_display_handler.c ****  * @date 16. March. 2024
+   9:Core/Src/my_display_handler.c ****  * 
+  10:Core/Src/my_display_handler.c ****  * @brief This file handles the displays for each menu.
+  11:Core/Src/my_display_handler.c ****  */
+  12:Core/Src/my_display_handler.c **** #include "my_display_handler.h"
+  13:Core/Src/my_display_handler.c **** 
+  14:Core/Src/my_display_handler.c **** void print_display(menu_event current_event, void *data) {
+ 139              		.loc 1 14 58 view -0
+ 140              		.cfi_startproc
+ 141              		@ args = 0, pretend = 0, frame = 80
+ 142              		@ frame_needed = 0, uses_anonymous_args = 0
+ 143              		.loc 1 14 58 is_stmt 0 view .LVU1
+ 144 0000 70B5     		push	{r4, r5, r6, lr}
+ 145              		.cfi_def_cfa_offset 16
+ 146              		.cfi_offset 4, -16
+ 147              		.cfi_offset 5, -12
+ 148              		.cfi_offset 6, -8
+ 149              		.cfi_offset 14, -4
+ 150 0002 96B0     		sub	sp, sp, #88
+ 151              		.cfi_def_cfa_offset 104
+ 152 0004 0C46     		mov	r4, r1
+  15:Core/Src/my_display_handler.c ****   
+  16:Core/Src/my_display_handler.c ****   char str1 [30];
+ 153              		.loc 1 16 3 is_stmt 1 view .LVU2
+  17:Core/Src/my_display_handler.c ****   char str2 [30];
+ 154              		.loc 1 17 3 view .LVU3
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccDzbEJq.s 			page 5
+
+
+  18:Core/Src/my_display_handler.c ****   char str_mode [10];
+ 155              		.loc 1 18 3 view .LVU4
+  19:Core/Src/my_display_handler.c ****   AppData* display_data = data;
+ 156              		.loc 1 19 3 view .LVU5
+ 157              	.LVL1:
+  20:Core/Src/my_display_handler.c **** 
+  21:Core/Src/my_display_handler.c ****   switch (current_event) {
+ 158              		.loc 1 21 3 view .LVU6
+ 159 0006 0238     		subs	r0, r0, #2
+ 160              	.LVL2:
+ 161              		.loc 1 21 3 is_stmt 0 view .LVU7
+ 162 0008 1228     		cmp	r0, #18
+ 163 000a 00F22581 		bhi	.L1
+ 164 000e DFE810F0 		tbh	[pc, r0, lsl #1]
+ 165              	.L4:
+ 166 0012 1300     		.2byte	(.L11-.L4)/2
+ 167 0014 2301     		.2byte	(.L1-.L4)/2
+ 168 0016 2301     		.2byte	(.L1-.L4)/2
+ 169 0018 2000     		.2byte	(.L10-.L4)/2
+ 170 001a 2301     		.2byte	(.L1-.L4)/2
+ 171 001c C200     		.2byte	(.L9-.L4)/2
+ 172 001e 2301     		.2byte	(.L1-.L4)/2
+ 173 0020 2301     		.2byte	(.L1-.L4)/2
+ 174 0022 2301     		.2byte	(.L1-.L4)/2
+ 175 0024 2301     		.2byte	(.L1-.L4)/2
+ 176 0026 2301     		.2byte	(.L1-.L4)/2
+ 177 0028 2301     		.2byte	(.L1-.L4)/2
+ 178 002a 2301     		.2byte	(.L1-.L4)/2
+ 179 002c 2301     		.2byte	(.L1-.L4)/2
+ 180 002e 8701     		.2byte	(.L8-.L4)/2
+ 181 0030 A501     		.2byte	(.L7-.L4)/2
+ 182 0032 3B00     		.2byte	(.L6-.L4)/2
+ 183 0034 7C00     		.2byte	(.L5-.L4)/2
+ 184 0036 D000     		.2byte	(.L3-.L4)/2
+ 185              		.p2align 1
+ 186              	.L11:
+  22:Core/Src/my_display_handler.c ****   case MENU_RLED_EVENT:
+  23:Core/Src/my_display_handler.c ****     sprintf(&str1[0]," %s","color n/a ");
+ 187              		.loc 1 23 5 is_stmt 1 view .LVU8
+ 188 0038 9B4A     		ldr	r2, .L36
+ 189 003a 9C49     		ldr	r1, .L36+4
+ 190              	.LVL3:
+ 191              		.loc 1 23 5 is_stmt 0 view .LVU9
+ 192 003c 0EA8     		add	r0, sp, #56
+ 193              	.LVL4:
+ 194              		.loc 1 23 5 view .LVU10
+ 195 003e FFF7FEFF 		bl	sprintf
+ 196              	.LVL5:
+  24:Core/Src/my_display_handler.c **** 		lcd_setString(20,10, (const char*) &str1, LCD_FONT_8, false);
+ 197              		.loc 1 24 3 is_stmt 1 view .LVU11
+ 198 0042 0023     		movs	r3, #0
+ 199 0044 0093     		str	r3, [sp]
+ 200 0046 0EAA     		add	r2, sp, #56
+ 201 0048 0A21     		movs	r1, #10
+ 202 004a 1420     		movs	r0, #20
+ 203 004c FFF7FEFF 		bl	lcd_setString
+ 204              	.LVL6:
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccDzbEJq.s 			page 6
+
+
+  25:Core/Src/my_display_handler.c **** 		break;
+ 205              		.loc 1 25 3 view .LVU12
+ 206 0050 02E1     		b	.L1
+ 207              	.LVL7:
+ 208              	.L10:
+  26:Core/Src/my_display_handler.c ****   case MENU_MANUAL_SUB1_EVENT:
+  27:Core/Src/my_display_handler.c ****     sprintf(&str1[0]," %s", "Star Wars Episode 3");
+ 209              		.loc 1 27 5 view .LVU13
+ 210 0052 964C     		ldr	r4, .L36+4
+ 211 0054 964A     		ldr	r2, .L36+8
+ 212 0056 2146     		mov	r1, r4
+ 213              	.LVL8:
+ 214              		.loc 1 27 5 is_stmt 0 view .LVU14
+ 215 0058 0EA8     		add	r0, sp, #56
+ 216 005a FFF7FEFF 		bl	sprintf
+ 217              	.LVL9:
+  28:Core/Src/my_display_handler.c ****     sprintf(&str2[0]," %s", "Revenge of the Sith");
+ 218              		.loc 1 28 5 is_stmt 1 view .LVU15
+ 219 005e 954A     		ldr	r2, .L36+12
+ 220 0060 2146     		mov	r1, r4
+ 221 0062 06A8     		add	r0, sp, #24
+ 222 0064 FFF7FEFF 		bl	sprintf
+ 223              	.LVL10:
+  29:Core/Src/my_display_handler.c **** 		lcd_setString(2,10, (const char*) &str1, LCD_FONT_8, false);
+ 224              		.loc 1 29 3 view .LVU16
+ 225 0068 0024     		movs	r4, #0
+ 226 006a 0094     		str	r4, [sp]
+ 227 006c 2346     		mov	r3, r4
+ 228 006e 0EAA     		add	r2, sp, #56
+ 229 0070 0A21     		movs	r1, #10
+ 230 0072 0220     		movs	r0, #2
+ 231 0074 FFF7FEFF 		bl	lcd_setString
+ 232              	.LVL11:
+  30:Core/Src/my_display_handler.c **** 		lcd_setString(2,20, (const char*) &str2 , LCD_FONT_8, false);
+ 233              		.loc 1 30 3 view .LVU17
+ 234 0078 0094     		str	r4, [sp]
+ 235 007a 2346     		mov	r3, r4
+ 236 007c 06AA     		add	r2, sp, #24
+ 237 007e 1421     		movs	r1, #20
+ 238 0080 0220     		movs	r0, #2
+ 239 0082 FFF7FEFF 		bl	lcd_setString
+ 240              	.LVL12:
+  31:Core/Src/my_display_handler.c ****     break;
+ 241              		.loc 1 31 5 view .LVU18
+ 242 0086 E7E0     		b	.L1
+ 243              	.LVL13:
+ 244              	.L6:
+  32:Core/Src/my_display_handler.c ****   case MENU_SPEAKER_NOR_EVENT:
+  33:Core/Src/my_display_handler.c ****     display_data->current.pot_power1 = (int)((double)display_data->current.pot1/maxPOTSpeed*100);
+ 245              		.loc 1 33 5 view .LVU19
+ 246              		.loc 1 33 46 is_stmt 0 view .LVU20
+ 247 0088 0888     		ldrh	r0, [r1]
+ 248 008a FFF7FEFF 		bl	__aeabi_ui2d
+ 249              	.LVL14:
+ 250              		.loc 1 33 80 view .LVU21
+ 251 008e 0022     		movs	r2, #0
+ 252 0090 894B     		ldr	r3, .L36+16
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccDzbEJq.s 			page 7
+
+
+ 253 0092 FFF7FEFF 		bl	__aeabi_dmul
+ 254              	.LVL15:
+ 255              		.loc 1 33 92 view .LVU22
+ 256 0096 0022     		movs	r2, #0
+ 257 0098 884B     		ldr	r3, .L36+20
+ 258 009a FFF7FEFF 		bl	__aeabi_dmul
+ 259              	.LVL16:
+ 260              		.loc 1 33 40 view .LVU23
+ 261 009e FFF7FEFF 		bl	__aeabi_d2iz
+ 262              	.LVL17:
+ 263              		.loc 1 33 38 view .LVU24
+ 264 00a2 2081     		strh	r0, [r4, #8]	@ movhi
+  34:Core/Src/my_display_handler.c ****     sprintf(&str1[0],"%s"," Sound   Pitch");
+ 265              		.loc 1 34 5 is_stmt 1 view .LVU25
+ 266 00a4 864B     		ldr	r3, .L36+24
+ 267 00a6 0EAD     		add	r5, sp, #56
+ 268 00a8 0FCB     		ldm	r3, {r0, r1, r2, r3}
+ 269 00aa 07C5     		stmia	r5!, {r0, r1, r2}
+ 270 00ac 25F8023B 		strh	r3, [r5], #2	@ movhi
+ 271 00b0 1B0C     		lsrs	r3, r3, #16
+ 272 00b2 2B70     		strb	r3, [r5]
+  35:Core/Src/my_display_handler.c **** 	  lcd_setString(10,10, (const char*) &str1, LCD_FONT_8, false);
+ 273              		.loc 1 35 4 view .LVU26
+ 274 00b4 0023     		movs	r3, #0
+ 275 00b6 0093     		str	r3, [sp]
+ 276 00b8 0EAA     		add	r2, sp, #56
+ 277 00ba 0A21     		movs	r1, #10
+ 278 00bc 0846     		mov	r0, r1
+ 279 00be FFF7FEFF 		bl	lcd_setString
+ 280              	.LVL18:
+  36:Core/Src/my_display_handler.c ****     if(display_data->current.pot2 < 1300)
+ 281              		.loc 1 36 5 view .LVU27
+ 282              		.loc 1 36 29 is_stmt 0 view .LVU28
+ 283 00c2 6388     		ldrh	r3, [r4, #2]
+ 284              		.loc 1 36 7 view .LVU29
+ 285 00c4 40F21352 		movw	r2, #1299
+ 286 00c8 9342     		cmp	r3, r2
+ 287 00ca 10D9     		bls	.L33
+  37:Core/Src/my_display_handler.c ****       sprintf(&str2[0]," %3d %s",display_data->current.pot_power1, "%    <<H>>");
+  38:Core/Src/my_display_handler.c ****     else if(display_data->current.pot2 > 2800)
+ 288              		.loc 1 38 10 is_stmt 1 view .LVU30
+ 289              		.loc 1 38 12 is_stmt 0 view .LVU31
+ 290 00cc B3F52F6F 		cmp	r3, #2800
+ 291 00d0 14D9     		bls	.L14
+  39:Core/Src/my_display_handler.c ****       sprintf(&str2[0]," %3d %s",display_data->current.pot_power1, "%    <<L>>");
+ 292              		.loc 1 39 7 is_stmt 1 view .LVU32
+ 293 00d2 7C4B     		ldr	r3, .L36+28
+ 294 00d4 2289     		ldrh	r2, [r4, #8]
+ 295 00d6 7C49     		ldr	r1, .L36+32
+ 296 00d8 06A8     		add	r0, sp, #24
+ 297 00da FFF7FEFF 		bl	sprintf
+ 298              	.LVL19:
+ 299              	.L13:
+  40:Core/Src/my_display_handler.c ****     else
+  41:Core/Src/my_display_handler.c ****       sprintf(&str2[0]," %3d %s",display_data->current.pot_power1, "%    <<M>>");
+  42:Core/Src/my_display_handler.c ****     lcd_setString(10,20, (const char*) &str2, LCD_FONT_8, false);
+ 300              		.loc 1 42 5 view .LVU33
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccDzbEJq.s 			page 8
+
+
+ 301 00de 0023     		movs	r3, #0
+ 302 00e0 0093     		str	r3, [sp]
+ 303 00e2 06AA     		add	r2, sp, #24
+ 304 00e4 1421     		movs	r1, #20
+ 305 00e6 0A20     		movs	r0, #10
+ 306 00e8 FFF7FEFF 		bl	lcd_setString
+ 307              	.LVL20:
+  43:Core/Src/my_display_handler.c ****     break;
+ 308              		.loc 1 43 5 view .LVU34
+ 309 00ec B4E0     		b	.L1
+ 310              	.L33:
+  37:Core/Src/my_display_handler.c ****     else if(display_data->current.pot2 > 2800)
+ 311              		.loc 1 37 7 view .LVU35
+ 312 00ee 774B     		ldr	r3, .L36+36
+ 313 00f0 2289     		ldrh	r2, [r4, #8]
+ 314 00f2 7549     		ldr	r1, .L36+32
+ 315 00f4 06A8     		add	r0, sp, #24
+ 316 00f6 FFF7FEFF 		bl	sprintf
+ 317              	.LVL21:
+ 318 00fa F0E7     		b	.L13
+ 319              	.L14:
+  41:Core/Src/my_display_handler.c ****     lcd_setString(10,20, (const char*) &str2, LCD_FONT_8, false);
+ 320              		.loc 1 41 7 view .LVU36
+ 321 00fc 744B     		ldr	r3, .L36+40
+ 322 00fe 2289     		ldrh	r2, [r4, #8]
+ 323 0100 7149     		ldr	r1, .L36+32
+ 324 0102 06A8     		add	r0, sp, #24
+ 325 0104 FFF7FEFF 		bl	sprintf
+ 326              	.LVL22:
+ 327 0108 E9E7     		b	.L13
+ 328              	.LVL23:
+ 329              	.L5:
+  44:Core/Src/my_display_handler.c ****   case MENU_SPEAKER_MEL_EVENT:
+  45:Core/Src/my_display_handler.c ****     display_data->current.pot_power1 = (int)((double)display_data->current.pot1/maxPOTSpeed*100);
+ 330              		.loc 1 45 5 view .LVU37
+ 331              		.loc 1 45 75 is_stmt 0 view .LVU38
+ 332 010a 0E88     		ldrh	r6, [r1]
+ 333              		.loc 1 45 46 view .LVU39
+ 334 010c 3046     		mov	r0, r6
+ 335 010e FFF7FEFF 		bl	__aeabi_ui2d
+ 336              	.LVL24:
+ 337              		.loc 1 45 80 view .LVU40
+ 338 0112 0022     		movs	r2, #0
+ 339 0114 684B     		ldr	r3, .L36+16
+ 340 0116 FFF7FEFF 		bl	__aeabi_dmul
+ 341              	.LVL25:
+ 342              		.loc 1 45 92 view .LVU41
+ 343 011a 0022     		movs	r2, #0
+ 344 011c 674B     		ldr	r3, .L36+20
+ 345 011e FFF7FEFF 		bl	__aeabi_dmul
+ 346              	.LVL26:
+ 347              		.loc 1 45 40 view .LVU42
+ 348 0122 FFF7FEFF 		bl	__aeabi_d2iz
+ 349              	.LVL27:
+ 350              		.loc 1 45 38 view .LVU43
+ 351 0126 2081     		strh	r0, [r4, #8]	@ movhi
+  46:Core/Src/my_display_handler.c ****     sprintf(&str1[0],"%s","John Williams 1980");
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccDzbEJq.s 			page 9
+
+
+ 352              		.loc 1 46 5 is_stmt 1 view .LVU44
+ 353 0128 0DF1380C 		add	ip, sp, #56
+ 354 012c 694D     		ldr	r5, .L36+44
+ 355 012e 0FCD     		ldmia	r5!, {r0, r1, r2, r3}
+ 356 0130 ACE80F00 		stmia	ip!, {r0, r1, r2, r3}
+ 357 0134 2B68     		ldr	r3, [r5]
+ 358 0136 2CF8023B 		strh	r3, [ip], #2	@ movhi
+ 359 013a 1B0C     		lsrs	r3, r3, #16
+ 360 013c 8CF80030 		strb	r3, [ip]
+  47:Core/Src/my_display_handler.c ****     if(display_data->current.pot1 < 1300)
+ 361              		.loc 1 47 5 view .LVU45
+ 362              		.loc 1 47 7 is_stmt 0 view .LVU46
+ 363 0140 40F21353 		movw	r3, #1299
+ 364 0144 9E42     		cmp	r6, r3
+ 365 0146 18D9     		bls	.L34
+  48:Core/Src/my_display_handler.c ****       sprintf(&str2[0]," %3d %s",display_data->current.pot_power1, "%    <<H>>");
+  49:Core/Src/my_display_handler.c ****     else if(display_data->current.pot1 > 2800)
+ 366              		.loc 1 49 10 is_stmt 1 view .LVU47
+ 367              		.loc 1 49 12 is_stmt 0 view .LVU48
+ 368 0148 B6F52F6F 		cmp	r6, #2800
+ 369 014c 1CD9     		bls	.L17
+  50:Core/Src/my_display_handler.c ****       sprintf(&str2[0]," %3d %s",display_data->current.pot_power1, "%    <<L>>");
+ 370              		.loc 1 50 7 is_stmt 1 view .LVU49
+ 371 014e 5D4B     		ldr	r3, .L36+28
+ 372 0150 2289     		ldrh	r2, [r4, #8]
+ 373 0152 5D49     		ldr	r1, .L36+32
+ 374 0154 06A8     		add	r0, sp, #24
+ 375 0156 FFF7FEFF 		bl	sprintf
+ 376              	.LVL28:
+ 377              	.L16:
+  51:Core/Src/my_display_handler.c ****     else
+  52:Core/Src/my_display_handler.c ****       sprintf(&str2[0]," %3d %s",display_data->current.pot_power1, "%    <<M>>");    
+  53:Core/Src/my_display_handler.c ****     lcd_setString(10,10, (const char*) &str1, LCD_FONT_8, false);
+ 378              		.loc 1 53 5 view .LVU50
+ 379 015a 0024     		movs	r4, #0
+ 380              	.LVL29:
+ 381              		.loc 1 53 5 is_stmt 0 view .LVU51
+ 382 015c 0094     		str	r4, [sp]
+ 383 015e 2346     		mov	r3, r4
+ 384 0160 0EAA     		add	r2, sp, #56
+ 385 0162 0A21     		movs	r1, #10
+ 386 0164 0846     		mov	r0, r1
+ 387 0166 FFF7FEFF 		bl	lcd_setString
+ 388              	.LVL30:
+  54:Core/Src/my_display_handler.c ****     lcd_setString(10,20, (const char*) &str2, LCD_FONT_8, false);
+ 389              		.loc 1 54 5 is_stmt 1 view .LVU52
+ 390 016a 0094     		str	r4, [sp]
+ 391 016c 2346     		mov	r3, r4
+ 392 016e 06AA     		add	r2, sp, #24
+ 393 0170 1421     		movs	r1, #20
+ 394 0172 0A20     		movs	r0, #10
+ 395 0174 FFF7FEFF 		bl	lcd_setString
+ 396              	.LVL31:
+  55:Core/Src/my_display_handler.c ****     break;
+ 397              		.loc 1 55 5 view .LVU53
+ 398 0178 6EE0     		b	.L1
+ 399              	.LVL32:
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccDzbEJq.s 			page 10
+
+
+ 400              	.L34:
+  48:Core/Src/my_display_handler.c ****     else if(display_data->current.pot1 > 2800)
+ 401              		.loc 1 48 7 view .LVU54
+ 402 017a 544B     		ldr	r3, .L36+36
+ 403 017c 2289     		ldrh	r2, [r4, #8]
+ 404 017e 5249     		ldr	r1, .L36+32
+ 405 0180 06A8     		add	r0, sp, #24
+ 406 0182 FFF7FEFF 		bl	sprintf
+ 407              	.LVL33:
+ 408 0186 E8E7     		b	.L16
+ 409              	.L17:
+  52:Core/Src/my_display_handler.c ****     lcd_setString(10,10, (const char*) &str1, LCD_FONT_8, false);
+ 410              		.loc 1 52 7 view .LVU55
+ 411 0188 514B     		ldr	r3, .L36+40
+ 412 018a 2289     		ldrh	r2, [r4, #8]
+ 413 018c 4E49     		ldr	r1, .L36+32
+ 414 018e 06A8     		add	r0, sp, #24
+ 415 0190 FFF7FEFF 		bl	sprintf
+ 416              	.LVL34:
+ 417 0194 E1E7     		b	.L16
+ 418              	.LVL35:
+ 419              	.L9:
+  56:Core/Src/my_display_handler.c ****   case MENU_POT_EVENT:
+  57:Core/Src/my_display_handler.c **** 		sprintf(&str1[0]," %5d %5d",display_data->current. pot1, display_data->current.pot2);
+ 420              		.loc 1 57 3 view .LVU56
+ 421 0196 4B88     		ldrh	r3, [r1, #2]
+ 422 0198 0A88     		ldrh	r2, [r1]
+ 423 019a 4F49     		ldr	r1, .L36+48
+ 424              	.LVL36:
+ 425              		.loc 1 57 3 is_stmt 0 view .LVU57
+ 426 019c 0EA8     		add	r0, sp, #56
+ 427 019e FFF7FEFF 		bl	sprintf
+ 428              	.LVL37:
+  58:Core/Src/my_display_handler.c **** 		lcd_setString(10,10, (const char*) &str1, LCD_FONT_8, false);
+ 429              		.loc 1 58 3 is_stmt 1 view .LVU58
+ 430 01a2 0023     		movs	r3, #0
+ 431 01a4 0093     		str	r3, [sp]
+ 432 01a6 0EAA     		add	r2, sp, #56
+ 433 01a8 0A21     		movs	r1, #10
+ 434 01aa 0846     		mov	r0, r1
+ 435 01ac FFF7FEFF 		bl	lcd_setString
+ 436              	.LVL38:
+  59:Core/Src/my_display_handler.c **** 		break;
+ 437              		.loc 1 59 3 view .LVU59
+ 438 01b0 52E0     		b	.L1
+ 439              	.LVL39:
+ 440              	.L3:
+  60:Core/Src/my_display_handler.c ****   case MENU_DC_EVENT:   
+  61:Core/Src/my_display_handler.c ****     display_data->current.pot_power2 = (int)((double)display_data->current.pot2/maxPOTSpeed*100);
+ 441              		.loc 1 61 5 view .LVU60
+ 442              		.loc 1 61 46 is_stmt 0 view .LVU61
+ 443 01b2 4888     		ldrh	r0, [r1, #2]
+ 444 01b4 FFF7FEFF 		bl	__aeabi_ui2d
+ 445              	.LVL40:
+ 446              		.loc 1 61 80 view .LVU62
+ 447 01b8 0022     		movs	r2, #0
+ 448 01ba 3F4B     		ldr	r3, .L36+16
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccDzbEJq.s 			page 11
+
+
+ 449 01bc FFF7FEFF 		bl	__aeabi_dmul
+ 450              	.LVL41:
+ 451              		.loc 1 61 92 view .LVU63
+ 452 01c0 0022     		movs	r2, #0
+ 453 01c2 3E4B     		ldr	r3, .L36+20
+ 454 01c4 FFF7FEFF 		bl	__aeabi_dmul
+ 455              	.LVL42:
+ 456              		.loc 1 61 40 view .LVU64
+ 457 01c8 FFF7FEFF 		bl	__aeabi_d2iz
+ 458              	.LVL43:
+ 459              		.loc 1 61 38 view .LVU65
+ 460 01cc 6081     		strh	r0, [r4, #10]	@ movhi
+  62:Core/Src/my_display_handler.c ****     if(display_data->current.PSC_on) {
+ 461              		.loc 1 62 5 is_stmt 1 view .LVU66
+ 462              		.loc 1 62 29 is_stmt 0 view .LVU67
+ 463 01ce E389     		ldrh	r3, [r4, #14]
+ 464              		.loc 1 62 7 view .LVU68
+ 465 01d0 BBB1     		cbz	r3, .L18
+  63:Core/Src/my_display_handler.c ****       sprintf(&str1[0],"%5s %3d %s %4d","PSC:",display_data->averaged_over_5.pot1, "ROT:", display_
+ 466              		.loc 1 63 7 is_stmt 1 view .LVU69
+ 467              		.loc 1 63 113 is_stmt 0 view .LVU70
+ 468 01d2 E388     		ldrh	r3, [r4, #6]
+ 469              		.loc 1 63 7 view .LVU71
+ 470 01d4 0193     		str	r3, [sp, #4]
+ 471 01d6 414B     		ldr	r3, .L36+52
+ 472 01d8 0093     		str	r3, [sp]
+ 473 01da 638A     		ldrh	r3, [r4, #18]
+ 474 01dc 404A     		ldr	r2, .L36+56
+ 475 01de 4149     		ldr	r1, .L36+60
+ 476 01e0 0EA8     		add	r0, sp, #56
+ 477 01e2 FFF7FEFF 		bl	sprintf
+ 478              	.LVL44:
+  64:Core/Src/my_display_handler.c ****       lcd_setString(1,10, (const char*) &str1, LCD_FONT_8, false);
+ 479              		.loc 1 64 7 is_stmt 1 view .LVU72
+ 480 01e6 0023     		movs	r3, #0
+ 481 01e8 0093     		str	r3, [sp]
+ 482 01ea 0EAA     		add	r2, sp, #56
+ 483 01ec 0A21     		movs	r1, #10
+ 484 01ee 0120     		movs	r0, #1
+ 485 01f0 FFF7FEFF 		bl	lcd_setString
+ 486              	.LVL45:
+ 487              	.L19:
+  65:Core/Src/my_display_handler.c ****     }
+  66:Core/Src/my_display_handler.c ****     else {
+  67:Core/Src/my_display_handler.c ****       sprintf(&str1[0]," %s %4d","rot speed", display_data->current.rotation_speed);
+  68:Core/Src/my_display_handler.c ****       lcd_setString(10,10, (const char*) &str1, LCD_FONT_8, false);
+  69:Core/Src/my_display_handler.c ****     }
+  70:Core/Src/my_display_handler.c ****     switch (display_data->current.mode) {
+ 488              		.loc 1 70 5 view .LVU73
+ 489              		.loc 1 70 34 is_stmt 0 view .LVU74
+ 490 01f4 237C     		ldrb	r3, [r4, #16]	@ zero_extendqisi2
+ 491 01f6 032B     		cmp	r3, #3
+ 492 01f8 16D8     		bhi	.L20
+ 493 01fa DFE803F0 		tbb	[pc, r3]
+ 494              	.L22:
+ 495 01fe 10       		.byte	(.L25-.L22)/2
+ 496 01ff 2F       		.byte	(.L24-.L22)/2
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccDzbEJq.s 			page 12
+
+
+ 497 0200 3B       		.byte	(.L23-.L22)/2
+ 498 0201 35       		.byte	(.L21-.L22)/2
+ 499              		.p2align 1
+ 500              	.L18:
+  67:Core/Src/my_display_handler.c ****       lcd_setString(10,10, (const char*) &str1, LCD_FONT_8, false);
+ 501              		.loc 1 67 7 is_stmt 1 view .LVU75
+ 502 0202 E388     		ldrh	r3, [r4, #6]
+ 503 0204 384A     		ldr	r2, .L36+64
+ 504 0206 3949     		ldr	r1, .L36+68
+ 505 0208 0EA8     		add	r0, sp, #56
+ 506 020a FFF7FEFF 		bl	sprintf
+ 507              	.LVL46:
+  68:Core/Src/my_display_handler.c ****     }
+ 508              		.loc 1 68 7 view .LVU76
+ 509 020e 0023     		movs	r3, #0
+ 510 0210 0093     		str	r3, [sp]
+ 511 0212 0EAA     		add	r2, sp, #56
+ 512 0214 0A21     		movs	r1, #10
+ 513 0216 0846     		mov	r0, r1
+ 514 0218 FFF7FEFF 		bl	lcd_setString
+ 515              	.LVL47:
+ 516 021c EAE7     		b	.L19
+ 517              	.L25:
+  71:Core/Src/my_display_handler.c ****     case CLOCK_WISE:
+  72:Core/Src/my_display_handler.c ****       sprintf(&str_mode[0]," %5s","[CW]");
+ 518              		.loc 1 72 7 view .LVU77
+ 519 021e 344A     		ldr	r2, .L36+72
+ 520 0220 3449     		ldr	r1, .L36+76
+ 521 0222 03A8     		add	r0, sp, #12
+ 522 0224 FFF7FEFF 		bl	sprintf
+ 523              	.LVL48:
+  73:Core/Src/my_display_handler.c ****       break;
+ 524              		.loc 1 73 7 view .LVU78
+ 525              	.L20:
+  74:Core/Src/my_display_handler.c ****     case COUNTER_CLOCK_WISE:
+  75:Core/Src/my_display_handler.c ****       sprintf(&str_mode[0]," %5s","[CCW]");
+  76:Core/Src/my_display_handler.c ****       break;
+  77:Core/Src/my_display_handler.c ****     case FAST_STOP:
+  78:Core/Src/my_display_handler.c ****       sprintf(&str_mode[0]," %5s","[FS]");
+  79:Core/Src/my_display_handler.c ****       break;
+  80:Core/Src/my_display_handler.c ****     case SOFT_STOP:
+  81:Core/Src/my_display_handler.c ****       sprintf(&str_mode[0]," %5s","[SS]");
+  82:Core/Src/my_display_handler.c ****       break;    
+  83:Core/Src/my_display_handler.c ****     default:
+  84:Core/Src/my_display_handler.c ****       break;
+  85:Core/Src/my_display_handler.c ****     }
+  86:Core/Src/my_display_handler.c ****     if(display_data->current.pot_power2 < 30)
+ 526              		.loc 1 86 5 view .LVU79
+ 527              		.loc 1 86 29 is_stmt 0 view .LVU80
+ 528 0228 6389     		ldrh	r3, [r4, #10]
+ 529              		.loc 1 86 7 view .LVU81
+ 530 022a 1D2B     		cmp	r3, #29
+ 531 022c 28D9     		bls	.L35
+  87:Core/Src/my_display_handler.c ****       sprintf(&str2[0],"%5s %3s %3d %s", str_mode, "<", display_data->current.pot_power2, "%>");
+  88:Core/Src/my_display_handler.c ****     else if(display_data->current.pot_power2 > 70)
+ 532              		.loc 1 88 10 is_stmt 1 view .LVU82
+ 533              		.loc 1 88 12 is_stmt 0 view .LVU83
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccDzbEJq.s 			page 13
+
+
+ 534 022e 462B     		cmp	r3, #70
+ 535 0230 30D9     		bls	.L28
+  89:Core/Src/my_display_handler.c ****       sprintf(&str2[0],"%5s %3s %3d %s", str_mode, "<<<", display_data->current.pot_power2, "%>>>")
+ 536              		.loc 1 89 7 is_stmt 1 view .LVU84
+ 537 0232 314A     		ldr	r2, .L36+80
+ 538 0234 0192     		str	r2, [sp, #4]
+ 539 0236 0093     		str	r3, [sp]
+ 540 0238 304B     		ldr	r3, .L36+84
+ 541 023a 03AA     		add	r2, sp, #12
+ 542 023c 3049     		ldr	r1, .L36+88
+ 543 023e 06A8     		add	r0, sp, #24
+ 544 0240 FFF7FEFF 		bl	sprintf
+ 545              	.LVL49:
+ 546              	.L27:
+  90:Core/Src/my_display_handler.c ****     else
+  91:Core/Src/my_display_handler.c ****       sprintf(&str2[0],"%5s %3s %3d %s", str_mode, "<<", display_data->current.pot_power2, "%>>");
+  92:Core/Src/my_display_handler.c ****     lcd_setString(5,20, (const char*) &str2, LCD_FONT_8, false);  
+ 547              		.loc 1 92 5 view .LVU85
+ 548 0244 0023     		movs	r3, #0
+ 549 0246 0093     		str	r3, [sp]
+ 550 0248 06AA     		add	r2, sp, #24
+ 551 024a 1421     		movs	r1, #20
+ 552 024c 0520     		movs	r0, #5
+ 553 024e FFF7FEFF 		bl	lcd_setString
+ 554              	.LVL50:
+  93:Core/Src/my_display_handler.c ****     sendToUart(display_data->current.rotation_speed);  
+ 555              		.loc 1 93 5 view .LVU86
+ 556 0252 E088     		ldrh	r0, [r4, #6]
+ 557 0254 FFF7FEFF 		bl	sendToUart
+ 558              	.LVL51:
+  94:Core/Src/my_display_handler.c **** 		break;
+ 559              		.loc 1 94 3 view .LVU87
+ 560              	.L1:
+  95:Core/Src/my_display_handler.c ****   case MENU_SETTINGS_DC_EVENT:
+  96:Core/Src/my_display_handler.c ****  		sprintf(&str1[0],"%s %2d %s","Smooth value <", display_data->current.number_of_samples, ">");
+  97:Core/Src/my_display_handler.c ****     sprintf(&str2[0],"%s","To reset:         v");
+  98:Core/Src/my_display_handler.c **** 		lcd_setString(1,10, (const char*) &str1, LCD_FONT_8, false);
+  99:Core/Src/my_display_handler.c **** 		lcd_setString(1,20, (const char*) &str2, LCD_FONT_8, false);
+ 100:Core/Src/my_display_handler.c ****     break;
+ 101:Core/Src/my_display_handler.c ****   case MENU_SETTINGS_PSC_EVENT:
+ 102:Core/Src/my_display_handler.c ****  		sprintf(&str1[0],"%s","Turn PSC on for motor");
+ 103:Core/Src/my_display_handler.c **** 		lcd_setString(1,10, (const char*) &str1, LCD_FONT_8, false);
+ 104:Core/Src/my_display_handler.c ****     if(display_data->current.PSC_on)
+ 105:Core/Src/my_display_handler.c ****       lcd_setString(56,20, (const char*) "< ON", LCD_FONT_8, false);
+ 106:Core/Src/my_display_handler.c ****     else if(!display_data->current.PSC_on)
+ 107:Core/Src/my_display_handler.c ****       lcd_setString(34,20, (const char*) "OFF >", LCD_FONT_8, false);
+ 108:Core/Src/my_display_handler.c **** 		break;
+ 109:Core/Src/my_display_handler.c ****   default:
+ 110:Core/Src/my_display_handler.c ****     break;
+ 111:Core/Src/my_display_handler.c ****   }
+ 112:Core/Src/my_display_handler.c **** }...
+ 561              		.loc 1 112 1 is_stmt 0 view .LVU88
+ 562 0258 16B0     		add	sp, sp, #88
+ 563              		.cfi_remember_state
+ 564              		.cfi_def_cfa_offset 16
+ 565              		@ sp needed
+ 566 025a 70BD     		pop	{r4, r5, r6, pc}
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccDzbEJq.s 			page 14
+
+
+ 567              	.LVL52:
+ 568              	.L24:
+ 569              		.cfi_restore_state
+  75:Core/Src/my_display_handler.c ****       sprintf(&str_mode[0]," %5s","[CCW]");
+ 570              		.loc 1 75 7 is_stmt 1 view .LVU89
+ 571 025c 294A     		ldr	r2, .L36+92
+ 572 025e 2549     		ldr	r1, .L36+76
+ 573 0260 03A8     		add	r0, sp, #12
+ 574 0262 FFF7FEFF 		bl	sprintf
+ 575              	.LVL53:
+  76:Core/Src/my_display_handler.c ****       break;
+ 576              		.loc 1 76 7 view .LVU90
+ 577 0266 DFE7     		b	.L20
+ 578              	.L21:
+  78:Core/Src/my_display_handler.c ****       sprintf(&str_mode[0]," %5s","[FS]");
+ 579              		.loc 1 78 7 view .LVU91
+ 580 0268 274A     		ldr	r2, .L36+96
+ 581 026a 2249     		ldr	r1, .L36+76
+ 582 026c 03A8     		add	r0, sp, #12
+ 583 026e FFF7FEFF 		bl	sprintf
+ 584              	.LVL54:
+  79:Core/Src/my_display_handler.c ****       break;
+ 585              		.loc 1 79 7 view .LVU92
+ 586 0272 D9E7     		b	.L20
+ 587              	.L23:
+  81:Core/Src/my_display_handler.c ****       sprintf(&str_mode[0]," %5s","[SS]");
+ 588              		.loc 1 81 7 view .LVU93
+ 589 0274 254A     		ldr	r2, .L36+100
+ 590 0276 1F49     		ldr	r1, .L36+76
+ 591 0278 03A8     		add	r0, sp, #12
+ 592 027a FFF7FEFF 		bl	sprintf
+ 593              	.LVL55:
+  82:Core/Src/my_display_handler.c ****       break;    
+ 594              		.loc 1 82 7 view .LVU94
+ 595 027e D3E7     		b	.L20
+ 596              	.L35:
+  87:Core/Src/my_display_handler.c ****       sprintf(&str2[0],"%5s %3s %3d %s", str_mode, "<", display_data->current.pot_power2, "%>");
+ 597              		.loc 1 87 7 view .LVU95
+ 598 0280 234A     		ldr	r2, .L36+104
+ 599 0282 0192     		str	r2, [sp, #4]
+ 600 0284 0093     		str	r3, [sp]
+ 601 0286 234B     		ldr	r3, .L36+108
+ 602 0288 03AA     		add	r2, sp, #12
+ 603 028a 1D49     		ldr	r1, .L36+88
+ 604 028c 06A8     		add	r0, sp, #24
+ 605 028e FFF7FEFF 		bl	sprintf
+ 606              	.LVL56:
+ 607 0292 D7E7     		b	.L27
+ 608              	.L28:
+  91:Core/Src/my_display_handler.c ****       sprintf(&str2[0],"%5s %3s %3d %s", str_mode, "<<", display_data->current.pot_power2, "%>>");
+ 609              		.loc 1 91 7 view .LVU96
+ 610 0294 204A     		ldr	r2, .L36+112
+ 611 0296 0192     		str	r2, [sp, #4]
+ 612 0298 0093     		str	r3, [sp]
+ 613 029a 204B     		ldr	r3, .L36+116
+ 614 029c 03AA     		add	r2, sp, #12
+ 615 029e 1849     		ldr	r1, .L36+88
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccDzbEJq.s 			page 15
+
+
+ 616 02a0 06A8     		add	r0, sp, #24
+ 617 02a2 FFF7FEFF 		bl	sprintf
+ 618              	.LVL57:
+ 619 02a6 CDE7     		b	.L27
+ 620              	.L37:
+ 621              		.align	2
+ 622              	.L36:
+ 623 02a8 00000000 		.word	.LC0
+ 624 02ac 0C000000 		.word	.LC1
+ 625 02b0 10000000 		.word	.LC2
+ 626 02b4 24000000 		.word	.LC3
+ 627 02b8 0000303F 		.word	1060110336
+ 628 02bc 00005940 		.word	1079574528
+ 629 02c0 38000000 		.word	.LC4
+ 630 02c4 5C000000 		.word	.LC7
+ 631 02c8 54000000 		.word	.LC6
+ 632 02cc 48000000 		.word	.LC5
+ 633 02d0 68000000 		.word	.LC8
+ 634 02d4 74000000 		.word	.LC9
+ 635 02d8 88000000 		.word	.LC10
+ 636 02dc AC000000 		.word	.LC13
+ 637 02e0 94000000 		.word	.LC11
+ 638 02e4 9C000000 		.word	.LC12
+ 639 02e8 B4000000 		.word	.LC14
+ 640 02ec C0000000 		.word	.LC15
+ 641 02f0 C8000000 		.word	.LC16
+ 642 02f4 D0000000 		.word	.LC17
+ 643 02f8 0C010000 		.word	.LC25
+ 644 02fc 08010000 		.word	.LC24
+ 645 0300 F4000000 		.word	.LC22
+ 646 0304 D8000000 		.word	.LC18
+ 647 0308 E0000000 		.word	.LC19
+ 648 030c E8000000 		.word	.LC20
+ 649 0310 04010000 		.word	.LC23
+ 650 0314 F0000000 		.word	.LC21
+ 651 0318 18010000 		.word	.LC27
+ 652 031c 14010000 		.word	.LC26
+ 653              	.LVL58:
+ 654              	.L8:
+  96:Core/Src/my_display_handler.c ****  		sprintf(&str1[0],"%s %2d %s","Smooth value <", display_data->current.number_of_samples, ">");
+ 655              		.loc 1 96 4 view .LVU97
+ 656 0320 214B     		ldr	r3, .L38
+ 657 0322 0093     		str	r3, [sp]
+ 658 0324 8B89     		ldrh	r3, [r1, #12]
+ 659 0326 214A     		ldr	r2, .L38+4
+ 660 0328 2149     		ldr	r1, .L38+8
+ 661              	.LVL59:
+  96:Core/Src/my_display_handler.c ****  		sprintf(&str1[0],"%s %2d %s","Smooth value <", display_data->current.number_of_samples, ">");
+ 662              		.loc 1 96 4 is_stmt 0 view .LVU98
+ 663 032a 0EA8     		add	r0, sp, #56
+ 664 032c FFF7FEFF 		bl	sprintf
+ 665              	.LVL60:
+  97:Core/Src/my_display_handler.c ****     sprintf(&str2[0],"%s","To reset:         v");
+ 666              		.loc 1 97 5 is_stmt 1 view .LVU99
+ 667 0330 06AC     		add	r4, sp, #24
+ 668              	.LVL61:
+  97:Core/Src/my_display_handler.c ****     sprintf(&str2[0],"%s","To reset:         v");
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccDzbEJq.s 			page 16
+
+
+ 669              		.loc 1 97 5 is_stmt 0 view .LVU100
+ 670 0332 204D     		ldr	r5, .L38+12
+ 671 0334 0FCD     		ldmia	r5!, {r0, r1, r2, r3}
+ 672 0336 0FC4     		stmia	r4!, {r0, r1, r2, r3}
+ 673 0338 2B68     		ldr	r3, [r5]
+ 674 033a 2360     		str	r3, [r4]
+  98:Core/Src/my_display_handler.c **** 		lcd_setString(1,10, (const char*) &str1, LCD_FONT_8, false);
+ 675              		.loc 1 98 3 is_stmt 1 view .LVU101
+ 676 033c 0024     		movs	r4, #0
+ 677 033e 0094     		str	r4, [sp]
+ 678 0340 2346     		mov	r3, r4
+ 679 0342 0EAA     		add	r2, sp, #56
+ 680 0344 0A21     		movs	r1, #10
+ 681 0346 0120     		movs	r0, #1
+ 682 0348 FFF7FEFF 		bl	lcd_setString
+ 683              	.LVL62:
+  99:Core/Src/my_display_handler.c **** 		lcd_setString(1,20, (const char*) &str2, LCD_FONT_8, false);
+ 684              		.loc 1 99 3 view .LVU102
+ 685 034c 0094     		str	r4, [sp]
+ 686 034e 2346     		mov	r3, r4
+ 687 0350 06AA     		add	r2, sp, #24
+ 688 0352 1421     		movs	r1, #20
+ 689 0354 0120     		movs	r0, #1
+ 690 0356 FFF7FEFF 		bl	lcd_setString
+ 691              	.LVL63:
+ 100:Core/Src/my_display_handler.c ****     break;
+ 692              		.loc 1 100 5 view .LVU103
+ 693 035a 7DE7     		b	.L1
+ 694              	.LVL64:
+ 695              	.L7:
+ 102:Core/Src/my_display_handler.c ****  		sprintf(&str1[0],"%s","Turn PSC on for motor");
+ 696              		.loc 1 102 4 view .LVU104
+ 697 035c 0DF1380C 		add	ip, sp, #56
+ 698 0360 154D     		ldr	r5, .L38+16
+ 699 0362 0FCD     		ldmia	r5!, {r0, r1, r2, r3}
+ 700              	.LVL65:
+ 102:Core/Src/my_display_handler.c ****  		sprintf(&str1[0],"%s","Turn PSC on for motor");
+ 701              		.loc 1 102 4 is_stmt 0 view .LVU105
+ 702 0364 ACE80F00 		stmia	ip!, {r0, r1, r2, r3}
+ 703 0368 95E80300 		ldm	r5, {r0, r1}
+ 704 036c 4CF8040B 		str	r0, [ip], #4
+ 705 0370 ACF80010 		strh	r1, [ip]	@ movhi
+ 103:Core/Src/my_display_handler.c **** 		lcd_setString(1,10, (const char*) &str1, LCD_FONT_8, false);
+ 706              		.loc 1 103 3 is_stmt 1 view .LVU106
+ 707 0374 0023     		movs	r3, #0
+ 708 0376 0093     		str	r3, [sp]
+ 709 0378 0EAA     		add	r2, sp, #56
+ 710 037a 0A21     		movs	r1, #10
+ 711 037c 0120     		movs	r0, #1
+ 712 037e FFF7FEFF 		bl	lcd_setString
+ 713              	.LVL66:
+ 104:Core/Src/my_display_handler.c ****     if(display_data->current.PSC_on)
+ 714              		.loc 1 104 5 view .LVU107
+ 104:Core/Src/my_display_handler.c ****     if(display_data->current.PSC_on)
+ 715              		.loc 1 104 29 is_stmt 0 view .LVU108
+ 716 0382 E389     		ldrh	r3, [r4, #14]
+ 104:Core/Src/my_display_handler.c ****     if(display_data->current.PSC_on)
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccDzbEJq.s 			page 17
+
+
+ 717              		.loc 1 104 7 view .LVU109
+ 718 0384 3BB1     		cbz	r3, .L29
+ 105:Core/Src/my_display_handler.c ****       lcd_setString(56,20, (const char*) "< ON", LCD_FONT_8, false);
+ 719              		.loc 1 105 7 is_stmt 1 view .LVU110
+ 720 0386 0023     		movs	r3, #0
+ 721 0388 0093     		str	r3, [sp]
+ 722 038a 0C4A     		ldr	r2, .L38+20
+ 723 038c 1421     		movs	r1, #20
+ 724 038e 3820     		movs	r0, #56
+ 725 0390 FFF7FEFF 		bl	lcd_setString
+ 726              	.LVL67:
+ 727 0394 60E7     		b	.L1
+ 728              	.L29:
+ 106:Core/Src/my_display_handler.c ****     else if(!display_data->current.PSC_on)
+ 729              		.loc 1 106 10 view .LVU111
+ 107:Core/Src/my_display_handler.c ****       lcd_setString(34,20, (const char*) "OFF >", LCD_FONT_8, false);
+ 730              		.loc 1 107 7 view .LVU112
+ 731 0396 0023     		movs	r3, #0
+ 732 0398 0093     		str	r3, [sp]
+ 733 039a 094A     		ldr	r2, .L38+24
+ 734 039c 1421     		movs	r1, #20
+ 735 039e 2220     		movs	r0, #34
+ 736 03a0 FFF7FEFF 		bl	lcd_setString
+ 737              	.LVL68:
+ 738              		.loc 1 112 1 is_stmt 0 view .LVU113
+ 739 03a4 58E7     		b	.L1
+ 740              	.L39:
+ 741 03a6 00BF     		.align	2
+ 742              	.L38:
+ 743 03a8 38010000 		.word	.LC30
+ 744 03ac 1C010000 		.word	.LC28
+ 745 03b0 2C010000 		.word	.LC29
+ 746 03b4 3C010000 		.word	.LC31
+ 747 03b8 50010000 		.word	.LC32
+ 748 03bc 68010000 		.word	.LC33
+ 749 03c0 70010000 		.word	.LC34
+ 750              		.cfi_endproc
+ 751              	.LFE242:
+ 753              		.text
+ 754              	.Letext0:
+ 755              		.file 2 "C:/Users/silsp/AppData/Roaming/Code/User/globalStorage/bmd.stm32-for-vscode/@xpack-dev-to
+ 756              		.file 3 "C:/Users/silsp/AppData/Roaming/Code/User/globalStorage/bmd.stm32-for-vscode/@xpack-dev-to
+ 757              		.file 4 "Core/Inc/main.h"
+ 758              		.file 5 "Core/Inc/lcd_driver.h"
+ 759              		.file 6 "Core/Inc/lcd_menu.h"
+ 760              		.file 7 "Core/Inc/my_funcs.h"
+ 761              		.file 8 "C:/Users/silsp/AppData/Roaming/Code/User/globalStorage/bmd.stm32-for-vscode/@xpack-dev-to
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccDzbEJq.s 			page 18
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 my_display_handler.c
+C:\Users\silsp\AppData\Local\Temp\ccDzbEJq.s:21     .rodata.print_display.str1.4:00000000 $d
+C:\Users\silsp\AppData\Local\Temp\ccDzbEJq.s:130    .text.print_display:00000000 $t
+C:\Users\silsp\AppData\Local\Temp\ccDzbEJq.s:136    .text.print_display:00000000 print_display
+C:\Users\silsp\AppData\Local\Temp\ccDzbEJq.s:166    .text.print_display:00000012 $d
+C:\Users\silsp\AppData\Local\Temp\ccDzbEJq.s:185    .text.print_display:00000038 $t
+C:\Users\silsp\AppData\Local\Temp\ccDzbEJq.s:495    .text.print_display:000001fe $d
+C:\Users\silsp\AppData\Local\Temp\ccDzbEJq.s:499    .text.print_display:00000202 $t
+C:\Users\silsp\AppData\Local\Temp\ccDzbEJq.s:623    .text.print_display:000002a8 $d
+C:\Users\silsp\AppData\Local\Temp\ccDzbEJq.s:656    .text.print_display:00000320 $t
+C:\Users\silsp\AppData\Local\Temp\ccDzbEJq.s:743    .text.print_display:000003a8 $d
+
+UNDEFINED SYMBOLS
+__aeabi_ui2d
+__aeabi_dmul
+__aeabi_d2iz
+sprintf
+lcd_setString
+sendToUart

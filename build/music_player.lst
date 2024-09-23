@@ -1,0 +1,583 @@
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccpCPnln.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"music_player.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "Core/Src/music_player.c"
+  20              		.section	.text.MusicPlayer,"ax",%progbits
+  21              		.align	1
+  22              		.global	MusicPlayer
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	MusicPlayer:
+  28              	.LVL0:
+  29              	.LFB239:
+   1:Core/Src/music_player.c **** /* USER CODE BEGIN Header */
+   2:Core/Src/music_player.c **** /**
+   3:Core/Src/music_player.c ****   ******************************************************************************
+   4:Core/Src/music_player.c ****   * @file    adc.c
+   5:Core/Src/music_player.c ****   * @brief   This file provides code for the configuration
+   6:Core/Src/music_player.c ****   *          of the ADC instances.
+   7:Core/Src/music_player.c ****   ******************************************************************************
+   8:Core/Src/music_player.c ****   * @attention
+   9:Core/Src/music_player.c ****   *
+  10:Core/Src/music_player.c ****   * Copyright (c) 2024 STMicroelectronics.
+  11:Core/Src/music_player.c ****   * All rights reserved.
+  12:Core/Src/music_player.c ****   *
+  13:Core/Src/music_player.c ****   * This software is licensed under terms that can be found in the LICENSE file
+  14:Core/Src/music_player.c ****   * in the root directory of this software component.
+  15:Core/Src/music_player.c ****   * If no LICENSE file comes with this software, it is provided AS-IS.
+  16:Core/Src/music_player.c ****   *
+  17:Core/Src/music_player.c ****   ******************************************************************************
+  18:Core/Src/music_player.c ****   */
+  19:Core/Src/music_player.c **** /* USER CODE END Header */
+  20:Core/Src/music_player.c **** /* Includes ------------------------------------------------------------------*/
+  21:Core/Src/music_player.c **** #include "music_player.h"
+  22:Core/Src/music_player.c **** #include "tim.h"
+  23:Core/Src/music_player.c **** /*
+  24:Core/Src/music_player.c **** //StarWars melody
+  25:Core/Src/music_player.c **** int melodia[] = {
+  26:Core/Src/music_player.c ****   a, a, a, f,
+  27:Core/Src/music_player.c ****   cH, a, f, cH,
+  28:Core/Src/music_player.c ****   a,
+  29:Core/Src/music_player.c ****   eH, eH, eH,
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccpCPnln.s 			page 2
+
+
+  30:Core/Src/music_player.c ****   fH, cH, gS, f,
+  31:Core/Src/music_player.c ****   cH, a,
+  32:Core/Src/music_player.c **** 
+  33:Core/Src/music_player.c ****   aH, a, a, aH,
+  34:Core/Src/music_player.c ****   gSH, gH, fSH, fH,
+  35:Core/Src/music_player.c ****   fSH,
+  36:Core/Src/music_player.c ****   aS, dSH, dH, cSH,
+  37:Core/Src/music_player.c ****   cH, bb, cH,
+  38:Core/Src/music_player.c **** 
+  39:Core/Src/music_player.c ****   f, gS, f, a, cH , eH,
+  40:Core/Src/music_player.c ****   aH, a, a, aH,
+  41:Core/Src/music_player.c ****   gSH, gH, fSH, fH,
+  42:Core/Src/music_player.c ****   fSH,
+  43:Core/Src/music_player.c ****   aS, dSH, dH, cSH,
+  44:Core/Src/music_player.c ****   cH, bb, cH,
+  45:Core/Src/music_player.c ****   f, gS, f, cH, a, f, cH, a, cH, a, a
+  46:Core/Src/music_player.c **** };
+  47:Core/Src/music_player.c **** //StarWars tempo
+  48:Core/Src/music_player.c **** int tempo[] = {
+  49:Core/Src/music_player.c ****   500, 500, 500, 350,
+  50:Core/Src/music_player.c ****   150, 500, 350, 150,
+  51:Core/Src/music_player.c ****   650,
+  52:Core/Src/music_player.c ****   500, 500, 500,
+  53:Core/Src/music_player.c ****   350, 150, 500, 350,
+  54:Core/Src/music_player.c ****   150, 1000,
+  55:Core/Src/music_player.c **** 
+  56:Core/Src/music_player.c ****   500, 300, 150, 500,
+  57:Core/Src/music_player.c ****   325, 175, 125, 125,
+  58:Core/Src/music_player.c ****   500,
+  59:Core/Src/music_player.c ****   250, 500, 325, 175,
+  60:Core/Src/music_player.c ****   125, 125, 500,
+  61:Core/Src/music_player.c ****   250, 500, 350, 125, 500, 375, //125, 650,
+  62:Core/Src/music_player.c ****   500, 300, 150, 500,
+  63:Core/Src/music_player.c ****   325, 175, 125, 125,
+  64:Core/Src/music_player.c ****   500,
+  65:Core/Src/music_player.c ****   250, 500, 325, 175,
+  66:Core/Src/music_player.c ****   125, 125, 500,
+  67:Core/Src/music_player.c ****   250, 500, 375, 125, 500, 375, 125, 1000, 125, 1000, 1000
+  68:Core/Src/music_player.c **** };*/
+  69:Core/Src/music_player.c **** int melodia[] = {
+  70:Core/Src/music_player.c ****   a, a, a, f, 
+  71:Core/Src/music_player.c ****   cH, a, f, cH, 
+  72:Core/Src/music_player.c ****   a,
+  73:Core/Src/music_player.c ****   eH, eH, eH,
+  74:Core/Src/music_player.c ****   fH, cH, gS, f,
+  75:Core/Src/music_player.c ****   cH, a,
+  76:Core/Src/music_player.c **** 
+  77:Core/Src/music_player.c ****   aH, a, a, aH,
+  78:Core/Src/music_player.c ****   gSH, gH, fSH, fH,
+  79:Core/Src/music_player.c ****   fSH,
+  80:Core/Src/music_player.c ****   aS, dSH, dH, cSH,
+  81:Core/Src/music_player.c ****   cH, bb, cH,
+  82:Core/Src/music_player.c **** 
+  83:Core/Src/music_player.c ****   f, gS, f, a, cH, eH,
+  84:Core/Src/music_player.c ****   aH, a, a, aH,
+  85:Core/Src/music_player.c ****   gSH, gH, fSH, fH,
+  86:Core/Src/music_player.c ****   fSH,
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccpCPnln.s 			page 3
+
+
+  87:Core/Src/music_player.c ****   aS, dSH, dH, cSH,
+  88:Core/Src/music_player.c ****   cH, bb, cH
+  89:Core/Src/music_player.c **** };
+  90:Core/Src/music_player.c **** 
+  91:Core/Src/music_player.c **** int tempo[] = {
+  92:Core/Src/music_player.c ****   500, 500, 500, 350,
+  93:Core/Src/music_player.c ****   150, 500, 350, 150,
+  94:Core/Src/music_player.c ****   650,
+  95:Core/Src/music_player.c ****   500, 500, 500,
+  96:Core/Src/music_player.c ****   350, 150, 500, 350,
+  97:Core/Src/music_player.c ****   150, 1000,
+  98:Core/Src/music_player.c **** 
+  99:Core/Src/music_player.c ****   500, 300, 150, 500,
+ 100:Core/Src/music_player.c ****   325, 175, 125, 125,
+ 101:Core/Src/music_player.c ****   500,
+ 102:Core/Src/music_player.c ****   250, 500, 325, 175,
+ 103:Core/Src/music_player.c ****   125, 125, 500,
+ 104:Core/Src/music_player.c **** 
+ 105:Core/Src/music_player.c ****   250, 500, 350, 125, 500, 375,
+ 106:Core/Src/music_player.c ****   500, 300, 150, 500,
+ 107:Core/Src/music_player.c ****   325, 175, 125, 125,
+ 108:Core/Src/music_player.c ****   500, 
+ 109:Core/Src/music_player.c ****   250, 500, 325, 175,
+ 110:Core/Src/music_player.c ****   125, 125, 500, 
+ 111:Core/Src/music_player.c ****   //250,  500, 375, 125, 1000, 125, 1000, 1000
+ 112:Core/Src/music_player.c **** };
+ 113:Core/Src/music_player.c **** 
+ 114:Core/Src/music_player.c **** #define delay_var 50
+ 115:Core/Src/music_player.c **** 
+ 116:Core/Src/music_player.c **** #if(0)
+ 117:Core/Src/music_player.c **** void MusicPlayer(int PresentStatusMusic, int Speed) { //Dice se la musica è finita
+ 118:Core/Src/music_player.c **** 
+ 119:Core/Src/music_player.c ****   int i = 0;
+ 120:Core/Src/music_player.c ****   int DimensionOfArrayMelody = sizeof(melodia);
+ 121:Core/Src/music_player.c ****   htim2.Instance->PSC = 800-1;
+ 122:Core/Src/music_player.c ****   while(i < DimensionOfArrayMelody) {
+ 123:Core/Src/music_player.c ****     HAL_TIM_OC_Start (&htim2, TIM_CHANNEL_3);//start timer
+ 124:Core/Src/music_player.c ****     htim2.Instance->ARR = melodia[i]; // vary the duty cycle
+ 125:Core/Src/music_player.c ****     HAL_Delay (tempo[i]); // wait for time
+ 126:Core/Src/music_player.c ****     HAL_Delay (delay_var); // wait for 50 ms
+ 127:Core/Src/music_player.c ****     HAL_TIM_OC_Stop(&htim2, TIM_CHANNEL_3);//stop timer 
+ 128:Core/Src/music_player.c ****     HAL_Delay (delay_var); // wait for 50 ms
+ 129:Core/Src/music_player.c ****     i++;
+ 130:Core/Src/music_player.c ****   }
+ 131:Core/Src/music_player.c ****   HAL_TIM_OC_Stop(&htim2, TIM_CHANNEL_3);//stop timer  
+ 132:Core/Src/music_player.c **** }
+ 133:Core/Src/music_player.c **** #endif
+ 134:Core/Src/music_player.c **** 
+ 135:Core/Src/music_player.c **** #if(1)
+ 136:Core/Src/music_player.c **** uint32_t ValTempo;
+ 137:Core/Src/music_player.c **** 
+ 138:Core/Src/music_player.c **** 
+ 139:Core/Src/music_player.c **** void MusicPlayer(int PresentStatusMusic, int Speed) {  
+  30              		.loc 1 139 53 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccpCPnln.s 			page 4
+
+
+  34              		.loc 1 139 53 is_stmt 0 view .LVU1
+  35 0000 38B5     		push	{r3, r4, r5, lr}
+  36              		.cfi_def_cfa_offset 16
+  37              		.cfi_offset 3, -16
+  38              		.cfi_offset 4, -12
+  39              		.cfi_offset 5, -8
+  40              		.cfi_offset 14, -4
+  41 0002 0546     		mov	r5, r0
+  42 0004 0C46     		mov	r4, r1
+ 140:Core/Src/music_player.c **** 
+ 141:Core/Src/music_player.c ****   static int i = 0;
+  43              		.loc 1 141 3 is_stmt 1 view .LVU2
+ 142:Core/Src/music_player.c ****   static int PastStatusMusic = 0;
+  44              		.loc 1 142 3 view .LVU3
+ 143:Core/Src/music_player.c ****   static int StartMusic = 0;
+  45              		.loc 1 143 3 view .LVU4
+ 144:Core/Src/music_player.c **** 
+ 145:Core/Src/music_player.c ****   int song_length = sizeof(melodia) / sizeof(melodia[0]);
+  46              		.loc 1 145 3 view .LVU5
+  47              	.LVL1:
+ 146:Core/Src/music_player.c **** 
+ 147:Core/Src/music_player.c ****   if((PastStatusMusic == 0) && (PresentStatusMusic == 1)) { 
+  48              		.loc 1 147 3 view .LVU6
+  49              		.loc 1 147 23 is_stmt 0 view .LVU7
+  50 0006 264B     		ldr	r3, .L9
+  51 0008 1B68     		ldr	r3, [r3]
+  52              		.loc 1 147 5 view .LVU8
+  53 000a 0BB9     		cbnz	r3, .L2
+  54              		.loc 1 147 29 discriminator 1 view .LVU9
+  55 000c 0128     		cmp	r0, #1
+  56 000e 08D0     		beq	.L6
+  57              	.LVL2:
+  58              	.L2:
+ 148:Core/Src/music_player.c ****     i = 0;
+ 149:Core/Src/music_player.c ****     ValTempo = HAL_GetTick();
+ 150:Core/Src/music_player.c ****     StartMusic = 1;
+ 151:Core/Src/music_player.c ****   }
+ 152:Core/Src/music_player.c ****   if((i < song_length) && (StartMusic == 1)) {
+  59              		.loc 1 152 3 is_stmt 1 view .LVU10
+  60              		.loc 1 152 9 is_stmt 0 view .LVU11
+  61 0010 244B     		ldr	r3, .L9+4
+  62 0012 1B68     		ldr	r3, [r3]
+  63              		.loc 1 152 5 view .LVU12
+  64 0014 372B     		cmp	r3, #55
+  65 0016 03DC     		bgt	.L1
+  66              		.loc 1 152 39 discriminator 1 view .LVU13
+  67 0018 234A     		ldr	r2, .L9+8
+  68 001a 1268     		ldr	r2, [r2]
+  69              		.loc 1 152 24 discriminator 1 view .LVU14
+  70 001c 012A     		cmp	r2, #1
+  71 001e 0BD0     		beq	.L7
+  72              	.L1:
+ 153:Core/Src/music_player.c ****     htim2.Instance->ARR = melodia[i];
+ 154:Core/Src/music_player.c ****     HAL_TIM_OC_Start(&htim2, TIM_CHANNEL_3);
+ 155:Core/Src/music_player.c ****     
+ 156:Core/Src/music_player.c ****     if(HAL_GetTick() > (ValTempo + tempo[i] + delay_var + Speed)) { // Used to avoid HALDELAY()
+ 157:Core/Src/music_player.c ****       HAL_TIM_OC_Stop(&htim2, TIM_CHANNEL_3);
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccpCPnln.s 			page 5
+
+
+ 158:Core/Src/music_player.c ****       if(HAL_GetTick() > (ValTempo + tempo[i] + delay_var + delay_var + Speed)) {
+ 159:Core/Src/music_player.c ****         i++;
+ 160:Core/Src/music_player.c ****         ValTempo = HAL_GetTick();
+ 161:Core/Src/music_player.c ****       }
+ 162:Core/Src/music_player.c ****     }
+ 163:Core/Src/music_player.c ****     PastStatusMusic = PresentStatusMusic;
+ 164:Core/Src/music_player.c ****   }  
+ 165:Core/Src/music_player.c **** }
+  73              		.loc 1 165 1 view .LVU15
+  74 0020 38BD     		pop	{r3, r4, r5, pc}
+  75              	.LVL3:
+  76              	.L6:
+ 148:Core/Src/music_player.c ****     i = 0;
+  77              		.loc 1 148 5 is_stmt 1 view .LVU16
+ 148:Core/Src/music_player.c ****     i = 0;
+  78              		.loc 1 148 7 is_stmt 0 view .LVU17
+  79 0022 204B     		ldr	r3, .L9+4
+  80 0024 0022     		movs	r2, #0
+  81 0026 1A60     		str	r2, [r3]
+ 149:Core/Src/music_player.c ****     StartMusic = 1;
+  82              		.loc 1 149 5 is_stmt 1 view .LVU18
+ 149:Core/Src/music_player.c ****     StartMusic = 1;
+  83              		.loc 1 149 16 is_stmt 0 view .LVU19
+  84 0028 FFF7FEFF 		bl	HAL_GetTick
+  85              	.LVL4:
+ 149:Core/Src/music_player.c ****     StartMusic = 1;
+  86              		.loc 1 149 14 discriminator 1 view .LVU20
+  87 002c 1F4B     		ldr	r3, .L9+12
+  88 002e 1860     		str	r0, [r3]
+ 150:Core/Src/music_player.c ****   }
+  89              		.loc 1 150 5 is_stmt 1 view .LVU21
+ 150:Core/Src/music_player.c ****   }
+  90              		.loc 1 150 16 is_stmt 0 view .LVU22
+  91 0030 1D4B     		ldr	r3, .L9+8
+  92 0032 0122     		movs	r2, #1
+  93 0034 1A60     		str	r2, [r3]
+  94 0036 EBE7     		b	.L2
+  95              	.L7:
+ 153:Core/Src/music_player.c ****     htim2.Instance->ARR = melodia[i];
+  96              		.loc 1 153 5 is_stmt 1 view .LVU23
+ 153:Core/Src/music_player.c ****     htim2.Instance->ARR = melodia[i];
+  97              		.loc 1 153 10 is_stmt 0 view .LVU24
+  98 0038 1D48     		ldr	r0, .L9+16
+  99 003a 0268     		ldr	r2, [r0]
+ 153:Core/Src/music_player.c ****     htim2.Instance->ARR = melodia[i];
+ 100              		.loc 1 153 34 view .LVU25
+ 101 003c 1D49     		ldr	r1, .L9+20
+ 102 003e 51F82330 		ldr	r3, [r1, r3, lsl #2]
+ 153:Core/Src/music_player.c ****     htim2.Instance->ARR = melodia[i];
+ 103              		.loc 1 153 25 view .LVU26
+ 104 0042 D362     		str	r3, [r2, #44]
+ 154:Core/Src/music_player.c ****     
+ 105              		.loc 1 154 5 is_stmt 1 view .LVU27
+ 106 0044 0821     		movs	r1, #8
+ 107 0046 FFF7FEFF 		bl	HAL_TIM_OC_Start
+ 108              	.LVL5:
+ 156:Core/Src/music_player.c ****       HAL_TIM_OC_Stop(&htim2, TIM_CHANNEL_3);
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccpCPnln.s 			page 6
+
+
+ 109              		.loc 1 156 5 view .LVU28
+ 156:Core/Src/music_player.c ****       HAL_TIM_OC_Stop(&htim2, TIM_CHANNEL_3);
+ 110              		.loc 1 156 8 is_stmt 0 view .LVU29
+ 111 004a FFF7FEFF 		bl	HAL_GetTick
+ 112              	.LVL6:
+ 156:Core/Src/music_player.c ****       HAL_TIM_OC_Stop(&htim2, TIM_CHANNEL_3);
+ 113              		.loc 1 156 41 discriminator 1 view .LVU30
+ 114 004e 154B     		ldr	r3, .L9+4
+ 115 0050 1A68     		ldr	r2, [r3]
+ 116 0052 194B     		ldr	r3, .L9+24
+ 117 0054 53F82230 		ldr	r3, [r3, r2, lsl #2]
+ 156:Core/Src/music_player.c ****       HAL_TIM_OC_Stop(&htim2, TIM_CHANNEL_3);
+ 118              		.loc 1 156 34 discriminator 1 view .LVU31
+ 119 0058 144A     		ldr	r2, .L9+12
+ 120 005a 1268     		ldr	r2, [r2]
+ 121 005c 1344     		add	r3, r3, r2
+ 156:Core/Src/music_player.c ****       HAL_TIM_OC_Stop(&htim2, TIM_CHANNEL_3);
+ 122              		.loc 1 156 57 discriminator 1 view .LVU32
+ 123 005e 2344     		add	r3, r3, r4
+ 124 0060 3233     		adds	r3, r3, #50
+ 156:Core/Src/music_player.c ****       HAL_TIM_OC_Stop(&htim2, TIM_CHANNEL_3);
+ 125              		.loc 1 156 7 discriminator 1 view .LVU33
+ 126 0062 9842     		cmp	r0, r3
+ 127 0064 02D8     		bhi	.L8
+ 128              	.L4:
+ 163:Core/Src/music_player.c ****   }  
+ 129              		.loc 1 163 5 is_stmt 1 view .LVU34
+ 163:Core/Src/music_player.c ****   }  
+ 130              		.loc 1 163 21 is_stmt 0 view .LVU35
+ 131 0066 0E4B     		ldr	r3, .L9
+ 132 0068 1D60     		str	r5, [r3]
+ 133              		.loc 1 165 1 view .LVU36
+ 134 006a D9E7     		b	.L1
+ 135              	.L8:
+ 157:Core/Src/music_player.c ****       if(HAL_GetTick() > (ValTempo + tempo[i] + delay_var + delay_var + Speed)) {
+ 136              		.loc 1 157 7 is_stmt 1 view .LVU37
+ 137 006c 0821     		movs	r1, #8
+ 138 006e 1048     		ldr	r0, .L9+16
+ 139 0070 FFF7FEFF 		bl	HAL_TIM_OC_Stop
+ 140              	.LVL7:
+ 158:Core/Src/music_player.c ****         i++;
+ 141              		.loc 1 158 7 view .LVU38
+ 158:Core/Src/music_player.c ****         i++;
+ 142              		.loc 1 158 10 is_stmt 0 view .LVU39
+ 143 0074 FFF7FEFF 		bl	HAL_GetTick
+ 144              	.LVL8:
+ 158:Core/Src/music_player.c ****         i++;
+ 145              		.loc 1 158 43 discriminator 1 view .LVU40
+ 146 0078 0A4B     		ldr	r3, .L9+4
+ 147 007a 1A68     		ldr	r2, [r3]
+ 148 007c 0E4B     		ldr	r3, .L9+24
+ 149 007e 53F82230 		ldr	r3, [r3, r2, lsl #2]
+ 158:Core/Src/music_player.c ****         i++;
+ 150              		.loc 1 158 36 discriminator 1 view .LVU41
+ 151 0082 0A49     		ldr	r1, .L9+12
+ 152 0084 0968     		ldr	r1, [r1]
+ 153 0086 0B44     		add	r3, r3, r1
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccpCPnln.s 			page 7
+
+
+ 158:Core/Src/music_player.c ****         i++;
+ 154              		.loc 1 158 71 discriminator 1 view .LVU42
+ 155 0088 E118     		adds	r1, r4, r3
+ 156 008a 6431     		adds	r1, r1, #100
+ 158:Core/Src/music_player.c ****         i++;
+ 157              		.loc 1 158 9 discriminator 1 view .LVU43
+ 158 008c 8842     		cmp	r0, r1
+ 159 008e EAD9     		bls	.L4
+ 159:Core/Src/music_player.c ****         ValTempo = HAL_GetTick();
+ 160              		.loc 1 159 9 is_stmt 1 view .LVU44
+ 159:Core/Src/music_player.c ****         ValTempo = HAL_GetTick();
+ 161              		.loc 1 159 10 is_stmt 0 view .LVU45
+ 162 0090 0132     		adds	r2, r2, #1
+ 163 0092 044B     		ldr	r3, .L9+4
+ 164 0094 1A60     		str	r2, [r3]
+ 160:Core/Src/music_player.c ****       }
+ 165              		.loc 1 160 9 is_stmt 1 view .LVU46
+ 160:Core/Src/music_player.c ****       }
+ 166              		.loc 1 160 20 is_stmt 0 view .LVU47
+ 167 0096 FFF7FEFF 		bl	HAL_GetTick
+ 168              	.LVL9:
+ 160:Core/Src/music_player.c ****       }
+ 169              		.loc 1 160 18 discriminator 1 view .LVU48
+ 170 009a 044B     		ldr	r3, .L9+12
+ 171 009c 1860     		str	r0, [r3]
+ 172 009e E2E7     		b	.L4
+ 173              	.L10:
+ 174              		.align	2
+ 175              	.L9:
+ 176 00a0 00000000 		.word	PastStatusMusic.2
+ 177 00a4 00000000 		.word	i.1
+ 178 00a8 00000000 		.word	StartMusic.0
+ 179 00ac 00000000 		.word	ValTempo
+ 180 00b0 00000000 		.word	htim2
+ 181 00b4 00000000 		.word	melodia
+ 182 00b8 00000000 		.word	tempo
+ 183              		.cfi_endproc
+ 184              	.LFE239:
+ 186              		.section	.bss.StartMusic.0,"aw",%nobits
+ 187              		.align	2
+ 190              	StartMusic.0:
+ 191 0000 00000000 		.space	4
+ 192              		.section	.bss.i.1,"aw",%nobits
+ 193              		.align	2
+ 196              	i.1:
+ 197 0000 00000000 		.space	4
+ 198              		.section	.bss.PastStatusMusic.2,"aw",%nobits
+ 199              		.align	2
+ 202              	PastStatusMusic.2:
+ 203 0000 00000000 		.space	4
+ 204              		.global	ValTempo
+ 205              		.section	.bss.ValTempo,"aw",%nobits
+ 206              		.align	2
+ 209              	ValTempo:
+ 210 0000 00000000 		.space	4
+ 211              		.global	tempo
+ 212              		.section	.data.tempo,"aw"
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccpCPnln.s 			page 8
+
+
+ 213              		.align	2
+ 216              	tempo:
+ 217 0000 F4010000 		.word	500
+ 218 0004 F4010000 		.word	500
+ 219 0008 F4010000 		.word	500
+ 220 000c 5E010000 		.word	350
+ 221 0010 96000000 		.word	150
+ 222 0014 F4010000 		.word	500
+ 223 0018 5E010000 		.word	350
+ 224 001c 96000000 		.word	150
+ 225 0020 8A020000 		.word	650
+ 226 0024 F4010000 		.word	500
+ 227 0028 F4010000 		.word	500
+ 228 002c F4010000 		.word	500
+ 229 0030 5E010000 		.word	350
+ 230 0034 96000000 		.word	150
+ 231 0038 F4010000 		.word	500
+ 232 003c 5E010000 		.word	350
+ 233 0040 96000000 		.word	150
+ 234 0044 E8030000 		.word	1000
+ 235 0048 F4010000 		.word	500
+ 236 004c 2C010000 		.word	300
+ 237 0050 96000000 		.word	150
+ 238 0054 F4010000 		.word	500
+ 239 0058 45010000 		.word	325
+ 240 005c AF000000 		.word	175
+ 241 0060 7D000000 		.word	125
+ 242 0064 7D000000 		.word	125
+ 243 0068 F4010000 		.word	500
+ 244 006c FA000000 		.word	250
+ 245 0070 F4010000 		.word	500
+ 246 0074 45010000 		.word	325
+ 247 0078 AF000000 		.word	175
+ 248 007c 7D000000 		.word	125
+ 249 0080 7D000000 		.word	125
+ 250 0084 F4010000 		.word	500
+ 251 0088 FA000000 		.word	250
+ 252 008c F4010000 		.word	500
+ 253 0090 5E010000 		.word	350
+ 254 0094 7D000000 		.word	125
+ 255 0098 F4010000 		.word	500
+ 256 009c 77010000 		.word	375
+ 257 00a0 F4010000 		.word	500
+ 258 00a4 2C010000 		.word	300
+ 259 00a8 96000000 		.word	150
+ 260 00ac F4010000 		.word	500
+ 261 00b0 45010000 		.word	325
+ 262 00b4 AF000000 		.word	175
+ 263 00b8 7D000000 		.word	125
+ 264 00bc 7D000000 		.word	125
+ 265 00c0 F4010000 		.word	500
+ 266 00c4 FA000000 		.word	250
+ 267 00c8 F4010000 		.word	500
+ 268 00cc 45010000 		.word	325
+ 269 00d0 AF000000 		.word	175
+ 270 00d4 7D000000 		.word	125
+ 271 00d8 7D000000 		.word	125
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccpCPnln.s 			page 9
+
+
+ 272 00dc F4010000 		.word	500
+ 273              		.global	melodia
+ 274              		.section	.data.melodia,"aw"
+ 275              		.align	2
+ 278              	melodia:
+ 279 0000 DA000000 		.word	218
+ 280 0004 DA000000 		.word	218
+ 281 0008 DA000000 		.word	218
+ 282 000c 13010000 		.word	275
+ 283 0010 B8000000 		.word	184
+ 284 0014 DA000000 		.word	218
+ 285 0018 13010000 		.word	275
+ 286 001c B8000000 		.word	184
+ 287 0020 DA000000 		.word	218
+ 288 0024 92000000 		.word	146
+ 289 0028 92000000 		.word	146
+ 290 002c 92000000 		.word	146
+ 291 0030 8A000000 		.word	138
+ 292 0034 B8000000 		.word	184
+ 293 0038 E7000000 		.word	231
+ 294 003c 13010000 		.word	275
+ 295 0040 B8000000 		.word	184
+ 296 0044 DA000000 		.word	218
+ 297 0048 6D000000 		.word	109
+ 298 004c DA000000 		.word	218
+ 299 0050 DA000000 		.word	218
+ 300 0054 6D000000 		.word	109
+ 301 0058 74000000 		.word	116
+ 302 005c 7A000000 		.word	122
+ 303 0060 81000000 		.word	129
+ 304 0064 8A000000 		.word	138
+ 305 0068 81000000 		.word	129
+ 306 006c D3000000 		.word	211
+ 307 0070 9A000000 		.word	154
+ 308 0074 A4000000 		.word	164
+ 309 0078 AD000000 		.word	173
+ 310 007c B8000000 		.word	184
+ 311 0080 C2000000 		.word	194
+ 312 0084 B8000000 		.word	184
+ 313 0088 13010000 		.word	275
+ 314 008c E7000000 		.word	231
+ 315 0090 13010000 		.word	275
+ 316 0094 DA000000 		.word	218
+ 317 0098 B8000000 		.word	184
+ 318 009c 92000000 		.word	146
+ 319 00a0 6D000000 		.word	109
+ 320 00a4 DA000000 		.word	218
+ 321 00a8 DA000000 		.word	218
+ 322 00ac 6D000000 		.word	109
+ 323 00b0 74000000 		.word	116
+ 324 00b4 7A000000 		.word	122
+ 325 00b8 81000000 		.word	129
+ 326 00bc 8A000000 		.word	138
+ 327 00c0 81000000 		.word	129
+ 328 00c4 D3000000 		.word	211
+ 329 00c8 9A000000 		.word	154
+ 330 00cc A4000000 		.word	164
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccpCPnln.s 			page 10
+
+
+ 331 00d0 AD000000 		.word	173
+ 332 00d4 B8000000 		.word	184
+ 333 00d8 C2000000 		.word	194
+ 334 00dc B8000000 		.word	184
+ 335              		.text
+ 336              	.Letext0:
+ 337              		.file 2 "C:/Users/silsp/AppData/Roaming/Code/User/globalStorage/bmd.stm32-for-vscode/@xpack-dev-to
+ 338              		.file 3 "C:/Users/silsp/AppData/Roaming/Code/User/globalStorage/bmd.stm32-for-vscode/@xpack-dev-to
+ 339              		.file 4 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f446xx.h"
+ 340              		.file 5 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+ 341              		.file 6 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
+ 342              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h"
+ 343              		.file 8 "Core/Inc/tim.h"
+ 344              		.file 9 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccpCPnln.s 			page 11
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 music_player.c
+C:\Users\silsp\AppData\Local\Temp\ccpCPnln.s:21     .text.MusicPlayer:00000000 $t
+C:\Users\silsp\AppData\Local\Temp\ccpCPnln.s:27     .text.MusicPlayer:00000000 MusicPlayer
+C:\Users\silsp\AppData\Local\Temp\ccpCPnln.s:176    .text.MusicPlayer:000000a0 $d
+C:\Users\silsp\AppData\Local\Temp\ccpCPnln.s:202    .bss.PastStatusMusic.2:00000000 PastStatusMusic.2
+C:\Users\silsp\AppData\Local\Temp\ccpCPnln.s:196    .bss.i.1:00000000 i.1
+C:\Users\silsp\AppData\Local\Temp\ccpCPnln.s:190    .bss.StartMusic.0:00000000 StartMusic.0
+C:\Users\silsp\AppData\Local\Temp\ccpCPnln.s:209    .bss.ValTempo:00000000 ValTempo
+C:\Users\silsp\AppData\Local\Temp\ccpCPnln.s:278    .data.melodia:00000000 melodia
+C:\Users\silsp\AppData\Local\Temp\ccpCPnln.s:216    .data.tempo:00000000 tempo
+C:\Users\silsp\AppData\Local\Temp\ccpCPnln.s:187    .bss.StartMusic.0:00000000 $d
+C:\Users\silsp\AppData\Local\Temp\ccpCPnln.s:193    .bss.i.1:00000000 $d
+C:\Users\silsp\AppData\Local\Temp\ccpCPnln.s:199    .bss.PastStatusMusic.2:00000000 $d
+C:\Users\silsp\AppData\Local\Temp\ccpCPnln.s:206    .bss.ValTempo:00000000 $d
+C:\Users\silsp\AppData\Local\Temp\ccpCPnln.s:213    .data.tempo:00000000 $d
+C:\Users\silsp\AppData\Local\Temp\ccpCPnln.s:275    .data.melodia:00000000 $d
+
+UNDEFINED SYMBOLS
+HAL_GetTick
+HAL_TIM_OC_Start
+HAL_TIM_OC_Stop
+htim2

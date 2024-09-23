@@ -1,0 +1,1290 @@
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"lcd_menu.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "Core/Src/lcd_menu.c"
+  20              		.section	.text.runningMan,"ax",%progbits
+  21              		.align	1
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	runningMan:
+  27              	.LVL0:
+  28              	.LFB246:
+   1:Core/Src/lcd_menu.c **** /**
+   2:Core/Src/lcd_menu.c ****   * @file   lcd_menu.c
+   3:Core/Src/lcd_menu.c ****   * @author BFH-TI / Matthias WAELTI <waltm5@bfh.ch>
+   4:Core/Src/lcd_menu.c ****   * @author BFH-TI / Daniel DEBRUNNER <dnd1@bfh.ch>
+   5:Core/Src/lcd_menu.c ****   * @version 1.0.1
+   6:Core/Src/lcd_menu.c ****   * @date 28.02.2019
+   7:Core/Src/lcd_menu.c ****   * @date 23.04.2018
+   8:Core/Src/lcd_menu.c ****   * @brief  Simple generic lcd menu. Check userCallbackPointer
+   9:Core/Src/lcd_menu.c ****   * @hardware NucleoF446RE, mbed-016.1-application-shield
+  10:Core/Src/lcd_menu.c ****   */
+  11:Core/Src/lcd_menu.c **** 
+  12:Core/Src/lcd_menu.c **** #include "lcd_menu.h"
+  13:Core/Src/lcd_menu.c **** #include <stdbool.h>
+  14:Core/Src/lcd_menu.c **** 
+  15:Core/Src/lcd_menu.c **** #define ENTRIES_PER_PAGE                ((uint8_t) 3)
+  16:Core/Src/lcd_menu.c **** 
+  17:Core/Src/lcd_menu.c **** static Menu *activeMenu = NULL;
+  18:Core/Src/lcd_menu.c **** static bool optionIsRunning = false;
+  19:Core/Src/lcd_menu.c **** 
+  20:Core/Src/lcd_menu.c **** void menu_setMainMenu(Menu *const menu)
+  21:Core/Src/lcd_menu.c **** {
+  22:Core/Src/lcd_menu.c ****     if (menu) {
+  23:Core/Src/lcd_menu.c ****         activeMenu = menu;
+  24:Core/Src/lcd_menu.c ****         menu->parentMenu = NULL;
+  25:Core/Src/lcd_menu.c ****     }
+  26:Core/Src/lcd_menu.c **** }
+  27:Core/Src/lcd_menu.c **** 
+  28:Core/Src/lcd_menu.c **** static void renderingScrollBar(Menu * const menu)
+  29:Core/Src/lcd_menu.c **** {
+  30:Core/Src/lcd_menu.c **** #define SCROLLBAR_MAX_HANDLE_HEIGHT     ((uint8_t) 27)
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s 			page 2
+
+
+  31:Core/Src/lcd_menu.c **** #define SCROLLBAR_HANDLE_WIDTH          ((uint8_t) 2)
+  32:Core/Src/lcd_menu.c **** #define SCROLLBAR_HANDLE_ANCHOR_X       ((uint8_t) 123)
+  33:Core/Src/lcd_menu.c **** #define SCROLLBAR_HANDLE_ANCHOR_Y       ((uint8_t) 2)
+  34:Core/Src/lcd_menu.c **** #define SCROLLBAR_FRAME_TOP_LEFT_X      ((uint8_t) 121)
+  35:Core/Src/lcd_menu.c **** #define SCROLLBAR_FRAME_TOP_LEFT_Y      ((uint8_t) 0)
+  36:Core/Src/lcd_menu.c **** #define SCROLLBAR_FRAME_BOTTOM_RIGHT_X  ((uint8_t) 127)
+  37:Core/Src/lcd_menu.c **** #define SCROLLBAR_FRAME_BOTTOM_RIGHT_Y  ((uint8_t) 31)
+  38:Core/Src/lcd_menu.c **** 
+  39:Core/Src/lcd_menu.c ****     uint8_t handleHeight = SCROLLBAR_MAX_HANDLE_HEIGHT, handleAnchor = SCROLLBAR_HANDLE_ANCHOR_Y;
+  40:Core/Src/lcd_menu.c **** 
+  41:Core/Src/lcd_menu.c ****     if(menu->numberOfEntries > ENTRIES_PER_PAGE){
+  42:Core/Src/lcd_menu.c ****         handleHeight /= (menu->numberOfEntries - 2);
+  43:Core/Src/lcd_menu.c ****         handleAnchor += handleHeight * menu->pageAnchor;
+  44:Core/Src/lcd_menu.c ****     }
+  45:Core/Src/lcd_menu.c **** 
+  46:Core/Src/lcd_menu.c ****     lcd_setFrame(SCROLLBAR_FRAME_TOP_LEFT_X, SCROLLBAR_FRAME_TOP_LEFT_Y, SCROLLBAR_FRAME_BOTTOM_RIG
+  47:Core/Src/lcd_menu.c ****     lcd_setBar(SCROLLBAR_HANDLE_ANCHOR_X, handleAnchor, SCROLLBAR_HANDLE_ANCHOR_X + SCROLLBAR_HANDL
+  48:Core/Src/lcd_menu.c **** }
+  49:Core/Src/lcd_menu.c **** 
+  50:Core/Src/lcd_menu.c **** 
+  51:Core/Src/lcd_menu.c **** static void renderingMenuPage(Menu * const menu)
+  52:Core/Src/lcd_menu.c **** {
+  53:Core/Src/lcd_menu.c ****     char tempLcdString[MENU_CHARACTERS_PER_LINE] = {};
+  54:Core/Src/lcd_menu.c **** 
+  55:Core/Src/lcd_menu.c ****     if(menu->cursorPosition > menu->pageAnchor + 2)
+  56:Core/Src/lcd_menu.c ****         menu->pageAnchor++;
+  57:Core/Src/lcd_menu.c ****     else if(menu->cursorPosition < menu->pageAnchor)
+  58:Core/Src/lcd_menu.c ****         menu->pageAnchor--;
+  59:Core/Src/lcd_menu.c **** 
+  60:Core/Src/lcd_menu.c ****     uint8_t numberOfRows = ENTRIES_PER_PAGE;
+  61:Core/Src/lcd_menu.c ****     if(menu->numberOfEntries < ENTRIES_PER_PAGE)
+  62:Core/Src/lcd_menu.c ****         numberOfRows = menu->numberOfEntries;
+  63:Core/Src/lcd_menu.c **** 
+  64:Core/Src/lcd_menu.c ****     for(uint8_t rowIndex = 0; rowIndex < numberOfRows; rowIndex++){
+  65:Core/Src/lcd_menu.c ****         MenuEntry * currentEntry = menu->list[rowIndex + menu->pageAnchor];
+  66:Core/Src/lcd_menu.c ****         bool contrastIsInverted = (rowIndex + menu->pageAnchor == menu->cursorPosition);
+  67:Core/Src/lcd_menu.c ****         char featureSymbol = ' ';
+  68:Core/Src/lcd_menu.c **** 
+  69:Core/Src/lcd_menu.c ****         if(currentEntry->type == MENU_SUBMENU)
+  70:Core/Src/lcd_menu.c ****             featureSymbol = '>';
+  71:Core/Src/lcd_menu.c **** 
+  72:Core/Src/lcd_menu.c ****         sprintf(tempLcdString, "%-18s %c", currentEntry->description, featureSymbol);
+  73:Core/Src/lcd_menu.c ****         lcd_setString(2, 8+8*rowIndex, tempLcdString, LCD_FONT_8, contrastIsInverted);
+  74:Core/Src/lcd_menu.c ****     }
+  75:Core/Src/lcd_menu.c **** }
+  76:Core/Src/lcd_menu.c **** 
+  77:Core/Src/lcd_menu.c **** static void renderingMenu(Menu * const menu)
+  78:Core/Src/lcd_menu.c **** {
+  79:Core/Src/lcd_menu.c ****     lcd_clear();
+  80:Core/Src/lcd_menu.c ****     lcd_setSymbol8(0, 0, LCD_MENU_SYMBOL, false);
+  81:Core/Src/lcd_menu.c ****     lcd_setString(14, 0, menu->description, LCD_FONT_8, false);
+  82:Core/Src/lcd_menu.c ****     renderingMenuPage(menu);
+  83:Core/Src/lcd_menu.c ****     renderingScrollBar(menu);
+  84:Core/Src/lcd_menu.c ****     lcd_show();
+  85:Core/Src/lcd_menu.c **** }
+  86:Core/Src/lcd_menu.c **** // was in runningMan $todo klj9
+  87:Core/Src/lcd_menu.c **** 		static menuUserDrawItem2 userDrawItemCallback2 = NULL;
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s 			page 3
+
+
+  88:Core/Src/lcd_menu.c **** 		static void* userData;
+  89:Core/Src/lcd_menu.c **** // end
+  90:Core/Src/lcd_menu.c **** 
+  91:Core/Src/lcd_menu.c **** static void runningMan(uint8_t x, uint8_t y, bool contrastIsInverted)
+  92:Core/Src/lcd_menu.c **** {
+  29              		.loc 1 92 1 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		.loc 1 92 1 is_stmt 0 view .LVU1
+  34 0000 10B5     		push	{r4, lr}
+  35              		.cfi_def_cfa_offset 8
+  36              		.cfi_offset 4, -8
+  37              		.cfi_offset 14, -4
+  38 0002 1346     		mov	r3, r2
+  93:Core/Src/lcd_menu.c ****     unsigned updateTreshold = 12;
+  39              		.loc 1 93 5 is_stmt 1 view .LVU2
+  40              	.LVL1:
+  94:Core/Src/lcd_menu.c ****     static unsigned updateCounter = 0;
+  41              		.loc 1 94 5 view .LVU3
+  95:Core/Src/lcd_menu.c ****     static bool isRunning = false;
+  42              		.loc 1 95 5 view .LVU4
+  96:Core/Src/lcd_menu.c **** 
+  97:Core/Src/lcd_menu.c **** 
+  98:Core/Src/lcd_menu.c ****     updateCounter++;
+  43              		.loc 1 98 5 view .LVU5
+  44              		.loc 1 98 18 is_stmt 0 view .LVU6
+  45 0004 0C4A     		ldr	r2, .L7
+  46              	.LVL2:
+  47              		.loc 1 98 18 view .LVU7
+  48 0006 1468     		ldr	r4, [r2]
+  49 0008 0134     		adds	r4, r4, #1
+  50 000a 1460     		str	r4, [r2]
+  99:Core/Src/lcd_menu.c ****     if (updateCounter == updateTreshold) {
+  51              		.loc 1 99 5 is_stmt 1 view .LVU8
+  52              		.loc 1 99 8 is_stmt 0 view .LVU9
+  53 000c 0C2C     		cmp	r4, #12
+  54 000e 06D0     		beq	.L6
+  55              	.L2:
+ 100:Core/Src/lcd_menu.c ****         isRunning = !isRunning;
+ 101:Core/Src/lcd_menu.c ****         updateCounter = 0;
+ 102:Core/Src/lcd_menu.c ****     }
+ 103:Core/Src/lcd_menu.c **** 
+ 104:Core/Src/lcd_menu.c ****     if (isRunning)
+  56              		.loc 1 104 5 is_stmt 1 view .LVU10
+  57              		.loc 1 104 9 is_stmt 0 view .LVU11
+  58 0010 0A4A     		ldr	r2, .L7+4
+  59 0012 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+  60              		.loc 1 104 8 view .LVU12
+  61 0014 62B1     		cbz	r2, .L3
+ 105:Core/Src/lcd_menu.c ****         lcd_setSymbol8(x, y, LCD_RUNNING_MAN, contrastIsInverted);
+  62              		.loc 1 105 9 is_stmt 1 view .LVU13
+  63 0016 0322     		movs	r2, #3
+  64 0018 FFF7FEFF 		bl	lcd_setSymbol8
+  65              	.LVL3:
+  66              	.L1:
+ 106:Core/Src/lcd_menu.c ****     else
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s 			page 4
+
+
+ 107:Core/Src/lcd_menu.c ****         lcd_setSymbol8(x, y, LCD_STANDING_MAN, contrastIsInverted);
+ 108:Core/Src/lcd_menu.c **** }
+  67              		.loc 1 108 1 is_stmt 0 view .LVU14
+  68 001c 10BD     		pop	{r4, pc}
+  69              	.LVL4:
+  70              	.L6:
+ 100:Core/Src/lcd_menu.c ****         updateCounter = 0;
+  71              		.loc 1 100 9 is_stmt 1 view .LVU15
+  72 001e 074C     		ldr	r4, .L7+4
+  73 0020 2278     		ldrb	r2, [r4]	@ zero_extendqisi2
+  74 0022 82F00102 		eor	r2, r2, #1
+ 100:Core/Src/lcd_menu.c ****         updateCounter = 0;
+  75              		.loc 1 100 19 is_stmt 0 view .LVU16
+  76 0026 2270     		strb	r2, [r4]
+ 101:Core/Src/lcd_menu.c ****     }
+  77              		.loc 1 101 9 is_stmt 1 view .LVU17
+ 101:Core/Src/lcd_menu.c ****     }
+  78              		.loc 1 101 23 is_stmt 0 view .LVU18
+  79 0028 034A     		ldr	r2, .L7
+  80 002a 0024     		movs	r4, #0
+  81 002c 1460     		str	r4, [r2]
+  82 002e EFE7     		b	.L2
+  83              	.L3:
+ 107:Core/Src/lcd_menu.c **** }
+  84              		.loc 1 107 9 is_stmt 1 view .LVU19
+  85 0030 0222     		movs	r2, #2
+  86 0032 FFF7FEFF 		bl	lcd_setSymbol8
+  87              	.LVL5:
+  88              		.loc 1 108 1 is_stmt 0 view .LVU20
+  89 0036 F1E7     		b	.L1
+  90              	.L8:
+  91              		.align	2
+  92              	.L7:
+  93 0038 00000000 		.word	updateCounter.1
+  94 003c 00000000 		.word	isRunning.0
+  95              		.cfi_endproc
+  96              	.LFE246:
+  98              		.section	.text.renderingAction,"ax",%progbits
+  99              		.align	1
+ 100              		.syntax unified
+ 101              		.thumb
+ 102              		.thumb_func
+ 104              	renderingAction:
+ 105              	.LVL6:
+ 106              	.LFB248:
+ 109:Core/Src/lcd_menu.c **** 
+ 110:Core/Src/lcd_menu.c **** void menu_registerDrawMenuItem2(menuUserDrawItem2 func, void* data){
+ 111:Core/Src/lcd_menu.c **** 	// register this function pointer
+ 112:Core/Src/lcd_menu.c **** 	userDrawItemCallback2 = func;
+ 113:Core/Src/lcd_menu.c **** 	userData = data;
+ 114:Core/Src/lcd_menu.c **** }
+ 115:Core/Src/lcd_menu.c **** 
+ 116:Core/Src/lcd_menu.c **** static void renderingAction(MenuEntry *const entry)
+ 117:Core/Src/lcd_menu.c **** {
+ 107              		.loc 1 117 1 is_stmt 1 view -0
+ 108              		.cfi_startproc
+ 109              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s 			page 5
+
+
+ 110              		@ frame_needed = 0, uses_anonymous_args = 0
+ 111              		.loc 1 117 1 is_stmt 0 view .LVU22
+ 112 0000 30B5     		push	{r4, r5, lr}
+ 113              		.cfi_def_cfa_offset 12
+ 114              		.cfi_offset 4, -12
+ 115              		.cfi_offset 5, -8
+ 116              		.cfi_offset 14, -4
+ 117 0002 83B0     		sub	sp, sp, #12
+ 118              		.cfi_def_cfa_offset 24
+ 119 0004 0546     		mov	r5, r0
+ 118:Core/Src/lcd_menu.c ****     lcd_clear();
+ 120              		.loc 1 118 5 is_stmt 1 view .LVU23
+ 121 0006 FFF7FEFF 		bl	lcd_clear
+ 122              	.LVL7:
+ 119:Core/Src/lcd_menu.c ****     runningMan(120, 0, false);
+ 123              		.loc 1 119 5 view .LVU24
+ 124 000a 0022     		movs	r2, #0
+ 125 000c 1146     		mov	r1, r2
+ 126 000e 7820     		movs	r0, #120
+ 127 0010 FFF7FEFF 		bl	runningMan
+ 128              	.LVL8:
+ 120:Core/Src/lcd_menu.c ****     lcd_setSymbol8(0,0, LCD_PLAY_SYMBOL, false);
+ 129              		.loc 1 120 5 view .LVU25
+ 130 0014 0023     		movs	r3, #0
+ 131 0016 0122     		movs	r2, #1
+ 132 0018 1946     		mov	r1, r3
+ 133 001a 1846     		mov	r0, r3
+ 134 001c FFF7FEFF 		bl	lcd_setSymbol8
+ 135              	.LVL9:
+ 121:Core/Src/lcd_menu.c ****     lcd_setString(14,0,entry->description, LCD_FONT_8, false);
+ 136              		.loc 1 121 5 view .LVU26
+ 137 0020 0024     		movs	r4, #0
+ 138 0022 0094     		str	r4, [sp]
+ 139 0024 2346     		mov	r3, r4
+ 140 0026 2A68     		ldr	r2, [r5]
+ 141 0028 2146     		mov	r1, r4
+ 142 002a 0E20     		movs	r0, #14
+ 143 002c FFF7FEFF 		bl	lcd_setString
+ 144              	.LVL10:
+ 122:Core/Src/lcd_menu.c ****     lcd_setFrame(0, 8, 127, 31);
+ 145              		.loc 1 122 5 view .LVU27
+ 146 0030 1F23     		movs	r3, #31
+ 147 0032 7F22     		movs	r2, #127
+ 148 0034 0821     		movs	r1, #8
+ 149 0036 2046     		mov	r0, r4
+ 150 0038 FFF7FEFF 		bl	lcd_setFrame
+ 151              	.LVL11:
+ 123:Core/Src/lcd_menu.c ****     if (userDrawItemCallback2 != NULL) {
+ 152              		.loc 1 123 5 view .LVU28
+ 153              		.loc 1 123 31 is_stmt 0 view .LVU29
+ 154 003c 054B     		ldr	r3, .L12
+ 155 003e 1B68     		ldr	r3, [r3]
+ 156              		.loc 1 123 8 view .LVU30
+ 157 0040 1BB1     		cbz	r3, .L10
+ 124:Core/Src/lcd_menu.c ****       userDrawItemCallback2((int) entry->event,userData);
+ 158              		.loc 1 124 7 is_stmt 1 view .LVU31
+ 159 0042 054A     		ldr	r2, .L12+4
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s 			page 6
+
+
+ 160 0044 1168     		ldr	r1, [r2]
+ 161 0046 287A     		ldrb	r0, [r5, #8]	@ zero_extendqisi2
+ 162 0048 9847     		blx	r3
+ 163              	.LVL12:
+ 164              	.L10:
+ 125:Core/Src/lcd_menu.c ****     }
+ 126:Core/Src/lcd_menu.c ****     lcd_show();
+ 165              		.loc 1 126 5 view .LVU32
+ 166 004a FFF7FEFF 		bl	lcd_show
+ 167              	.LVL13:
+ 127:Core/Src/lcd_menu.c **** }
+ 168              		.loc 1 127 1 is_stmt 0 view .LVU33
+ 169 004e 03B0     		add	sp, sp, #12
+ 170              		.cfi_def_cfa_offset 12
+ 171              		@ sp needed
+ 172 0050 30BD     		pop	{r4, r5, pc}
+ 173              	.LVL14:
+ 174              	.L13:
+ 175              		.loc 1 127 1 view .LVU34
+ 176 0052 00BF     		.align	2
+ 177              	.L12:
+ 178 0054 00000000 		.word	userDrawItemCallback2
+ 179 0058 00000000 		.word	userData
+ 180              		.cfi_endproc
+ 181              	.LFE248:
+ 183              		.section	.rodata.renderingMenuPage.str1.4,"aMS",%progbits,1
+ 184              		.align	2
+ 185              	.LC0:
+ 186 0000 252D3138 		.ascii	"%-18s %c\000"
+ 186      73202563 
+ 186      00
+ 187              		.section	.text.renderingMenuPage,"ax",%progbits
+ 188              		.align	1
+ 189              		.syntax unified
+ 190              		.thumb
+ 191              		.thumb_func
+ 193              	renderingMenuPage:
+ 194              	.LVL15:
+ 195              	.LFB244:
+  52:Core/Src/lcd_menu.c ****     char tempLcdString[MENU_CHARACTERS_PER_LINE] = {};
+ 196              		.loc 1 52 1 is_stmt 1 view -0
+ 197              		.cfi_startproc
+ 198              		@ args = 0, pretend = 0, frame = 24
+ 199              		@ frame_needed = 0, uses_anonymous_args = 0
+  52:Core/Src/lcd_menu.c ****     char tempLcdString[MENU_CHARACTERS_PER_LINE] = {};
+ 200              		.loc 1 52 1 is_stmt 0 view .LVU36
+ 201 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 202              		.cfi_def_cfa_offset 20
+ 203              		.cfi_offset 4, -20
+ 204              		.cfi_offset 5, -16
+ 205              		.cfi_offset 6, -12
+ 206              		.cfi_offset 7, -8
+ 207              		.cfi_offset 14, -4
+ 208 0002 89B0     		sub	sp, sp, #36
+ 209              		.cfi_def_cfa_offset 56
+ 210 0004 0646     		mov	r6, r0
+  53:Core/Src/lcd_menu.c **** 
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s 			page 7
+
+
+ 211              		.loc 1 53 5 is_stmt 1 view .LVU37
+  53:Core/Src/lcd_menu.c **** 
+ 212              		.loc 1 53 10 is_stmt 0 view .LVU38
+ 213 0006 0023     		movs	r3, #0
+ 214 0008 0293     		str	r3, [sp, #8]
+ 215 000a 0393     		str	r3, [sp, #12]
+ 216 000c 0493     		str	r3, [sp, #16]
+ 217 000e 0593     		str	r3, [sp, #20]
+ 218 0010 0693     		str	r3, [sp, #24]
+ 219 0012 ADF81C30 		strh	r3, [sp, #28]	@ movhi
+  55:Core/Src/lcd_menu.c ****         menu->pageAnchor++;
+ 220              		.loc 1 55 5 is_stmt 1 view .LVU39
+  55:Core/Src/lcd_menu.c ****         menu->pageAnchor++;
+ 221              		.loc 1 55 12 is_stmt 0 view .LVU40
+ 222 0016 027C     		ldrb	r2, [r0, #16]	@ zero_extendqisi2
+  55:Core/Src/lcd_menu.c ****         menu->pageAnchor++;
+ 223              		.loc 1 55 35 view .LVU41
+ 224 0018 437C     		ldrb	r3, [r0, #17]	@ zero_extendqisi2
+  55:Core/Src/lcd_menu.c ****         menu->pageAnchor++;
+ 225              		.loc 1 55 48 view .LVU42
+ 226 001a 991C     		adds	r1, r3, #2
+  55:Core/Src/lcd_menu.c ****         menu->pageAnchor++;
+ 227              		.loc 1 55 7 view .LVU43
+ 228 001c 8A42     		cmp	r2, r1
+ 229 001e 07DD     		ble	.L15
+  56:Core/Src/lcd_menu.c ****     else if(menu->cursorPosition < menu->pageAnchor)
+ 230              		.loc 1 56 9 is_stmt 1 view .LVU44
+  56:Core/Src/lcd_menu.c ****     else if(menu->cursorPosition < menu->pageAnchor)
+ 231              		.loc 1 56 25 is_stmt 0 view .LVU45
+ 232 0020 0133     		adds	r3, r3, #1
+ 233 0022 4374     		strb	r3, [r0, #17]
+ 234              	.L16:
+  60:Core/Src/lcd_menu.c ****     if(menu->numberOfEntries < ENTRIES_PER_PAGE)
+ 235              		.loc 1 60 5 is_stmt 1 view .LVU46
+ 236              	.LVL16:
+  61:Core/Src/lcd_menu.c ****         numberOfRows = menu->numberOfEntries;
+ 237              		.loc 1 61 5 view .LVU47
+  61:Core/Src/lcd_menu.c ****         numberOfRows = menu->numberOfEntries;
+ 238              		.loc 1 61 12 is_stmt 0 view .LVU48
+ 239 0024 3779     		ldrb	r7, [r6, #4]	@ zero_extendqisi2
+  61:Core/Src/lcd_menu.c ****         numberOfRows = menu->numberOfEntries;
+ 240              		.loc 1 61 7 view .LVU49
+ 241 0026 022F     		cmp	r7, #2
+ 242 0028 00D9     		bls	.L17
+  60:Core/Src/lcd_menu.c ****     if(menu->numberOfEntries < ENTRIES_PER_PAGE)
+ 243              		.loc 1 60 13 view .LVU50
+ 244 002a 0327     		movs	r7, #3
+ 245              	.L17:
+ 246              	.LVL17:
+  64:Core/Src/lcd_menu.c ****         MenuEntry * currentEntry = menu->list[rowIndex + menu->pageAnchor];
+ 247              		.loc 1 64 5 is_stmt 1 view .LVU51
+ 248              	.LBB2:
+  64:Core/Src/lcd_menu.c ****         MenuEntry * currentEntry = menu->list[rowIndex + menu->pageAnchor];
+ 249              		.loc 1 64 9 view .LVU52
+  64:Core/Src/lcd_menu.c ****         MenuEntry * currentEntry = menu->list[rowIndex + menu->pageAnchor];
+ 250              		.loc 1 64 17 is_stmt 0 view .LVU53
+ 251 002c 0024     		movs	r4, #0
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s 			page 8
+
+
+  64:Core/Src/lcd_menu.c ****         MenuEntry * currentEntry = menu->list[rowIndex + menu->pageAnchor];
+ 252              		.loc 1 64 5 view .LVU54
+ 253 002e 15E0     		b	.L18
+ 254              	.LVL18:
+ 255              	.L15:
+  64:Core/Src/lcd_menu.c ****         MenuEntry * currentEntry = menu->list[rowIndex + menu->pageAnchor];
+ 256              		.loc 1 64 5 view .LVU55
+ 257              	.LBE2:
+  57:Core/Src/lcd_menu.c ****         menu->pageAnchor--;
+ 258              		.loc 1 57 10 is_stmt 1 view .LVU56
+  57:Core/Src/lcd_menu.c ****         menu->pageAnchor--;
+ 259              		.loc 1 57 12 is_stmt 0 view .LVU57
+ 260 0030 9A42     		cmp	r2, r3
+ 261 0032 F7D2     		bcs	.L16
+  58:Core/Src/lcd_menu.c **** 
+ 262              		.loc 1 58 9 is_stmt 1 view .LVU58
+  58:Core/Src/lcd_menu.c **** 
+ 263              		.loc 1 58 25 is_stmt 0 view .LVU59
+ 264 0034 013B     		subs	r3, r3, #1
+ 265 0036 4374     		strb	r3, [r0, #17]
+ 266 0038 F4E7     		b	.L16
+ 267              	.LVL19:
+ 268              	.L21:
+ 269              	.LBB5:
+ 270              	.LBB3:
+  70:Core/Src/lcd_menu.c **** 
+ 271              		.loc 1 70 27 view .LVU60
+ 272 003a 3E23     		movs	r3, #62
+ 273              	.L19:
+ 274              	.LVL20:
+  72:Core/Src/lcd_menu.c ****         lcd_setString(2, 8+8*rowIndex, tempLcdString, LCD_FONT_8, contrastIsInverted);
+ 275              		.loc 1 72 9 is_stmt 1 view .LVU61
+ 276 003c 1268     		ldr	r2, [r2]
+ 277              	.LVL21:
+  72:Core/Src/lcd_menu.c ****         lcd_setString(2, 8+8*rowIndex, tempLcdString, LCD_FONT_8, contrastIsInverted);
+ 278              		.loc 1 72 9 is_stmt 0 view .LVU62
+ 279 003e 1149     		ldr	r1, .L24
+ 280 0040 02A8     		add	r0, sp, #8
+ 281 0042 FFF7FEFF 		bl	sprintf
+ 282              	.LVL22:
+  73:Core/Src/lcd_menu.c ****     }
+ 283              		.loc 1 73 9 is_stmt 1 view .LVU63
+ 284 0046 0134     		adds	r4, r4, #1
+ 285              	.LVL23:
+  73:Core/Src/lcd_menu.c ****     }
+ 286              		.loc 1 73 9 is_stmt 0 view .LVU64
+ 287 0048 E4B2     		uxtb	r4, r4
+ 288              	.LVL24:
+  73:Core/Src/lcd_menu.c ****     }
+ 289              		.loc 1 73 9 view .LVU65
+ 290 004a E100     		lsls	r1, r4, #3
+ 291 004c 0095     		str	r5, [sp]
+ 292 004e 0023     		movs	r3, #0
+ 293 0050 02AA     		add	r2, sp, #8
+ 294 0052 01F0F801 		and	r1, r1, #248
+ 295 0056 0220     		movs	r0, #2
+ 296 0058 FFF7FEFF 		bl	lcd_setString
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s 			page 9
+
+
+ 297              	.LVL25:
+ 298              	.LBE3:
+  64:Core/Src/lcd_menu.c ****         MenuEntry * currentEntry = menu->list[rowIndex + menu->pageAnchor];
+ 299              		.loc 1 64 64 is_stmt 1 discriminator 2 view .LVU66
+ 300              	.L18:
+  64:Core/Src/lcd_menu.c ****         MenuEntry * currentEntry = menu->list[rowIndex + menu->pageAnchor];
+ 301              		.loc 1 64 40 discriminator 1 view .LVU67
+ 302 005c A742     		cmp	r7, r4
+ 303 005e 0ED9     		bls	.L23
+ 304              	.LBB4:
+  65:Core/Src/lcd_menu.c ****         bool contrastIsInverted = (rowIndex + menu->pageAnchor == menu->cursorPosition);
+ 305              		.loc 1 65 9 view .LVU68
+  65:Core/Src/lcd_menu.c ****         bool contrastIsInverted = (rowIndex + menu->pageAnchor == menu->cursorPosition);
+ 306              		.loc 1 65 40 is_stmt 0 view .LVU69
+ 307 0060 B268     		ldr	r2, [r6, #8]
+  65:Core/Src/lcd_menu.c ****         bool contrastIsInverted = (rowIndex + menu->pageAnchor == menu->cursorPosition);
+ 308              		.loc 1 65 62 view .LVU70
+ 309 0062 737C     		ldrb	r3, [r6, #17]	@ zero_extendqisi2
+  65:Core/Src/lcd_menu.c ****         bool contrastIsInverted = (rowIndex + menu->pageAnchor == menu->cursorPosition);
+ 310              		.loc 1 65 56 view .LVU71
+ 311 0064 2344     		add	r3, r3, r4
+  65:Core/Src/lcd_menu.c ****         bool contrastIsInverted = (rowIndex + menu->pageAnchor == menu->cursorPosition);
+ 312              		.loc 1 65 21 view .LVU72
+ 313 0066 52F82320 		ldr	r2, [r2, r3, lsl #2]
+ 314              	.LVL26:
+  66:Core/Src/lcd_menu.c ****         char featureSymbol = ' ';
+ 315              		.loc 1 66 9 is_stmt 1 view .LVU73
+  66:Core/Src/lcd_menu.c ****         char featureSymbol = ' ';
+ 316              		.loc 1 66 71 is_stmt 0 view .LVU74
+ 317 006a 317C     		ldrb	r1, [r6, #16]	@ zero_extendqisi2
+  66:Core/Src/lcd_menu.c ****         char featureSymbol = ' ';
+ 318              		.loc 1 66 14 view .LVU75
+ 319 006c 8B42     		cmp	r3, r1
+ 320 006e 14BF     		ite	ne
+ 321 0070 0025     		movne	r5, #0
+ 322 0072 0125     		moveq	r5, #1
+ 323              	.LVL27:
+  67:Core/Src/lcd_menu.c **** 
+ 324              		.loc 1 67 9 is_stmt 1 view .LVU76
+  69:Core/Src/lcd_menu.c ****             featureSymbol = '>';
+ 325              		.loc 1 69 9 view .LVU77
+  69:Core/Src/lcd_menu.c ****             featureSymbol = '>';
+ 326              		.loc 1 69 24 is_stmt 0 view .LVU78
+ 327 0074 1379     		ldrb	r3, [r2, #4]	@ zero_extendqisi2
+  69:Core/Src/lcd_menu.c ****             featureSymbol = '>';
+ 328              		.loc 1 69 11 view .LVU79
+ 329 0076 012B     		cmp	r3, #1
+ 330 0078 DFD0     		beq	.L21
+  67:Core/Src/lcd_menu.c **** 
+ 331              		.loc 1 67 14 view .LVU80
+ 332 007a 2023     		movs	r3, #32
+ 333 007c DEE7     		b	.L19
+ 334              	.LVL28:
+ 335              	.L23:
+  67:Core/Src/lcd_menu.c **** 
+ 336              		.loc 1 67 14 view .LVU81
+ 337              	.LBE4:
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s 			page 10
+
+
+ 338              	.LBE5:
+  75:Core/Src/lcd_menu.c **** 
+ 339              		.loc 1 75 1 view .LVU82
+ 340 007e 09B0     		add	sp, sp, #36
+ 341              		.cfi_def_cfa_offset 20
+ 342              		@ sp needed
+ 343 0080 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 344              	.LVL29:
+ 345              	.L25:
+  75:Core/Src/lcd_menu.c **** 
+ 346              		.loc 1 75 1 view .LVU83
+ 347 0082 00BF     		.align	2
+ 348              	.L24:
+ 349 0084 00000000 		.word	.LC0
+ 350              		.cfi_endproc
+ 351              	.LFE244:
+ 353              		.section	.text.renderingScrollBar,"ax",%progbits
+ 354              		.align	1
+ 355              		.syntax unified
+ 356              		.thumb
+ 357              		.thumb_func
+ 359              	renderingScrollBar:
+ 360              	.LVL30:
+ 361              	.LFB243:
+  29:Core/Src/lcd_menu.c **** #define SCROLLBAR_MAX_HANDLE_HEIGHT     ((uint8_t) 27)
+ 362              		.loc 1 29 1 is_stmt 1 view -0
+ 363              		.cfi_startproc
+ 364              		@ args = 0, pretend = 0, frame = 0
+ 365              		@ frame_needed = 0, uses_anonymous_args = 0
+  29:Core/Src/lcd_menu.c **** #define SCROLLBAR_MAX_HANDLE_HEIGHT     ((uint8_t) 27)
+ 366              		.loc 1 29 1 is_stmt 0 view .LVU85
+ 367 0000 38B5     		push	{r3, r4, r5, lr}
+ 368              		.cfi_def_cfa_offset 16
+ 369              		.cfi_offset 3, -16
+ 370              		.cfi_offset 4, -12
+ 371              		.cfi_offset 5, -8
+ 372              		.cfi_offset 14, -4
+  39:Core/Src/lcd_menu.c **** 
+ 373              		.loc 1 39 5 is_stmt 1 view .LVU86
+ 374              	.LVL31:
+  41:Core/Src/lcd_menu.c ****         handleHeight /= (menu->numberOfEntries - 2);
+ 375              		.loc 1 41 5 view .LVU87
+  41:Core/Src/lcd_menu.c ****         handleHeight /= (menu->numberOfEntries - 2);
+ 376              		.loc 1 41 12 is_stmt 0 view .LVU88
+ 377 0002 0379     		ldrb	r3, [r0, #4]	@ zero_extendqisi2
+  41:Core/Src/lcd_menu.c ****         handleHeight /= (menu->numberOfEntries - 2);
+ 378              		.loc 1 41 7 view .LVU89
+ 379 0004 032B     		cmp	r3, #3
+ 380 0006 18D9     		bls	.L28
+  42:Core/Src/lcd_menu.c ****         handleAnchor += handleHeight * menu->pageAnchor;
+ 381              		.loc 1 42 9 is_stmt 1 view .LVU90
+  42:Core/Src/lcd_menu.c ****         handleAnchor += handleHeight * menu->pageAnchor;
+ 382              		.loc 1 42 48 is_stmt 0 view .LVU91
+ 383 0008 023B     		subs	r3, r3, #2
+  42:Core/Src/lcd_menu.c ****         handleAnchor += handleHeight * menu->pageAnchor;
+ 384              		.loc 1 42 22 view .LVU92
+ 385 000a 1B25     		movs	r5, #27
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s 			page 11
+
+
+ 386 000c 95FBF3F5 		sdiv	r5, r5, r3
+ 387 0010 EDB2     		uxtb	r5, r5
+ 388              	.LVL32:
+  43:Core/Src/lcd_menu.c ****     }
+ 389              		.loc 1 43 9 is_stmt 1 view .LVU93
+  43:Core/Src/lcd_menu.c ****     }
+ 390              		.loc 1 43 44 is_stmt 0 view .LVU94
+ 391 0012 447C     		ldrb	r4, [r0, #17]	@ zero_extendqisi2
+  43:Core/Src/lcd_menu.c ****     }
+ 392              		.loc 1 43 38 view .LVU95
+ 393 0014 14FB05F4 		smulbb	r4, r4, r5
+ 394 0018 E4B2     		uxtb	r4, r4
+  43:Core/Src/lcd_menu.c ****     }
+ 395              		.loc 1 43 22 view .LVU96
+ 396 001a 0234     		adds	r4, r4, #2
+ 397 001c E4B2     		uxtb	r4, r4
+ 398              	.LVL33:
+ 399              	.L27:
+  46:Core/Src/lcd_menu.c ****     lcd_setBar(SCROLLBAR_HANDLE_ANCHOR_X, handleAnchor, SCROLLBAR_HANDLE_ANCHOR_X + SCROLLBAR_HANDL
+ 400              		.loc 1 46 5 is_stmt 1 view .LVU97
+ 401 001e 1F23     		movs	r3, #31
+ 402 0020 7F22     		movs	r2, #127
+ 403 0022 0021     		movs	r1, #0
+ 404 0024 7920     		movs	r0, #121
+ 405              	.LVL34:
+  46:Core/Src/lcd_menu.c ****     lcd_setBar(SCROLLBAR_HANDLE_ANCHOR_X, handleAnchor, SCROLLBAR_HANDLE_ANCHOR_X + SCROLLBAR_HANDL
+ 406              		.loc 1 46 5 is_stmt 0 view .LVU98
+ 407 0026 FFF7FEFF 		bl	lcd_setFrame
+ 408              	.LVL35:
+  47:Core/Src/lcd_menu.c **** }
+ 409              		.loc 1 47 5 is_stmt 1 view .LVU99
+ 410 002a 2B19     		adds	r3, r5, r4
+ 411 002c DBB2     		uxtb	r3, r3
+ 412 002e 7D22     		movs	r2, #125
+ 413 0030 2146     		mov	r1, r4
+ 414 0032 7B20     		movs	r0, #123
+ 415 0034 FFF7FEFF 		bl	lcd_setBar
+ 416              	.LVL36:
+  48:Core/Src/lcd_menu.c **** 
+ 417              		.loc 1 48 1 is_stmt 0 view .LVU100
+ 418 0038 38BD     		pop	{r3, r4, r5, pc}
+ 419              	.LVL37:
+ 420              	.L28:
+  39:Core/Src/lcd_menu.c **** 
+ 421              		.loc 1 39 57 view .LVU101
+ 422 003a 0224     		movs	r4, #2
+  39:Core/Src/lcd_menu.c **** 
+ 423              		.loc 1 39 13 view .LVU102
+ 424 003c 1B25     		movs	r5, #27
+ 425 003e EEE7     		b	.L27
+ 426              		.cfi_endproc
+ 427              	.LFE243:
+ 429              		.section	.text.renderingMenu,"ax",%progbits
+ 430              		.align	1
+ 431              		.syntax unified
+ 432              		.thumb
+ 433              		.thumb_func
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s 			page 12
+
+
+ 435              	renderingMenu:
+ 436              	.LVL38:
+ 437              	.LFB245:
+  78:Core/Src/lcd_menu.c ****     lcd_clear();
+ 438              		.loc 1 78 1 is_stmt 1 view -0
+ 439              		.cfi_startproc
+ 440              		@ args = 0, pretend = 0, frame = 0
+ 441              		@ frame_needed = 0, uses_anonymous_args = 0
+  78:Core/Src/lcd_menu.c ****     lcd_clear();
+ 442              		.loc 1 78 1 is_stmt 0 view .LVU104
+ 443 0000 10B5     		push	{r4, lr}
+ 444              		.cfi_def_cfa_offset 8
+ 445              		.cfi_offset 4, -8
+ 446              		.cfi_offset 14, -4
+ 447 0002 82B0     		sub	sp, sp, #8
+ 448              		.cfi_def_cfa_offset 16
+ 449 0004 0446     		mov	r4, r0
+  79:Core/Src/lcd_menu.c ****     lcd_setSymbol8(0, 0, LCD_MENU_SYMBOL, false);
+ 450              		.loc 1 79 5 is_stmt 1 view .LVU105
+ 451 0006 FFF7FEFF 		bl	lcd_clear
+ 452              	.LVL39:
+  80:Core/Src/lcd_menu.c ****     lcd_setString(14, 0, menu->description, LCD_FONT_8, false);
+ 453              		.loc 1 80 5 view .LVU106
+ 454 000a 0023     		movs	r3, #0
+ 455 000c 1A46     		mov	r2, r3
+ 456 000e 1946     		mov	r1, r3
+ 457 0010 1846     		mov	r0, r3
+ 458 0012 FFF7FEFF 		bl	lcd_setSymbol8
+ 459              	.LVL40:
+  81:Core/Src/lcd_menu.c ****     renderingMenuPage(menu);
+ 460              		.loc 1 81 5 view .LVU107
+ 461 0016 0021     		movs	r1, #0
+ 462 0018 0091     		str	r1, [sp]
+ 463 001a 0B46     		mov	r3, r1
+ 464 001c 2268     		ldr	r2, [r4]
+ 465 001e 0E20     		movs	r0, #14
+ 466 0020 FFF7FEFF 		bl	lcd_setString
+ 467              	.LVL41:
+  82:Core/Src/lcd_menu.c ****     renderingScrollBar(menu);
+ 468              		.loc 1 82 5 view .LVU108
+ 469 0024 2046     		mov	r0, r4
+ 470 0026 FFF7FEFF 		bl	renderingMenuPage
+ 471              	.LVL42:
+  83:Core/Src/lcd_menu.c ****     lcd_show();
+ 472              		.loc 1 83 5 view .LVU109
+ 473 002a 2046     		mov	r0, r4
+ 474 002c FFF7FEFF 		bl	renderingScrollBar
+ 475              	.LVL43:
+  84:Core/Src/lcd_menu.c **** }
+ 476              		.loc 1 84 5 view .LVU110
+ 477 0030 FFF7FEFF 		bl	lcd_show
+ 478              	.LVL44:
+  85:Core/Src/lcd_menu.c **** // was in runningMan $todo klj9
+ 479              		.loc 1 85 1 is_stmt 0 view .LVU111
+ 480 0034 02B0     		add	sp, sp, #8
+ 481              		.cfi_def_cfa_offset 8
+ 482              		@ sp needed
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s 			page 13
+
+
+ 483 0036 10BD     		pop	{r4, pc}
+  85:Core/Src/lcd_menu.c **** // was in runningMan $todo klj9
+ 484              		.loc 1 85 1 view .LVU112
+ 485              		.cfi_endproc
+ 486              	.LFE245:
+ 488              		.section	.text.menu_setMainMenu,"ax",%progbits
+ 489              		.align	1
+ 490              		.global	menu_setMainMenu
+ 491              		.syntax unified
+ 492              		.thumb
+ 493              		.thumb_func
+ 495              	menu_setMainMenu:
+ 496              	.LVL45:
+ 497              	.LFB242:
+  21:Core/Src/lcd_menu.c ****     if (menu) {
+ 498              		.loc 1 21 1 is_stmt 1 view -0
+ 499              		.cfi_startproc
+ 500              		@ args = 0, pretend = 0, frame = 0
+ 501              		@ frame_needed = 0, uses_anonymous_args = 0
+ 502              		@ link register save eliminated.
+  22:Core/Src/lcd_menu.c ****         activeMenu = menu;
+ 503              		.loc 1 22 5 view .LVU114
+  22:Core/Src/lcd_menu.c ****         activeMenu = menu;
+ 504              		.loc 1 22 8 is_stmt 0 view .LVU115
+ 505 0000 18B1     		cbz	r0, .L32
+  23:Core/Src/lcd_menu.c ****         menu->parentMenu = NULL;
+ 506              		.loc 1 23 9 is_stmt 1 view .LVU116
+  23:Core/Src/lcd_menu.c ****         menu->parentMenu = NULL;
+ 507              		.loc 1 23 20 is_stmt 0 view .LVU117
+ 508 0002 024A     		ldr	r2, .L34
+ 509 0004 1060     		str	r0, [r2]
+  24:Core/Src/lcd_menu.c ****     }
+ 510              		.loc 1 24 9 is_stmt 1 view .LVU118
+  24:Core/Src/lcd_menu.c ****     }
+ 511              		.loc 1 24 26 is_stmt 0 view .LVU119
+ 512 0006 0022     		movs	r2, #0
+ 513 0008 C260     		str	r2, [r0, #12]
+ 514              	.L32:
+  26:Core/Src/lcd_menu.c **** 
+ 515              		.loc 1 26 1 view .LVU120
+ 516 000a 7047     		bx	lr
+ 517              	.L35:
+ 518              		.align	2
+ 519              	.L34:
+ 520 000c 00000000 		.word	activeMenu
+ 521              		.cfi_endproc
+ 522              	.LFE242:
+ 524              		.section	.text.menu_registerDrawMenuItem2,"ax",%progbits
+ 525              		.align	1
+ 526              		.global	menu_registerDrawMenuItem2
+ 527              		.syntax unified
+ 528              		.thumb
+ 529              		.thumb_func
+ 531              	menu_registerDrawMenuItem2:
+ 532              	.LVL46:
+ 533              	.LFB247:
+ 110:Core/Src/lcd_menu.c **** 	// register this function pointer
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s 			page 14
+
+
+ 534              		.loc 1 110 68 is_stmt 1 view -0
+ 535              		.cfi_startproc
+ 536              		@ args = 0, pretend = 0, frame = 0
+ 537              		@ frame_needed = 0, uses_anonymous_args = 0
+ 538              		@ link register save eliminated.
+ 112:Core/Src/lcd_menu.c **** 	userData = data;
+ 539              		.loc 1 112 2 view .LVU122
+ 112:Core/Src/lcd_menu.c **** 	userData = data;
+ 540              		.loc 1 112 24 is_stmt 0 view .LVU123
+ 541 0000 024B     		ldr	r3, .L37
+ 542 0002 1860     		str	r0, [r3]
+ 113:Core/Src/lcd_menu.c **** }
+ 543              		.loc 1 113 2 is_stmt 1 view .LVU124
+ 113:Core/Src/lcd_menu.c **** }
+ 544              		.loc 1 113 11 is_stmt 0 view .LVU125
+ 545 0004 024B     		ldr	r3, .L37+4
+ 546 0006 1960     		str	r1, [r3]
+ 114:Core/Src/lcd_menu.c **** 
+ 547              		.loc 1 114 1 view .LVU126
+ 548 0008 7047     		bx	lr
+ 549              	.L38:
+ 550 000a 00BF     		.align	2
+ 551              	.L37:
+ 552 000c 00000000 		.word	userDrawItemCallback2
+ 553 0010 00000000 		.word	userData
+ 554              		.cfi_endproc
+ 555              	.LFE247:
+ 557              		.section	.text.menu_show,"ax",%progbits
+ 558              		.align	1
+ 559              		.global	menu_show
+ 560              		.syntax unified
+ 561              		.thumb
+ 562              		.thumb_func
+ 564              	menu_show:
+ 565              	.LFB249:
+ 128:Core/Src/lcd_menu.c **** 
+ 129:Core/Src/lcd_menu.c **** void menu_show()
+ 130:Core/Src/lcd_menu.c **** {
+ 566              		.loc 1 130 1 is_stmt 1 view -0
+ 567              		.cfi_startproc
+ 568              		@ args = 0, pretend = 0, frame = 0
+ 569              		@ frame_needed = 0, uses_anonymous_args = 0
+ 570 0000 08B5     		push	{r3, lr}
+ 571              		.cfi_def_cfa_offset 8
+ 572              		.cfi_offset 3, -8
+ 573              		.cfi_offset 14, -4
+ 131:Core/Src/lcd_menu.c ****     if (!activeMenu)
+ 574              		.loc 1 131 5 view .LVU128
+ 575              		.loc 1 131 9 is_stmt 0 view .LVU129
+ 576 0002 084B     		ldr	r3, .L43
+ 577 0004 1868     		ldr	r0, [r3]
+ 578              		.loc 1 131 8 view .LVU130
+ 579 0006 40B1     		cbz	r0, .L39
+ 132:Core/Src/lcd_menu.c ****         return;
+ 133:Core/Src/lcd_menu.c **** 
+ 134:Core/Src/lcd_menu.c ****     if (optionIsRunning)
+ 580              		.loc 1 134 5 is_stmt 1 view .LVU131
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s 			page 15
+
+
+ 581              		.loc 1 134 9 is_stmt 0 view .LVU132
+ 582 0008 074B     		ldr	r3, .L43+4
+ 583 000a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 584              		.loc 1 134 8 view .LVU133
+ 585 000c 33B1     		cbz	r3, .L41
+ 135:Core/Src/lcd_menu.c ****         renderingAction(activeMenu->list[activeMenu->cursorPosition]);
+ 586              		.loc 1 135 9 is_stmt 1 view .LVU134
+ 587              		.loc 1 135 35 is_stmt 0 view .LVU135
+ 588 000e 8368     		ldr	r3, [r0, #8]
+ 589              		.loc 1 135 52 view .LVU136
+ 590 0010 027C     		ldrb	r2, [r0, #16]	@ zero_extendqisi2
+ 591              		.loc 1 135 9 view .LVU137
+ 592 0012 53F82200 		ldr	r0, [r3, r2, lsl #2]
+ 593 0016 FFF7FEFF 		bl	renderingAction
+ 594              	.LVL47:
+ 595              	.L39:
+ 136:Core/Src/lcd_menu.c ****     else
+ 137:Core/Src/lcd_menu.c ****         renderingMenu(activeMenu);
+ 138:Core/Src/lcd_menu.c **** }
+ 596              		.loc 1 138 1 view .LVU138
+ 597 001a 08BD     		pop	{r3, pc}
+ 598              	.L41:
+ 137:Core/Src/lcd_menu.c **** }
+ 599              		.loc 1 137 9 is_stmt 1 view .LVU139
+ 600 001c FFF7FEFF 		bl	renderingMenu
+ 601              	.LVL48:
+ 602 0020 FBE7     		b	.L39
+ 603              	.L44:
+ 604 0022 00BF     		.align	2
+ 605              	.L43:
+ 606 0024 00000000 		.word	activeMenu
+ 607 0028 00000000 		.word	optionIsRunning
+ 608              		.cfi_endproc
+ 609              	.LFE249:
+ 611              		.section	.text.menu_update,"ax",%progbits
+ 612              		.align	1
+ 613              		.global	menu_update
+ 614              		.syntax unified
+ 615              		.thumb
+ 616              		.thumb_func
+ 618              	menu_update:
+ 619              	.LVL49:
+ 620              	.LFB250:
+ 139:Core/Src/lcd_menu.c **** 
+ 140:Core/Src/lcd_menu.c **** menu_event menu_update(menu_navigation navigation)
+ 141:Core/Src/lcd_menu.c **** {
+ 621              		.loc 1 141 1 view -0
+ 622              		.cfi_startproc
+ 623              		@ args = 0, pretend = 0, frame = 0
+ 624              		@ frame_needed = 0, uses_anonymous_args = 0
+ 142:Core/Src/lcd_menu.c ****     if (!activeMenu)
+ 625              		.loc 1 142 5 view .LVU141
+ 626              		.loc 1 142 9 is_stmt 0 view .LVU142
+ 627 0000 2C4A     		ldr	r2, .L68
+ 628 0002 1268     		ldr	r2, [r2]
+ 629              		.loc 1 142 8 view .LVU143
+ 630 0004 002A     		cmp	r2, #0
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s 			page 16
+
+
+ 631 0006 4CD0     		beq	.L54
+ 141:Core/Src/lcd_menu.c ****     if (!activeMenu)
+ 632              		.loc 1 141 1 view .LVU144
+ 633 0008 10B5     		push	{r4, lr}
+ 634              		.cfi_def_cfa_offset 8
+ 635              		.cfi_offset 4, -8
+ 636              		.cfi_offset 14, -4
+ 637 000a 0346     		mov	r3, r0
+ 143:Core/Src/lcd_menu.c ****         return MENU_NO_EVENT;
+ 144:Core/Src/lcd_menu.c **** 
+ 145:Core/Src/lcd_menu.c ****     MenuEntry *currentEntry = activeMenu->list[activeMenu->cursorPosition];
+ 638              		.loc 1 145 5 is_stmt 1 view .LVU145
+ 639              		.loc 1 145 41 is_stmt 0 view .LVU146
+ 640 000c 9168     		ldr	r1, [r2, #8]
+ 641              		.loc 1 145 58 view .LVU147
+ 642 000e 107C     		ldrb	r0, [r2, #16]	@ zero_extendqisi2
+ 643              	.LVL50:
+ 644              		.loc 1 145 16 view .LVU148
+ 645 0010 51F82040 		ldr	r4, [r1, r0, lsl #2]
+ 646              	.LVL51:
+ 146:Core/Src/lcd_menu.c **** 
+ 147:Core/Src/lcd_menu.c **** 
+ 148:Core/Src/lcd_menu.c ****     if (optionIsRunning) {
+ 647              		.loc 1 148 5 is_stmt 1 view .LVU149
+ 648              		.loc 1 148 9 is_stmt 0 view .LVU150
+ 649 0014 2849     		ldr	r1, .L68+4
+ 650 0016 0978     		ldrb	r1, [r1]	@ zero_extendqisi2
+ 651              		.loc 1 148 8 view .LVU151
+ 652 0018 41B1     		cbz	r1, .L47
+ 149:Core/Src/lcd_menu.c ****         if (navigation == MENU_SELECT) {
+ 653              		.loc 1 149 9 is_stmt 1 view .LVU152
+ 654              		.loc 1 149 12 is_stmt 0 view .LVU153
+ 655 001a 052B     		cmp	r3, #5
+ 656 001c 01D0     		beq	.L65
+ 150:Core/Src/lcd_menu.c ****             optionIsRunning = false;
+ 151:Core/Src/lcd_menu.c ****             return MENU_STOP_EVENT;
+ 152:Core/Src/lcd_menu.c ****         }
+ 153:Core/Src/lcd_menu.c ****     } else {
+ 154:Core/Src/lcd_menu.c ****         switch (navigation) {
+ 155:Core/Src/lcd_menu.c ****         case MENU_SELECT:
+ 156:Core/Src/lcd_menu.c ****             if (currentEntry->type == MENU_EVENT) {
+ 157:Core/Src/lcd_menu.c ****                 optionIsRunning = true;
+ 158:Core/Src/lcd_menu.c ****                 return currentEntry->event;
+ 159:Core/Src/lcd_menu.c ****             } break;
+ 160:Core/Src/lcd_menu.c **** 
+ 161:Core/Src/lcd_menu.c ****         case MENU_UP:
+ 162:Core/Src/lcd_menu.c ****             if(activeMenu->cursorPosition > 0)
+ 163:Core/Src/lcd_menu.c ****                 activeMenu->cursorPosition--;
+ 164:Core/Src/lcd_menu.c ****             break;
+ 165:Core/Src/lcd_menu.c **** 
+ 166:Core/Src/lcd_menu.c ****         case MENU_DOWN:
+ 167:Core/Src/lcd_menu.c ****             if(activeMenu->cursorPosition < activeMenu->numberOfEntries-1)
+ 168:Core/Src/lcd_menu.c ****                 activeMenu->cursorPosition++;
+ 169:Core/Src/lcd_menu.c ****             break;
+ 170:Core/Src/lcd_menu.c **** 
+ 171:Core/Src/lcd_menu.c ****         case MENU_BACKWARD:
+ 172:Core/Src/lcd_menu.c ****             if (activeMenu->parentMenu) {
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s 			page 17
+
+
+ 173:Core/Src/lcd_menu.c ****                 activeMenu =  activeMenu->parentMenu;
+ 174:Core/Src/lcd_menu.c ****                 HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, 0);
+ 175:Core/Src/lcd_menu.c ****                 HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, 1);
+ 176:Core/Src/lcd_menu.c ****             }
+ 177:Core/Src/lcd_menu.c ****             break;
+ 178:Core/Src/lcd_menu.c **** 
+ 179:Core/Src/lcd_menu.c ****         case MENU_FORWARD:
+ 180:Core/Src/lcd_menu.c ****             if (currentEntry->type == MENU_SUBMENU) {
+ 181:Core/Src/lcd_menu.c ****                 Menu *parentMenu = activeMenu;
+ 182:Core/Src/lcd_menu.c ****                 activeMenu = currentEntry->submenu;
+ 183:Core/Src/lcd_menu.c ****                 activeMenu->parentMenu = parentMenu;
+ 184:Core/Src/lcd_menu.c ****             } break;
+ 185:Core/Src/lcd_menu.c **** 
+ 186:Core/Src/lcd_menu.c ****         default: break;
+ 187:Core/Src/lcd_menu.c ****         }
+ 188:Core/Src/lcd_menu.c ****     }
+ 189:Core/Src/lcd_menu.c ****     return MENU_NO_EVENT;
+ 657              		.loc 1 189 12 view .LVU154
+ 658 001e 0020     		movs	r0, #0
+ 659              	.LVL52:
+ 660              	.L46:
+ 190:Core/Src/lcd_menu.c **** }
+ 661              		.loc 1 190 1 view .LVU155
+ 662 0020 10BD     		pop	{r4, pc}
+ 663              	.LVL53:
+ 664              	.L65:
+ 150:Core/Src/lcd_menu.c ****             optionIsRunning = false;
+ 665              		.loc 1 150 13 is_stmt 1 view .LVU156
+ 150:Core/Src/lcd_menu.c ****             optionIsRunning = false;
+ 666              		.loc 1 150 29 is_stmt 0 view .LVU157
+ 667 0022 254B     		ldr	r3, .L68+4
+ 668 0024 0022     		movs	r2, #0
+ 669 0026 1A70     		strb	r2, [r3]
+ 151:Core/Src/lcd_menu.c ****         }
+ 670              		.loc 1 151 13 is_stmt 1 view .LVU158
+ 151:Core/Src/lcd_menu.c ****         }
+ 671              		.loc 1 151 20 is_stmt 0 view .LVU159
+ 672 0028 0120     		movs	r0, #1
+ 673 002a F9E7     		b	.L46
+ 674              	.L47:
+ 154:Core/Src/lcd_menu.c ****         case MENU_SELECT:
+ 675              		.loc 1 154 9 is_stmt 1 view .LVU160
+ 676 002c 013B     		subs	r3, r3, #1
+ 677 002e 042B     		cmp	r3, #4
+ 678 0030 39D8     		bhi	.L56
+ 679 0032 DFE803F0 		tbb	[pc, r3]
+ 680              	.L49:
+ 681 0036 0C       		.byte	(.L53-.L49)/2
+ 682 0037 12       		.byte	(.L52-.L49)/2
+ 683 0038 1A       		.byte	(.L51-.L49)/2
+ 684 0039 2B       		.byte	(.L50-.L49)/2
+ 685 003a 03       		.byte	(.L48-.L49)/2
+ 686 003b 00       		.p2align 1
+ 687              	.L48:
+ 156:Core/Src/lcd_menu.c ****                 optionIsRunning = true;
+ 688              		.loc 1 156 13 view .LVU161
+ 156:Core/Src/lcd_menu.c ****                 optionIsRunning = true;
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s 			page 18
+
+
+ 689              		.loc 1 156 29 is_stmt 0 view .LVU162
+ 690 003c 2379     		ldrb	r3, [r4, #4]	@ zero_extendqisi2
+ 156:Core/Src/lcd_menu.c ****                 optionIsRunning = true;
+ 691              		.loc 1 156 16 view .LVU163
+ 692 003e 0BB1     		cbz	r3, .L66
+ 189:Core/Src/lcd_menu.c **** }
+ 693              		.loc 1 189 12 view .LVU164
+ 694 0040 0020     		movs	r0, #0
+ 695 0042 EDE7     		b	.L46
+ 696              	.L66:
+ 157:Core/Src/lcd_menu.c ****                 return currentEntry->event;
+ 697              		.loc 1 157 17 is_stmt 1 view .LVU165
+ 157:Core/Src/lcd_menu.c ****                 return currentEntry->event;
+ 698              		.loc 1 157 33 is_stmt 0 view .LVU166
+ 699 0044 1C4B     		ldr	r3, .L68+4
+ 700 0046 0122     		movs	r2, #1
+ 701 0048 1A70     		strb	r2, [r3]
+ 158:Core/Src/lcd_menu.c ****             } break;
+ 702              		.loc 1 158 17 is_stmt 1 view .LVU167
+ 158:Core/Src/lcd_menu.c ****             } break;
+ 703              		.loc 1 158 36 is_stmt 0 view .LVU168
+ 704 004a 207A     		ldrb	r0, [r4, #8]	@ zero_extendqisi2
+ 705 004c E8E7     		b	.L46
+ 706              	.L53:
+ 162:Core/Src/lcd_menu.c ****                 activeMenu->cursorPosition--;
+ 707              		.loc 1 162 13 is_stmt 1 view .LVU169
+ 162:Core/Src/lcd_menu.c ****                 activeMenu->cursorPosition--;
+ 708              		.loc 1 162 15 is_stmt 0 view .LVU170
+ 709 004e 0028     		cmp	r0, #0
+ 710 0050 E6D0     		beq	.L46
+ 163:Core/Src/lcd_menu.c ****             break;
+ 711              		.loc 1 163 17 is_stmt 1 view .LVU171
+ 163:Core/Src/lcd_menu.c ****             break;
+ 712              		.loc 1 163 43 is_stmt 0 view .LVU172
+ 713 0052 0138     		subs	r0, r0, #1
+ 714 0054 1074     		strb	r0, [r2, #16]
+ 189:Core/Src/lcd_menu.c **** }
+ 715              		.loc 1 189 12 view .LVU173
+ 716 0056 0020     		movs	r0, #0
+ 717 0058 E2E7     		b	.L46
+ 718              	.L52:
+ 167:Core/Src/lcd_menu.c ****                 activeMenu->cursorPosition++;
+ 719              		.loc 1 167 13 is_stmt 1 view .LVU174
+ 167:Core/Src/lcd_menu.c ****                 activeMenu->cursorPosition++;
+ 720              		.loc 1 167 55 is_stmt 0 view .LVU175
+ 721 005a 1379     		ldrb	r3, [r2, #4]	@ zero_extendqisi2
+ 167:Core/Src/lcd_menu.c ****                 activeMenu->cursorPosition++;
+ 722              		.loc 1 167 72 view .LVU176
+ 723 005c 013B     		subs	r3, r3, #1
+ 167:Core/Src/lcd_menu.c ****                 activeMenu->cursorPosition++;
+ 724              		.loc 1 167 15 view .LVU177
+ 725 005e 9842     		cmp	r0, r3
+ 726 0060 23DA     		bge	.L58
+ 168:Core/Src/lcd_menu.c ****             break;
+ 727              		.loc 1 168 17 is_stmt 1 view .LVU178
+ 168:Core/Src/lcd_menu.c ****             break;
+ 728              		.loc 1 168 43 is_stmt 0 view .LVU179
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s 			page 19
+
+
+ 729 0062 0130     		adds	r0, r0, #1
+ 730 0064 1074     		strb	r0, [r2, #16]
+ 189:Core/Src/lcd_menu.c **** }
+ 731              		.loc 1 189 12 view .LVU180
+ 732 0066 0020     		movs	r0, #0
+ 733 0068 DAE7     		b	.L46
+ 734              	.L51:
+ 172:Core/Src/lcd_menu.c ****                 activeMenu =  activeMenu->parentMenu;
+ 735              		.loc 1 172 13 is_stmt 1 view .LVU181
+ 172:Core/Src/lcd_menu.c ****                 activeMenu =  activeMenu->parentMenu;
+ 736              		.loc 1 172 27 is_stmt 0 view .LVU182
+ 737 006a D368     		ldr	r3, [r2, #12]
+ 172:Core/Src/lcd_menu.c ****                 activeMenu =  activeMenu->parentMenu;
+ 738              		.loc 1 172 16 view .LVU183
+ 739 006c FBB1     		cbz	r3, .L59
+ 173:Core/Src/lcd_menu.c ****                 HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, 0);
+ 740              		.loc 1 173 17 is_stmt 1 view .LVU184
+ 173:Core/Src/lcd_menu.c ****                 HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, 0);
+ 741              		.loc 1 173 28 is_stmt 0 view .LVU185
+ 742 006e 114A     		ldr	r2, .L68
+ 743 0070 1360     		str	r3, [r2]
+ 174:Core/Src/lcd_menu.c ****                 HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, 1);
+ 744              		.loc 1 174 17 is_stmt 1 view .LVU186
+ 745 0072 0022     		movs	r2, #0
+ 746 0074 4FF40071 		mov	r1, #512
+ 747 0078 1048     		ldr	r0, .L68+8
+ 748 007a FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 749              	.LVL54:
+ 175:Core/Src/lcd_menu.c ****             }
+ 750              		.loc 1 175 17 view .LVU187
+ 751 007e 0122     		movs	r2, #1
+ 752 0080 8021     		movs	r1, #128
+ 753 0082 0F48     		ldr	r0, .L68+12
+ 754 0084 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 755              	.LVL55:
+ 189:Core/Src/lcd_menu.c **** }
+ 756              		.loc 1 189 12 is_stmt 0 view .LVU188
+ 757 0088 0020     		movs	r0, #0
+ 758 008a C9E7     		b	.L46
+ 759              	.L50:
+ 180:Core/Src/lcd_menu.c ****                 Menu *parentMenu = activeMenu;
+ 760              		.loc 1 180 13 is_stmt 1 view .LVU189
+ 180:Core/Src/lcd_menu.c ****                 Menu *parentMenu = activeMenu;
+ 761              		.loc 1 180 29 is_stmt 0 view .LVU190
+ 762 008c 2379     		ldrb	r3, [r4, #4]	@ zero_extendqisi2
+ 180:Core/Src/lcd_menu.c ****                 Menu *parentMenu = activeMenu;
+ 763              		.loc 1 180 16 view .LVU191
+ 764 008e 012B     		cmp	r3, #1
+ 765 0090 01D0     		beq	.L67
+ 189:Core/Src/lcd_menu.c **** }
+ 766              		.loc 1 189 12 view .LVU192
+ 767 0092 0020     		movs	r0, #0
+ 768 0094 C4E7     		b	.L46
+ 769              	.L67:
+ 770              	.LBB6:
+ 181:Core/Src/lcd_menu.c ****                 activeMenu = currentEntry->submenu;
+ 771              		.loc 1 181 17 is_stmt 1 view .LVU193
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s 			page 20
+
+
+ 772              	.LVL56:
+ 182:Core/Src/lcd_menu.c ****                 activeMenu->parentMenu = parentMenu;
+ 773              		.loc 1 182 17 view .LVU194
+ 182:Core/Src/lcd_menu.c ****                 activeMenu->parentMenu = parentMenu;
+ 774              		.loc 1 182 42 is_stmt 0 view .LVU195
+ 775 0096 A368     		ldr	r3, [r4, #8]
+ 182:Core/Src/lcd_menu.c ****                 activeMenu->parentMenu = parentMenu;
+ 776              		.loc 1 182 28 view .LVU196
+ 777 0098 0649     		ldr	r1, .L68
+ 778 009a 0B60     		str	r3, [r1]
+ 183:Core/Src/lcd_menu.c ****             } break;
+ 779              		.loc 1 183 17 is_stmt 1 view .LVU197
+ 183:Core/Src/lcd_menu.c ****             } break;
+ 780              		.loc 1 183 40 is_stmt 0 view .LVU198
+ 781 009c DA60     		str	r2, [r3, #12]
+ 782              	.LBE6:
+ 189:Core/Src/lcd_menu.c **** }
+ 783              		.loc 1 189 12 view .LVU199
+ 784 009e 0020     		movs	r0, #0
+ 785 00a0 BEE7     		b	.L46
+ 786              	.LVL57:
+ 787              	.L54:
+ 788              		.cfi_def_cfa_offset 0
+ 789              		.cfi_restore 4
+ 790              		.cfi_restore 14
+ 143:Core/Src/lcd_menu.c **** 
+ 791              		.loc 1 143 16 view .LVU200
+ 792 00a2 0020     		movs	r0, #0
+ 793              	.LVL58:
+ 794              		.loc 1 190 1 view .LVU201
+ 795 00a4 7047     		bx	lr
+ 796              	.LVL59:
+ 797              	.L56:
+ 798              		.cfi_def_cfa_offset 8
+ 799              		.cfi_offset 4, -8
+ 800              		.cfi_offset 14, -4
+ 154:Core/Src/lcd_menu.c ****         case MENU_SELECT:
+ 801              		.loc 1 154 9 view .LVU202
+ 802 00a6 0020     		movs	r0, #0
+ 803 00a8 BAE7     		b	.L46
+ 804              	.L58:
+ 189:Core/Src/lcd_menu.c **** }
+ 805              		.loc 1 189 12 view .LVU203
+ 806 00aa 0020     		movs	r0, #0
+ 807 00ac B8E7     		b	.L46
+ 808              	.L59:
+ 809 00ae 0020     		movs	r0, #0
+ 810 00b0 B6E7     		b	.L46
+ 811              	.L69:
+ 812 00b2 00BF     		.align	2
+ 813              	.L68:
+ 814 00b4 00000000 		.word	activeMenu
+ 815 00b8 00000000 		.word	optionIsRunning
+ 816 00bc 00000240 		.word	1073872896
+ 817 00c0 00080240 		.word	1073874944
+ 818              		.cfi_endproc
+ 819              	.LFE250:
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s 			page 21
+
+
+ 821              		.section	.bss.isRunning.0,"aw",%nobits
+ 824              	isRunning.0:
+ 825 0000 00       		.space	1
+ 826              		.section	.bss.updateCounter.1,"aw",%nobits
+ 827              		.align	2
+ 830              	updateCounter.1:
+ 831 0000 00000000 		.space	4
+ 832              		.section	.bss.userData,"aw",%nobits
+ 833              		.align	2
+ 836              	userData:
+ 837 0000 00000000 		.space	4
+ 838              		.section	.bss.userDrawItemCallback2,"aw",%nobits
+ 839              		.align	2
+ 842              	userDrawItemCallback2:
+ 843 0000 00000000 		.space	4
+ 844              		.section	.bss.optionIsRunning,"aw",%nobits
+ 847              	optionIsRunning:
+ 848 0000 00       		.space	1
+ 849              		.section	.bss.activeMenu,"aw",%nobits
+ 850              		.align	2
+ 853              	activeMenu:
+ 854 0000 00000000 		.space	4
+ 855              		.text
+ 856              	.Letext0:
+ 857              		.file 2 "C:/Users/silsp/AppData/Roaming/Code/User/globalStorage/bmd.stm32-for-vscode/@xpack-dev-to
+ 858              		.file 3 "C:/Users/silsp/AppData/Roaming/Code/User/globalStorage/bmd.stm32-for-vscode/@xpack-dev-to
+ 859              		.file 4 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f446xx.h"
+ 860              		.file 5 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h"
+ 861              		.file 6 "Core/Inc/lcd_driver.h"
+ 862              		.file 7 "Core/Inc/lcd_menu.h"
+ 863              		.file 8 "C:/Users/silsp/AppData/Roaming/Code/User/globalStorage/bmd.stm32-for-vscode/@xpack-dev-to
+ARM GAS  C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s 			page 22
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 lcd_menu.c
+C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s:21     .text.runningMan:00000000 $t
+C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s:26     .text.runningMan:00000000 runningMan
+C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s:93     .text.runningMan:00000038 $d
+C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s:830    .bss.updateCounter.1:00000000 updateCounter.1
+C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s:824    .bss.isRunning.0:00000000 isRunning.0
+C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s:99     .text.renderingAction:00000000 $t
+C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s:104    .text.renderingAction:00000000 renderingAction
+C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s:178    .text.renderingAction:00000054 $d
+C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s:842    .bss.userDrawItemCallback2:00000000 userDrawItemCallback2
+C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s:836    .bss.userData:00000000 userData
+C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s:184    .rodata.renderingMenuPage.str1.4:00000000 $d
+C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s:188    .text.renderingMenuPage:00000000 $t
+C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s:193    .text.renderingMenuPage:00000000 renderingMenuPage
+C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s:349    .text.renderingMenuPage:00000084 $d
+C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s:354    .text.renderingScrollBar:00000000 $t
+C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s:359    .text.renderingScrollBar:00000000 renderingScrollBar
+C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s:430    .text.renderingMenu:00000000 $t
+C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s:435    .text.renderingMenu:00000000 renderingMenu
+C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s:489    .text.menu_setMainMenu:00000000 $t
+C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s:495    .text.menu_setMainMenu:00000000 menu_setMainMenu
+C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s:520    .text.menu_setMainMenu:0000000c $d
+C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s:853    .bss.activeMenu:00000000 activeMenu
+C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s:525    .text.menu_registerDrawMenuItem2:00000000 $t
+C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s:531    .text.menu_registerDrawMenuItem2:00000000 menu_registerDrawMenuItem2
+C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s:552    .text.menu_registerDrawMenuItem2:0000000c $d
+C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s:558    .text.menu_show:00000000 $t
+C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s:564    .text.menu_show:00000000 menu_show
+C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s:606    .text.menu_show:00000024 $d
+C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s:847    .bss.optionIsRunning:00000000 optionIsRunning
+C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s:612    .text.menu_update:00000000 $t
+C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s:618    .text.menu_update:00000000 menu_update
+C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s:681    .text.menu_update:00000036 $d
+C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s:814    .text.menu_update:000000b4 $d
+C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s:825    .bss.isRunning.0:00000000 $d
+C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s:827    .bss.updateCounter.1:00000000 $d
+C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s:833    .bss.userData:00000000 $d
+C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s:839    .bss.userDrawItemCallback2:00000000 $d
+C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s:848    .bss.optionIsRunning:00000000 $d
+C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s:850    .bss.activeMenu:00000000 $d
+C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s:686    .text.menu_update:0000003b $d
+C:\Users\silsp\AppData\Local\Temp\ccJsOhkg.s:686    .text.menu_update:0000003c $t
+
+UNDEFINED SYMBOLS
+lcd_setSymbol8
+lcd_clear
+lcd_setString
+lcd_setFrame
+lcd_show
+sprintf
+lcd_setBar
+HAL_GPIO_WritePin
